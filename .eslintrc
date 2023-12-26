@@ -1,0 +1,90 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "plugin:prettier/recommended"
+  ],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "react",
+    "react-refresh",
+    "@typescript-eslint",
+    "import", // https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/order.md#groups-array
+    "prettier" // https://prettier.io/docs/en/install.html
+  ],
+  "rules": {
+    // To fix - TypeError: Error while loading rule '@typescript-eslint/comma-dangle': Cannot read property 'ecmaVersion' of undefined.
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": "off",
+
+    // Off rules
+    "max-len": "off",
+    "no-plusplus": "off",
+    "no-underscore-dangle": "off",
+    "react/prop-types": "off",
+    "import/prefer-default-export": "off",
+    "react/jsx-no-bind": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/require-default-props": "off",
+
+    // Typescript
+    "@typescript-eslint/default-param-last": "off",
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        "selector": "variable",
+        "format": ["camelCase", "UPPER_CASE"]
+      }
+    ],
+
+    // Common rules
+    "complexity": ["warn", { "max": 15 }],
+    "object-property-newline": ["error", { "allowMultiplePropertiesPerLine": true }],
+    "import/newline-after-import": "error",
+    "sort-imports": ["error", {
+      "ignoreCase": false,
+      "ignoreDeclarationSort": true,
+      "ignoreMemberSort": false,
+      "memberSyntaxSortOrder": ["single", "multiple", "all", "none"],
+      "allowSeparatedGroups": true
+    }],
+    "import/order": ["error", {
+      "newlines-between": "always",
+      "pathGroupsExcludedImportTypes": ["internal"],
+      "groups": [
+        ["builtin", "external"],
+        ["parent", "sibling", "internal", "index"]
+      ],
+      "pathGroups": [
+        {
+          "pattern": "src/**",
+          "group": "internal"
+        },
+        {
+          "pattern": "@lib/**",
+          "group": "internal"
+        },
+        {
+          "pattern": "@assets/**",
+          "group": "internal",
+          "position": "after"
+        }
+      ]
+    }],
+
+    // React rules
+    "react/jsx-max-props-per-line": ["error", { "maximum": 2 }]
+  }
+}
