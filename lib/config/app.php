@@ -14,7 +14,7 @@ return array(
   'version'     => '1.0.0',
   'vendor'      => '1275846',
   'sash_color'  => '#0051D2',
-  'ui'          => '1.3',
+  'ui'          => '2.0',
   'csrf'        => true,
   'plugins'     => true,
 );

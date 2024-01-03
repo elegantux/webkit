@@ -1,3 +1,12 @@
+# Locale
+https://stackoverflow.com/questions/3600436/how-to-convert-po-to-mo-files-on-mac
+```SHELl
+> brew install gettext
+> msgfmt inputfile.po -o outputfile.mo
+```
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
