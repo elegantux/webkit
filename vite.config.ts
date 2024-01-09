@@ -29,8 +29,9 @@ const plugins: Plugin[] = [
   {
     name: 'php',
     handleHotUpdate({ file, server }) {
-      if (file.includes(`${APP_NAME}/`) && file.endsWith('.php')) {
-        console.log('[PHP File Updated]: ', file);
+      const endsWith = file.endsWith('.php') || file.endsWith('.html');
+      if (file.includes(`${APP_NAME}/`) && endsWith) {
+        console.log('[PHP/HTML File Updated]: ', file);
         server.ws.send({ type: 'full-reload' });
       }
     }

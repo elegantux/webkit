@@ -16,6 +16,20 @@ const base = {
 
     return data;
   },
+  async getDependencies(templateId: string) {
+    const { data, status } = await axios.get<Response<string>>(
+      `${HOST}${WA_APP_URL}?module=editor&action=dependencies&template_id=${templateId}`,
+      {
+        headers: {},
+      }
+    );
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
 };
 
 export { base };

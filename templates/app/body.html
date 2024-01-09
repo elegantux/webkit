@@ -1,0 +1,7 @@
+{$wa->header()}
+{if webkitLicensing::hasLicense()}
+  <div id="webkit-root" data-ui="{$wa->whichUI()}"></div>
+{else}
+  <h1>Licence Error</h1>
+  {*include file="./LicenseError.html"*}
+{/if}

@@ -9,25 +9,21 @@ function Navbar() {
     <Flex gap="24px">
       <Link
         as={RouterLink}
-        to={appUrl('/')}
+        to="/dashboard"
       >
         Home
       </Link>
       <Link
         as={RouterLink}
-        to={appUrl('/about')}
+        to="/dashboard/about"
       >
         About
       </Link>
-      <Link
-        as={RouterLink}
-        to={appUrl('/dashboard')}
-      >
-        Dashboard
-      </Link>
+      <Link href={appUrl('/app/editor/2')}>Editor</Link>
     </Flex>
   );
 }
+
 export function AppLayout() {
   return (
     <>

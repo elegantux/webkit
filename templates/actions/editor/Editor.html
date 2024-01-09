@@ -1,0 +1,16 @@
+<html>
+<head>
+  {include file="../../app/head.html"}
+
+  <!-- [WebKit] Plugins - START -->
+  {$plugin_scripts}
+  <!-- [WebKit] Plugins - END -->
+
+  <!-- [WebKit] Vite Assets - START -->
+  {$wa->webkit->viteAssets()}
+  <!-- [WebKit] Vite Assets - END -->
+</head>
+<body>
+  {include file="../../app/body.html"}
+</body>
+</html>
