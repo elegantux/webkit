@@ -2,6 +2,7 @@
 
 class webkitPaginatedResponse
 {
+  const SEARCH_PARAMS = ['page', 'sort', 'order', 'keyword', 'per_page'];
 
   /**
    * @var int|string

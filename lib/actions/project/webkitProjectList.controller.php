@@ -1,6 +1,6 @@
 <?php
 
-class webkitTemplateListController extends webkitJsonController
+class webkitProjectListController extends webkitJsonController
 {
 
   /**
@@ -13,8 +13,7 @@ class webkitTemplateListController extends webkitJsonController
     parent::execute();
 
     try {
-
-      $this->validate(array_diff(waRequest::get(), ["templateList"]));
+      $this->validate(array_diff(waRequest::get(), ["projectList"]));
 
       $page = waRequest::get('page', 1, waRequest::TYPE_INT);
       $sort = waRequest::get('sort', 'DESC', waRequest::TYPE_STRING);
@@ -22,7 +21,7 @@ class webkitTemplateListController extends webkitJsonController
       $keyword = waRequest::get('keyword', null, waRequest::TYPE_STRING_TRIM);
       $per_page = waRequest::get('per_page', 10, waRequest::TYPE_INT);
 
-      $template_list = new webkitTemplateList([
+      $project_list = new webkitProjectList([
         'page' => $page,
         'sort' => $sort,
         'order' => $order,
@@ -30,7 +29,7 @@ class webkitTemplateListController extends webkitJsonController
         'per_page' => $per_page,
       ]);
 
-      $this->response = $template_list->getData();
+      $this->response = $project_list->getData();
 
     } catch (webkitAPIException $exception) {
 
