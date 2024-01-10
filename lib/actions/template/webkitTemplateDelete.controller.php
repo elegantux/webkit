@@ -9,9 +9,10 @@ class webkitTemplateDeleteController extends webkitJsonController
 
     try {
 
-      $template = new webkitTemplate(waRequest::get('id'));
+      wao(new webkitTemplateModel())->deleteById(waRequest::get('id'));
+      wao(new webkitTemplateProjectModel())->deleteByField('template_id', waRequest::get('id'));
 
-      $this->response = $template->delete();
+      $this->response = true;
 
     } catch (webkitAPIException $exception) {
 

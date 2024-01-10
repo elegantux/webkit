@@ -2,42 +2,35 @@
 
 /**
  * @property int $id
- * @property string $name
- * @property string $cover_url
- * @property string $front_content
- * @property string $front_styles
- * @property string $front_scripts
- * @property string $editor_components
- * @property string $editor_styles
- * @property string $editor_assets
- * @property string $child_templates
- * @property string $plugins
- * @property string $create_datetime
- * @property string $update_datetime
+ * @property int $template_id
+ * @property int $project_id
+ * @property int $status
+ * @property string $scope
+ * @property string $template_type
  */
-class webkitTemplate
+class webkitTemplateProject
 {
 
   use webkitUseState;
 
   /**
-   * @var webkitTemplateModel
+   * @var webkitTemplateProjectModel
    */
   protected $model;
 
   /**
-   * Creates a new template object or a template object corresponding to existing template.
+   * Creates a new condition object or a template object corresponding to existing condition.
    *
-   * @param int|array $data Template id or template data array
+   * @param int|array $data Condition id or template data array
    * @throws webkitAPIException
    */
   public function __construct($data)
   {
 
-    $this->model = new webkitTemplateModel();
+    $this->model = new webkitTemplateProjectModel();
 
     try {
-      if ($data instanceof webkitTemplate) {
+      if ($data instanceof webkitProject) {
         $this->data = $data->data;
       } elseif (is_array($data)) {
         $this->data = $data + $this->model->getEmptyRow();
