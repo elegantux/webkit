@@ -10,3 +10,6 @@ export const HOST = `${window.location.protocol}//${window.location.host}`;
 export const WA_APP_URL = window.webkitBackendUrls.backendApiUrl;
 // @ts-ignore
 export const WA_APP_PATH = window.webkitBackendUrls.backendAppStaticUrl;
+
+export const WA_THEME_MODE_LS_KEY = 'wa_theme_user_mode';
+export const WA_THEME_MODE_CHANGE_EVENT_NAME = 'wa-theme-change';

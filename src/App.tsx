@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Button, ChakraProvider, Link } from '@chakra-ui/react';
+import { Button, Link } from '@chakra-ui/react';
 
 import ViteLogo from './assets/icons/vite.svg?react';
 import ReactLogo from './assets/icons/react.svg?react';
-import theme from './ui/theme/theme';
 
 function Wrapper() {
   const [count, setCount] = useState<number>(0);
@@ -51,11 +50,7 @@ function Wrapper() {
 }
 
 function App() {
-  return (
-    <ChakraProvider theme={theme}>
-      <Wrapper />
-    </ChakraProvider>
-  );
+  return <Wrapper />;
 }
 
 export default App;
