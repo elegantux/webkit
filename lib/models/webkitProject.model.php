@@ -52,4 +52,56 @@ class webkitProjectModel extends waModel
     }
   }
 
+  /**
+   * @param $app_id
+   * @param $theme_id
+   * @return array
+   * @throws webkitAPIException
+   */
+  public function getTemplatesByAppAndThemeIds($app_id, $theme_id)
+  {
+    try {
+      return $this
+        ->query('
+          SELECT wt.*
+          FROM webkit_template AS wt
+          JOIN webkit_template_project AS wtp ON wt.id = wtp.template_id
+          JOIN webkit_project AS wp ON wtp.project_id = wp.id
+          WHERE wp.app_id = i:app_id
+          AND wp.theme_id = i:theme_id
+          AND wtp.status = 1
+        ', array('app_id' => $app_id, 'theme_id' => $theme_id))
+        ->fetchAll();
+    } catch (waDbException $exception) {
+      throw new webkitAPIException($exception->getMessage(), $exception->getCode());
+    }
+  }
+
+  /**
+   * @param int $app_id
+   * @param int $theme_id
+   * @param string $template_type
+   * @return string
+   * @throws webkitAPIException
+   */
+  public function getFrontendTemplateContent($app_id, $theme_id, $template_type)
+  {
+    try {
+      $response = $this
+        ->query('
+          SELECT wt.front_content
+          FROM webkit_template AS wt
+          JOIN webkit_template_project AS wtp ON wt.id = wtp.template_id
+          JOIN webkit_project AS wp ON wtp.project_id = wp.id
+          WHERE wp.app_id = i:app_id
+          AND wp.theme_id = i:theme_id
+          AND wtp.template_type = s:template_type
+          AND wtp.status = 1
+        ', array('app_id' => $app_id, 'theme_id' => $theme_id, 'template_type' => $template_type))
+        ->fetch();
+      return $response['front_content'];
+    } catch (waDbException $exception) {
+      throw new webkitAPIException($exception->getMessage(), $exception->getCode());
+    }
+  }
 }

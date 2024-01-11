@@ -41,13 +41,18 @@ class webkitHtmlParser
     return $html;
   }
 
-  // Function for generating HTML tag with dynamic attributes
-  private function tagToHtml($tagName, $attributes) {
+  /**
+   * @param string $tagName
+   * @param array $attributes
+   * @param string $content
+   * @return string
+   */
+  public function tagToHtml($tagName, $attributes, $content = '') {
     $tag = '<' . $tagName;
     foreach ($attributes as $attr => $value) {
       $tag .= ' ' . $attr . '="' . htmlentities($value, ENT_QUOTES, 'UTF-8') . '"';
     }
-    $tag .= ($tagName == 'link' ? '/>' : '></' . $tagName . '>');
+    $tag .= ($tagName == 'link' ? '/>' : '>'. $content .'</' . $tagName . '>');
     return $tag;
   }
 

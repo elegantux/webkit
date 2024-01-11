@@ -3,7 +3,6 @@
 trait webkitViteAssetManager
 {
   use webkitViteResolver;
-  use webkitFrontendUtils;
 
   /**
    * @throws waException

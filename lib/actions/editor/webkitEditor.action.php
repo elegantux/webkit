@@ -3,7 +3,7 @@
 class webkitEditorAction extends waViewAction
 {
 
-  use webkitFrontendUtils;
+  use webkitUrl;
 
   public function execute()
   {
@@ -13,7 +13,7 @@ class webkitEditorAction extends waViewAction
 
     $event_params = ['template' => $template];
 
-    $response = wa(webkitConst::APP_ID)->event(webkitConst::EDITOR_PLUGIN_ASSETS_EVENT, $event_params);
+    $response = wa(webkitConst::APP_ID)->event(webkitConst::EDITOR_PAGE_HEAD, $event_params);
 
     $plugin_scripts = [];
 

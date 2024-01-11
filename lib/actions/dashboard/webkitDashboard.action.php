@@ -2,7 +2,7 @@
 
 class webkitDashboardAction extends waViewAction
 {
-  use webkitFrontendUtils;
+  use webkitUrl;
 
   public function execute()
   {

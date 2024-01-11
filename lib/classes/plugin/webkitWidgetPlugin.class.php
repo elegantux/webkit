@@ -5,7 +5,7 @@ abstract class webkitWidgetPlugin extends webkitPlugin
 
   /**
    * Plugin Script/Style dependencies. E.g. Tailwind.
-   * @param $params = ['template' => $template, 'params' => []]
+   * @param $params
    * @return array array(
    *  'styles' => [
    *    ['href' => 'https://cdn.com/dependency.css', 'rel' => 'stylesheet'],
@@ -18,8 +18,10 @@ abstract class webkitWidgetPlugin extends webkitPlugin
   abstract public function dependencies($params);
 
   /**
-   * Frontend Hook
-   * @param $params = ['template' => $template, 'params' => []]
+   * Frontend Head Hook
+   *
+   * @event frontend_head
+   * @param $params
    * @return array array(
    *  'styles' => [
    *    ['href' => 'https://cdn.com/dependency.css', 'rel' => 'stylesheet'],
@@ -32,14 +34,54 @@ abstract class webkitWidgetPlugin extends webkitPlugin
   public function frontendHead($params) {}
 
   /**
-   * Hook
-   * @param $params = ['template' => $template, 'params' => []]
+   * Frontend Footer Hook
+   *
+   * @event frontend_footer
+   * @param $params
    * @return array array(
+   *  'styles' => [
+   *    ['href' => 'https://cdn.com/dependency.css', 'rel' => 'stylesheet'],
+   *  ],
    *  'scripts' => [
-   *    ['src' => '/wa-apps/app/plugin/js/some.js']
-   *  ]
+   *    ['src' => 'https://cdn.com/dependency.js']
+   *  ],
+   * );
+   */
+  public function frontendFooter($params) {}
+
+  /**
+   * Hook - Should return Plugin Script/Style dependencies.
+   *
+   * @event editor_canvas_head
+   * @param array $params
+   * @return array array(
+   * 'styles' => [
+   *    ['href' => 'https://cdn.com/dependency.css', 'rel' => 'stylesheet'],
+   *  ],
+   *  'scripts' => [
+   *    ['src' => 'https://cdn.com/dependency.js']
+   *  ],
    * )
    */
-  public function editorHead($params) {}
+  public function pluginDependencies($params)
+  {
+    return $this->dependencies($params);
+  }
+
+  /**
+   * Hook - Should return Plugin scripts
+   *
+   * @event editor_page_head
+   * @param array $params
+   * @return array array(
+   *  'scripts' => [
+   *    ['src' => $this->getPluginStaticUrl() . 'js/plugins/post.title.js' . '?v=' . $this->getVersion()]
+   *  ],
+   * )
+   */
+  public function pluginAssets($params)
+  {
+    return array();
+  }
 
 }

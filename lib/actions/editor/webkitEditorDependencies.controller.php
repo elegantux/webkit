@@ -15,7 +15,7 @@ class webkitEditorDependenciesController extends webkitJsonController
 
       $event_params = ['template' => $template];
 
-      $response = wa(webkitConst::APP_ID)->event(webkitConst::EDITOR_PLUGIN_DEPENDENCIES_EVENT, $event_params);
+      $response = wa(webkitConst::APP_ID)->event(webkitConst::EDITOR_CANVAS_HEAD, $event_params);
 
       $plugin_style_dependencies = [];
       $plugin_script_dependencies = [];

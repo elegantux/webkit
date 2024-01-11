@@ -19,49 +19,19 @@ class webkitShopPlugin extends webkitWidgetPlugin {
     );
   }
 
-  /**
-   * Hook - Plugin Script/Style dependencies. E.g. Tailwind.
-   * @param $params = ['template' => $template, 'params' => []]
-   * @return array array(
-   * 'styles' => [
-   *    ['href' => 'https://cdn.com/dependency.css', 'rel' => 'stylesheet'],
-   *  ],
-   *  'scripts' => [
-   *    ['src' => 'https://cdn.com/dependency.js']
-   *  ],
-   * )
-   */
   public function frontendHead($params)
   {
-    return $this->dependencies($params);
+    if (in_array($this->getId(), $params['plugin_ids'])) {
+      return $this->dependencies($params);
+    }
+    return [];
   }
 
-  /**
-   * Hook - Plugin Script/Style dependencies. E.g. Tailwind.
-   * @param $params = ['template' => $template, 'params' => []]
-   * @return array array(
-   * 'styles' => [
-   *    ['href' => 'https://cdn.com/dependency.css', 'rel' => 'stylesheet'],
-   *  ],
-   *  'scripts' => [
-   *    ['src' => 'https://cdn.com/dependency.js']
-   *  ],
-   * )
-   */
   public function pluginDependencies($params)
   {
     return $this->dependencies($params);
   }
 
-  /**
-   * Hook -
-   * @param $params
-   * @return array array(
-   *  'scripts' => [
-   *    ['src' => '/wa-apps/app/plugin/js/some.js']
-   *  ]
-   * )
-   */
   public function pluginAssets($params)
   {
     return array(

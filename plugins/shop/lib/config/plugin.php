@@ -10,7 +10,7 @@ return array(
   'handlers' => array(
     'frontend_head' => 'frontendHead',
     'frontend_footer' => 'frontendFooter',
-    'editor_plugin_assets' => 'pluginAssets',
-    'editor_plugin_dependencies' => 'pluginDependencies',
+    'editor_page_head' => 'pluginAssets',
+    'editor_canvas_head' => 'pluginDependencies',
   ),
 );

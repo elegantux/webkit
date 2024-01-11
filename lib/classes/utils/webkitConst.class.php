@@ -14,7 +14,7 @@ class webkitConst
    */
   const FRONTEND_HEAD_EVENT = 'frontend_head';
   const FRONTEND_FOOTER_EVENT = 'frontend_footer';
-  const EDITOR_PLUGIN_DEPENDENCIES_EVENT = 'editor_plugin_dependencies';
-  const EDITOR_PLUGIN_ASSETS_EVENT = 'editor_plugin_assets';
+  const EDITOR_CANVAS_HEAD = 'editor_canvas_head';
+  const EDITOR_PAGE_HEAD = 'editor_page_head';
 
 }
