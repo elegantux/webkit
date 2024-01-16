@@ -71,7 +71,7 @@
       ],
       "pathGroups": [
         {
-          "pattern": "src/**",
+          "pattern": "@app/**",
           "group": "internal"
         },
         {
@@ -79,9 +79,17 @@
           "group": "internal"
         },
         {
+          "pattern": "@ui/**",
+          "group": "internal"
+        },
+        {
           "pattern": "@assets/**",
           "group": "internal",
           "position": "after"
+        },
+        {
+          "pattern": "src/**",
+          "group": "internal"
         }
       ]
     }],

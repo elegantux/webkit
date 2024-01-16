@@ -28,6 +28,8 @@
       "@lib/*": ["src/lib/*"],
       "@assets/*": ["src/assets/*"],
       "@ui/*": ["src/ui/*"],
+      "@app": ["src/app"],
+      "@app/*": ["src/app/*"],
     }
   },
   "include": ["src"],

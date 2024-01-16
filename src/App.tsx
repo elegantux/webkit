@@ -35,7 +35,7 @@ function Wrapper() {
       <h1>Vite + React 222</h1>
       <div className="card">
         <Button
-          colorScheme="blue"
+          isDisabled
           onClick={() => setCount((c) => c + 1)}
         >
           count is {count}

@@ -3,11 +3,24 @@
 class webkitEditorDependenciesController extends webkitJsonController
 {
 
+  use webkitControllerHelper;
+
+  /**
+   * @var string[]
+   */
+  protected $required_fields = ['template_id'];
+
   public function execute()
   {
     parent::execute();
 
     try {
+
+      $this->validateRequired(
+        array_diff(waRequest::get(), ["editorDependencies"]),
+        $this->required_fields,
+        'Missing query params: '
+      );
 
       $template_id = intval(waRequest::get('template_id'));
 
@@ -15,6 +28,11 @@ class webkitEditorDependenciesController extends webkitJsonController
 
       $event_params = ['template' => $template];
 
+      /**
+       * @event editor_canvas_head
+       * @param array $event_params
+       * @return array List of ['name-plugin' => [dependencies]]
+       */
       $response = wa(webkitConst::APP_ID)->event(webkitConst::EDITOR_CANVAS_HEAD, $event_params);
 
       $plugin_style_dependencies = [];

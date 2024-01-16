@@ -6,10 +6,11 @@ trait webkitControllerHelper
   /**
    * @param array $parameters
    * @param array $available_params
+   * @param string $prefix_message
    * @return bool of invalid fields
    * @throws webkitAPIException
    */
-  public function validate($parameters = array(), $available_params = array())
+  public function validate($parameters = array(), $available_params = array(), $prefix_message = 'Invalid parameters: ')
   {
     $invalid_fields = [];
 
@@ -20,7 +21,7 @@ trait webkitControllerHelper
     }
 
     if (count($invalid_fields) > 0) {
-      throw new webkitAPIException('Invalid parameters: ' . implode(', ', $invalid_fields), webkitHttp::INVALID_FORMAT_CODE);
+      throw new webkitAPIException($prefix_message . implode(', ', $invalid_fields), webkitHttp::INVALID_FORMAT_CODE);
     }
 
     return true;
@@ -29,10 +30,11 @@ trait webkitControllerHelper
   /**
    * @param array $parameters
    * @param array $required_params
+   * @param string $prefix_message
    * @return bool of invalid fields
    * @throws webkitAPIException
    */
-  public function validateBody($parameters = array(), $required_params = array())
+  public function validateRequired($parameters = array(), $required_params = array(), $prefix_message = 'Missing fields: ')
   {
     $required_fields = [];
 
@@ -43,7 +45,7 @@ trait webkitControllerHelper
     }
 
     if (count($required_fields) > 0) {
-      throw new webkitAPIException('Missing fields: ' . implode(', ', $required_fields), webkitHttp::INVALID_FORMAT_CODE);
+      throw new webkitAPIException($prefix_message . implode(', ', $required_fields), webkitHttp::INVALID_FORMAT_CODE);
     }
 
     return true;

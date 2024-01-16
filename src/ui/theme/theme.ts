@@ -2,6 +2,9 @@
 import { theme as defaultTheme, extendTheme } from '@chakra-ui/react';
 
 import { WA_THEME_MODE_LS_KEY } from '@lib/constants';
+import Components from './components/index';
+import baseColors from '@ui/theme/colors';
+import { global } from '@ui/theme/global';
 
 const theme = extendTheme(
   {
@@ -15,14 +18,14 @@ const theme = extendTheme(
       initialColorMode: localStorage.getItem(WA_THEME_MODE_LS_KEY),
       useSystemColorMode: false,
     },
+    styles: { global },
     direction: defaultTheme.direction,
     transition: defaultTheme.transition,
     // breakpoints,
     zIndices: defaultTheme.zIndices,
-    components: {},
-    styles: {},
+    components: Components,
     borders: {},
-    colors: {},
+    colors: baseColors,
     radii: {},
     shadows: {},
     sizes: {},

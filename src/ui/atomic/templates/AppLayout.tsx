@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Outlet, Link as RouterLink } from 'react-router-dom';
+import { Outlet, Link as RouterLink, useLocation } from 'react-router-dom';
 import { Flex, Link, useColorMode } from '@chakra-ui/react';
 
 import { appUrl } from '@lib/utils';
@@ -27,6 +27,9 @@ function Navbar() {
 
 export function AppLayout() {
   const { setColorMode } = useColorMode();
+  const { pathname } = useLocation();
+
+  const showNavbar = !pathname.startsWith('/editor');
 
   const handleColorModeChange = () =>
     setColorMode(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
@@ -38,7 +41,7 @@ export function AppLayout() {
 
   return (
     <>
-      <Navbar />
+      {showNavbar && <Navbar />}
       <Outlet />
     </>
   );

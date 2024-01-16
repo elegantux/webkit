@@ -35,7 +35,7 @@ class webkitTemplateAddController extends webkitJsonController
       $post = waRequest::post();
 
       $this->validate(array_diff(waRequest::get(), ["templateAdd"]), $this->available_params);
-      $this->validateBody($post, $this->required_fields);
+      $this->validateRequired($post, $this->required_fields);
 
       /**
        * Get Template-Project info
