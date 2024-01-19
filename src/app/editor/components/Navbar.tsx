@@ -73,7 +73,7 @@ const SaveProject = memo(() => {
       colorScheme="malachite"
       size="sm"
       onClick={handleSave}
-      leftIcon={<FaFloppyDisk />}
+      leftIcon={<FaFloppyDisk size={20} />}
     >
       Save
     </Button>
@@ -106,23 +106,13 @@ export function Navbar() {
         >
           Back
         </Button>
-        {/* <IconButton */}
-        {/*  aria-label="Open Sidebar" */}
-        {/*  colorScheme="dodger" */}
-        {/*  // isLoading */}
-        {/*  size="sm" */}
-        {/*  onClick={() => navigate(-1)} */}
-        {/*  icon={<FaCirclePlus size={20} />} */}
-        {/* /> */}
       </Flex>
       <Button
         colorScheme="dodger"
-        // isLoading
         size="sm"
         onClick={openBlockListSidebar}
         leftIcon={<FaCirclePlus size={20} />}
         iconSpacing="6px"
-        ml="24px"
       >
         Add Block
       </Button>

@@ -3,6 +3,9 @@ export const global = () => ({
   '#wa-nav, #wa-nav:hover': {
     boxShadow: 'none',
   },
+  p: {
+    margin: 'unset',
+  },
   // Reset GJS styles
   ':root': {
     '--gjs-left-width': '0px',
@@ -15,5 +18,10 @@ export const global = () => ({
   '[data-theme][data-theme=light]': {
     // --background-color comes from the wa-...css file
     '--chakra-colors-chakra-body-bg': "var(--background-color, '#f3f5fa')",
+  },
+  // @uiw/react-color
+  "[data-theme*='dark'] .w-color-sketch": {
+    '--sketch-background': "var(--background-color, '#07051c') !important",
+    '--sketch-swatch-border-top': '1px solid red',
   },
 });

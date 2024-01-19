@@ -51,6 +51,9 @@ const sizes = {
 const getThemeColor = (props: StyleFunctionProps) =>
   props.colorMode === 'light' ? `${props.colorScheme}.600 !important` : `${props.colorScheme}.200 !important`;
 
+const resolveThemeColor = (props: StyleFunctionProps, light: string, dark: string) =>
+  props.colorMode === 'light' ? `${light} !important` : `${dark} !important`;
+
 function overrideWebasystButton(props: StyleFunctionProps) {
   const color = getThemeColor(props);
 
@@ -146,11 +149,42 @@ const variantLink = (props: StyleFunctionProps) => {
   };
 };
 
+const variantUnit = (props: StyleFunctionProps) => {
+  const styles = overrideWebasystButton(props);
+
+  const style = {
+    ...styles,
+    fontSize: 'xs',
+    padding: '4px',
+    height: 'auto',
+    width: 'min-content',
+    minW: 'auto',
+    margin: 0,
+    borderRadius: 4,
+    color: resolveThemeColor(props, 'grey.50', 'grey.200'),
+    bgColor: resolveThemeColor(props, 'grey.300', 'grey.900'),
+    _hover: {
+      textDecoration: 'none',
+      ...styles._hover,
+      color: resolveThemeColor(props, 'grey.50', 'grey.200'),
+      bgColor: resolveThemeColor(props, 'grey.500', 'grey.700'),
+    },
+  };
+
+  // To override some WA styles, we will have to use additional selectors.
+  // In this case it's '.chakra-button'
+  return {
+    '&.chakra-button': style,
+    ...style,
+  };
+};
+
 const variants = {
   solid: variantSolid,
   outline: variantOutline,
   ghost: variantGhost,
   link: variantLink,
+  unit: variantUnit,
 };
 
 const defaultProps = {

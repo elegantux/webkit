@@ -12,6 +12,8 @@ import { Template } from '@lib/models/template';
 import { Navbar } from '@app/editor/components/Navbar';
 import { Sidebar } from '@app/editor/components/Sidebar';
 import { Canvas } from '@app/editor/components/Canvas';
+import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
+import { styleManagerConfig } from '@app/editor/components/style-manager/lib/constant';
 
 const extractPluginsBlocks = (plugins: Plugin[]) => {
   return plugins.map((plugin) => plugin.blocks).flat();
@@ -55,7 +57,7 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
   const pluginsBlocks = extractPluginsBlocks(plugins);
   const pluginsComponents = extractPluginsComponents(plugins);
 
-  init({
+  const editor = init({
     container: '#editor-container',
     width: '100%',
     height: '100%',
@@ -69,9 +71,9 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     panels: {
       defaults: [],
     },
+    styleManager: styleManagerConfig,
     // blockManager: { custom: true },
     // deviceManager: { custom: true },
-    // styleManager: { custom: true },
     // // styleManager: { custom: true },
     // layerManager: { custom: true },
     // traitManager: { custom: true },
@@ -139,6 +141,8 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
       },
     ],
   });
+
+  editor.Commands.add(EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY, { run() {} });
 };
 
 export function Editor() {
@@ -147,10 +151,10 @@ export function Editor() {
   const { pluginsDependencies } = usePluginsDependencies(Number(templateId));
 
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  console.log('editor', editor);
 
   useEffectOnce(() => {
     initEditor(template, pluginsDependencies);
+    console.log('editor', editor);
   });
 
   return (

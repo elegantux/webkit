@@ -1,15 +1,17 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { create } from 'zustand';
-import grapesjs, { Editor, EditorConfig } from 'grapesjs';
+import grapesjs, { Editor, EditorConfig, Sector } from 'grapesjs';
 
 export const EDITOR_STORE = {
   EDITOR: (state: EditorInterface) => state.editor,
   INIT: (state: EditorInterface) => state.init,
+  SECTOR_LIST: (state: StyleManagerSectorsInterface) => state.sectorList,
+  SET_SECTOR_LIST: (state: StyleManagerSectorsInterface) => state.setSectorList,
 };
 
 interface EditorInterface {
   editor: Editor;
-  init: (config: EditorConfig) => void;
+  init: (config: EditorConfig) => Editor;
 }
 
 export const useEditorStore = create<EditorInterface>((set) => ({
@@ -18,6 +20,18 @@ export const useEditorStore = create<EditorInterface>((set) => ({
   init: (config) => {
     const editor = grapesjs.init(config);
     set(() => ({ editor }));
+    return editor;
+  },
+}));
+
+interface StyleManagerSectorsInterface {
+  sectorList: Sector[];
+  setSectorList: (sectors: Sector[]) => void;
+}
+export const useStyleManagerSectorsStore = create<StyleManagerSectorsInterface>((set) => ({
+  sectorList: [],
+  setSectorList: (sectors: Sector[]) => {
+    set(() => ({ sectorList: sectors }));
   },
 }));
 

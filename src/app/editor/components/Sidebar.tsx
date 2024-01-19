@@ -1,59 +1,154 @@
 import {
+  AbsoluteCenter,
+  Box,
+  Button,
+  Divider,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  SlideFade,
+  Flex,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
+  Text,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { FaComputerMouse as ComputerMouseIcon, FaCirclePlus } from 'react-icons/fa6';
 
 import { TraitManager } from '@app/editor/components/manager/TraitManager';
 import { BlockManager } from '@app/editor/components/manager/BlockManager';
-import { StyleManager } from '@app/editor/components/manager/StyleManager';
-import { useBlockListDisclosure } from '@app/editor/lib/store';
+import { StyleManager } from '@app/editor/components/style-manager/StyleManager';
+import { EDITOR_STORE, useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
 
 export function Sidebar() {
   const [tabIndex, setTabIndex] = useState<number>(0);
+  const [hasSelectedComponent, setHasSelectedComponent] = useState<boolean>(false);
   const disclosure = useBlockListDisclosure((state) => state);
+  const editor = useEditorStore(EDITOR_STORE.EDITOR);
+
+  // console.log('handleComponentChange', editor.getSelected());
+  const handleComponentChange = () => {
+    setHasSelectedComponent(!!editor.getSelected());
+  };
+
+  useEffect(() => {
+    editor.on('component:selected', handleComponentChange);
+    editor.on('component:deselected', handleComponentChange);
+    editor.on('component:remove', handleComponentChange);
+
+    return () => {
+      editor.off('component:selected', handleComponentChange);
+      editor.off('component:deselected', handleComponentChange);
+      editor.off('component:remove', handleComponentChange);
+    };
+  }, []);
+
   return (
     <>
-      <Tabs
-        tabIndex={tabIndex}
-        onChange={setTabIndex}
-        borderRight="2px solid"
-        borderRightColor="var(--chakra-colors-chakra-border-color)"
-        minH="100%"
-      >
-        <TabList>
-          <Tab>Styles</Tab>
-          <Tab>Settings</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel p={0}>
-            <SlideFade
-              in={tabIndex === 0}
-              offsetX="20px"
+      {hasSelectedComponent ? (
+        <Tabs
+          tabIndex={tabIndex}
+          onChange={setTabIndex}
+          borderRight="2px solid"
+          borderRightColor="var(--chakra-colors-chakra-border-color)"
+          minH="100%"
+          lazyBehavior="unmount"
+          isLazy
+        >
+          <TabList
+            position="sticky"
+            top={0}
+            zIndex={1}
+            bgColor="var(--chakra-colors-chakra-body-bg)"
+            gap={0}
+          >
+            <Tab
+              as={Button}
+              variant="ghost"
+              py="12px"
+              flex={1}
+              mr={0}
+              borderRadius={0}
+              borderWidth={0}
+              borderBottom="2px"
+              borderColor="transparent"
             >
+              Styles
+            </Tab>
+            <Tab
+              as={Button}
+              variant="ghost"
+              py="12px"
+              flex={1}
+              borderRadius={0}
+              borderWidth={0}
+              borderBottom="2px"
+              borderColor="transparent"
+            >
+              Settings
+            </Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel p={0}>
               <StyleManager />
-            </SlideFade>
-          </TabPanel>
-          <TabPanel p={0}>
-            <SlideFade
-              in={tabIndex === 1}
-              offsetX="20px"
-            >
+            </TabPanel>
+            <TabPanel p={0}>
               <TraitManager />
-            </SlideFade>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      ) : (
+        <Flex
+          direction="column"
+          justify="center"
+          align="center"
+          gap="64px"
+          height="100%"
+        >
+          <Flex
+            direction="column"
+            justify="center"
+            align="center"
+            gap="24px"
+          >
+            <Text
+              fontSize="lg"
+              fontWeight="bold"
+              textAlign="center"
+            >
+              Select component
+            </Text>
+            <ComputerMouseIcon size={42} />
+          </Flex>
+          <Box
+            position="relative"
+            width="100%"
+          >
+            <Divider borderColor="grey.500" />
+            <AbsoluteCenter
+              bg="grey.400"
+              px="4"
+              top="0"
+            >
+              or
+            </AbsoluteCenter>
+          </Box>
+          <Button
+            colorScheme="dodger"
+            size="sm"
+            onClick={disclosure.onOpen}
+            leftIcon={<FaCirclePlus size={20} />}
+            iconSpacing="6px"
+          >
+            Add Block
+          </Button>
+        </Flex>
+      )}
       <Drawer
         variant="sidebar"
         placement="left"
