@@ -17,6 +17,13 @@
       getAll: function() {
         return this.functions;
       }
+    },
+    getCsrf() {
+      var matches = document.cookie.match(new RegExp("(?:^|; )_csrf=([^;]*)"));
+      if (matches && matches[1]) {
+        return decodeURIComponent(matches[1]);
+      }
+      return '';
     }
   };
 

@@ -8,12 +8,27 @@ import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { PropertyHeader } from '@app/editor/components/style-manager/components/PropertyHeader';
 
-export const getPropertyInitialValue = (property: ExtendedProperty) => (property.hasValue() ? property.getValue() : '');
-
-export const hasValueParent = (property: ExtendedProperty) => {
-  const parent = property.getParent();
-  return property.hasValueParent() && (parent ? parent.isDetached() : true);
-};
+export const SelectProperty = memo(
+  ({
+    value,
+    options,
+    onChange,
+  }: {
+    value: SelectOptionProps | null;
+    options: SelectOptionProps[] | undefined;
+    onChange: (option: SelectOptionProps | any) => void;
+  }) => {
+    return (
+      <Select
+        menuPosition="fixed"
+        menuPlacement="auto"
+        value={value}
+        options={options}
+        onChange={onChange}
+      />
+    );
+  }
+);
 
 export const SelectPropertyType = memo(({ property }: { property: ExtendedProperty }) => {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
@@ -22,7 +37,6 @@ export const SelectPropertyType = memo(({ property }: { property: ExtendedProper
   const propertyLabel = useMemo(() => property.getLabel(), []);
   const hasValue = value.length > 0;
 
-  // const initialValue = getPropertyInitialValue(property);
   const selectedValue = property.attributes.options!.find((option) => option.value === value) ?? null;
   const options = property.attributes.options!;
 
@@ -67,9 +81,7 @@ export const SelectPropertyType = memo(({ property }: { property: ExtendedProper
         hasValue={hasValue}
         onClear={handleClearButton}
       />
-      <Select
-        menuPosition="fixed"
-        menuPlacement="auto"
+      <SelectProperty
         value={selectedValue}
         options={options}
         onChange={handleInputChange}

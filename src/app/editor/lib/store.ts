@@ -4,6 +4,8 @@ import grapesjs, { Editor, EditorConfig, Sector } from 'grapesjs';
 
 export const EDITOR_STORE = {
   EDITOR: (state: EditorInterface) => state.editor,
+  EDITOR_ARE_PLUGINS_LOADED: (state: EditorInterface) => state.arePluginsLoaded,
+  EDITOR_SET_ARE_PLUGINS_LOADED: (state: EditorInterface) => state.setArePluginsLoaded,
   INIT: (state: EditorInterface) => state.init,
   SECTOR_LIST: (state: StyleManagerSectorsInterface) => state.sectorList,
   SET_SECTOR_LIST: (state: StyleManagerSectorsInterface) => state.setSectorList,
@@ -12,6 +14,8 @@ export const EDITOR_STORE = {
 interface EditorInterface {
   editor: Editor;
   init: (config: EditorConfig) => Editor;
+  arePluginsLoaded: boolean;
+  setArePluginsLoaded: (bool: boolean) => void;
 }
 
 export const useEditorStore = create<EditorInterface>((set) => ({
@@ -21,6 +25,10 @@ export const useEditorStore = create<EditorInterface>((set) => ({
     const editor = grapesjs.init(config);
     set(() => ({ editor }));
     return editor;
+  },
+  arePluginsLoaded: false,
+  setArePluginsLoaded: (bool: boolean) => {
+    set((state) => ({ ...state, arePluginsLoaded: bool }));
   },
 }));
 

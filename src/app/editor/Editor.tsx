@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import 'grapesjs/dist/css/grapes.min.css';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
-import { Plugin, PluginDependencies, PluginPayload } from '@lib/models/plugin';
+import { PluginDependencies } from '@lib/models/plugin';
 import { useTemplate } from '@lib/state';
 import { usePluginsDependencies } from '@app/editor/lib/state';
 import { Template } from '@lib/models/template';
@@ -15,69 +15,75 @@ import { Canvas } from '@app/editor/components/Canvas';
 import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { styleManagerConfig } from '@app/editor/components/style-manager/lib/constant';
 
-const extractPluginsBlocks = (plugins: Plugin[]) => {
-  return plugins.map((plugin) => plugin.blocks).flat();
-};
+const loadPlugins = async (
+  editor: EditorInterface,
+  params: { pluginList: Function[]; pluginListOptions: Array<Record<any, any>>; onFinished: Function }
+) => {
+  console.log('loadPlugins', editor, params);
+  const { pluginList, pluginListOptions, onFinished } = params;
 
-const extractPluginsComponents = (plugins: Plugin[]) => {
-  return plugins.map((plugin) => plugin.components).flat();
-};
+  for (let i = 0; i < pluginList.length; i++) {
+    const plugin = pluginList[i];
+    if (typeof plugin !== 'function') {
+      return console.log('The plugin definition is incorrect!', plugin);
+    }
 
-const getPlugins = async (plugins: Function[], payload: PluginPayload): Promise<Plugin[]> => {
-  const pluginList: Plugin[] = [];
-  for (let i = 0; i < plugins.length; i++) {
     try {
       // eslint-disable-next-line no-await-in-loop
-      const result = await plugins[i](payload);
-      pluginList.push(result);
+      await plugin(editor, pluginListOptions[plugin]);
     } catch (error) {
       console.error(`Ошибка в функции под индексом ${i}:`, error);
+    } finally {
     }
   }
-  return pluginList;
-};
-
-const initPluginsComponents = (components: Plugin['components'], e: EditorInterface) => {
-  components.forEach((component) => {
-    try {
-      e.DomComponents.addType(component.type, component.definition);
-    } catch (error) {
-      console.error(`Ошибка при добавлении инициализации компонента ${component.type}:`, error);
-    }
-  });
+  console.log('>>>>>>>>>> onFinished');
+  onFinished(editor);
+  return true;
 };
 
 const initEditor = async (template: Template, pluginsDependencies: PluginDependencies) => {
   // eslint-disable-next-line prefer-destructuring
   const init = useEditorStore.getState().init;
+  const { setArePluginsLoaded } = useEditorStore.getState();
 
   // @ts-ignore
-  const plugins = await getPlugins(window.webkit.plugins.functions, { template });
+  // const plugins = await getPlugins(window.webkit.plugins.functions, { template });
+  // const pluginsBlocks = extractPluginsBlocks(plugins);
+  // const pluginsComponents = extractPluginsComponents(plugins);
 
-  const pluginsBlocks = extractPluginsBlocks(plugins);
-  const pluginsComponents = extractPluginsComponents(plugins);
+  const pluginOptions: Record<any, CallableFunction> = {};
+  window.webkit.plugins.functions.forEach((plugin: CallableFunction) => {
+    pluginOptions[plugin] = { template };
+  });
+
+  const onPluginsLoaded = async (e: EditorInterface) => {
+    // Load project data before canvas render
+    e.loadProjectData(JSON.parse(localStorage.getItem('gjsProject')));
+    // Rerender Editor canvas when plugins are loaded
+    e.render();
+    // Enable canvas
+    setArePluginsLoaded(true);
+    // Log
+    e.log('Plugins are loaded', { ns: 'log', level: 'info' });
+  };
 
   const editor = init({
     container: '#editor-container',
     width: '100%',
     height: '100%',
-    blockManager: {
-      appendTo: '.myblocks',
-      blocks: pluginsBlocks,
-    },
-    // traitManager: {
-    //   appendTo: '.my-traits',
-    // },
+    autorender: false,
+    showOffsets: true,
+    showOffsetsSelected: true,
+    storageManager: false,
+    styleManager: styleManagerConfig,
+    blockManager: { custom: true },
+    traitManager: { custom: true },
+    // deviceManager: { custom: true },
+    // layerManager: { custom: true },
+    // selectorManager: { custom: true },
     panels: {
       defaults: [],
     },
-    styleManager: styleManagerConfig,
-    // blockManager: { custom: true },
-    // deviceManager: { custom: true },
-    // // styleManager: { custom: true },
-    // layerManager: { custom: true },
-    // traitManager: { custom: true },
-    // selectorManager: { custom: true },
     canvas: {
       styles: pluginsDependencies.styles,
       scripts: pluginsDependencies.scripts,
@@ -88,7 +94,17 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
         * ::-webkit-scrollbar { width: 8px }
       `,
     },
+    // pluginsOpts: pluginOptions,
+    pluginsOpts: {
+      [loadPlugins]: {
+        pluginList: window.webkit.plugins.functions,
+        pluginListOptions: pluginOptions,
+        onFinished: onPluginsLoaded,
+      },
+    },
     plugins: [
+      // ...window.webkit.plugins.functions,
+      loadPlugins,
       (e) => {
         // Wrapper - is just a gjs wrapper for content editing.
         // This component is not included in the export data, so we remove all styling actions from this component.
@@ -98,16 +114,18 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
             defaults: {
               toolbar: [],
               stylable: false,
+              selectable: false,
+              highlightable: false,
             },
           },
         });
       },
       (e) => {
-        e.DomComponents.addType('default.container', {
+        e.DomComponents.addType('default_container', {
           isComponent: (el) => {
             if (el.tagName) {
               console.log('el.dataset', el, el.tagName);
-              return el.dataset['data-gjs-type'] === 'default.container';
+              return el.dataset['data-gjs-type'] === 'default_container';
             }
             return false;
           },
@@ -116,7 +134,7 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
               tagName: 'div',
               name: 'Container',
               attributes: { 'data-gjs-type': 'default.container' },
-              style: { padding: '12px' },
+              style: { 'padding-top': '12px', 'padding-bottom': '12px' },
               resizable: true,
               // components: `<div>Container</div>`,
             },
@@ -126,23 +144,27 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
           label: 'Container',
           category: 'Basic',
           // content: { type: 'image' },
-          content: { type: 'default.container' },
+          content: { type: 'default_container' },
           // The component `image` is activatable (shows the Asset Manager).
           // We want to activate it once dropped in the canvas.
           activate: true,
           // select: true, // Default with `activate: true`
         };
 
-        e.Blocks.add('default.container', block);
+        e.Blocks.add('default_container', block);
       },
-      (e) => initPluginsComponents(pluginsComponents, e),
+      // (e) => initPluginsComponents(pluginsComponents, e),
       (e) => {
         console.log('types', e.DomComponents.getTypes());
       },
     ],
   });
 
+  // Custom commands
   editor.Commands.add(EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY, { run() {} });
+  editor.Commands.add(EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY, { run() {} });
+  editor.Commands.add(EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY_LIST, { run() {} });
+  editor.on('log:info', (msg, opts) => console.info(`[WebKit Editor] - ${msg}`, opts));
 };
 
 export function Editor() {
@@ -154,7 +176,6 @@ export function Editor() {
 
   useEffectOnce(() => {
     initEditor(template, pluginsDependencies);
-    console.log('editor', editor);
   });
 
   return (

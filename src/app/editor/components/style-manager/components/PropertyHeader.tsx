@@ -10,8 +10,8 @@ export function PropertyHeader({
 }: {
   propertyLabel: string;
   hasValue: boolean;
-  hasInheritedValue: boolean;
-  onClear: Function;
+  hasInheritedValue?: boolean;
+  onClear?: Function;
 }) {
   const activeLabelColor = useColorModeValue('dodger.500', 'dodger.200');
   return (

@@ -1,6 +1,6 @@
 <?php
 
-class webkitShopPlugin extends webkitWidgetPlugin {
+class webkitShopPlugin extends webkitEditorPlugin {
 
   /**
    * @param $params

@@ -1,6 +1,6 @@
 <?php
 
-class webkitBlogPlugin extends webkitWidgetPlugin {
+class webkitBlogPlugin extends webkitEditorPlugin {
 
   /**
    * @param array $params

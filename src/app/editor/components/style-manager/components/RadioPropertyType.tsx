@@ -28,7 +28,7 @@ export const RadioPropertyType = memo(({ property }: { property: ExtendedPropert
     hexOpacity(theme.colors.stratos[500], 0.05),
     hexOpacity(theme.colors.grey[50], 0.1)
   );
-  const activeBgColor = useColorModeValue(theme.colors.dodger[50], hexOpacity(theme.colors.dodger[50], 0.2));
+  const activeBgColor = useColorModeValue(theme.colors.dodger[100], hexOpacity(theme.colors.dodger[50], 0.3));
   const borderColor = useColorModeValue(
     hexOpacity(theme.colors.stratos[500], 0.2),
     hexOpacity(theme.colors.grey[50], 0.2)

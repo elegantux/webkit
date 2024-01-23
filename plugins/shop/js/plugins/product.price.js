@@ -64,7 +64,7 @@
     // select: true, // Default with `activate: true`
   };
 
-  async function plugin(params) {
+  async function plugin(editor, params) {
     // All AJAX requests must be made inside the plugin function.
     // await new Promise((resolve) => setTimeout(resolve, 2000));
     console.log(PRODUCT_PRICE_COMPONENT_TYPE, params);

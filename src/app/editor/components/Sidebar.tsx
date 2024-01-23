@@ -19,6 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FaComputerMouse as ComputerMouseIcon, FaCirclePlus } from 'react-icons/fa6';
+import { Component } from 'grapesjs';
 
 import { TraitManager } from '@app/editor/components/manager/TraitManager';
 import { BlockManager } from '@app/editor/components/manager/BlockManager';
@@ -27,13 +28,15 @@ import { EDITOR_STORE, useBlockListDisclosure, useEditorStore } from '@app/edito
 
 export function Sidebar() {
   const [tabIndex, setTabIndex] = useState<number>(0);
-  const [hasSelectedComponent, setHasSelectedComponent] = useState<boolean>(false);
+  const [selectedComponent, setSelectedComponent] = useState<Component | undefined>(undefined);
   const disclosure = useBlockListDisclosure((state) => state);
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
 
-  // console.log('handleComponentChange', editor.getSelected());
+  const showTabs = !!selectedComponent && selectedComponent?.get('type') !== 'wrapper';
+
   const handleComponentChange = () => {
-    setHasSelectedComponent(!!editor.getSelected());
+    console.log('Sidebar -> handleComponentChange');
+    setSelectedComponent(editor.getSelected());
   };
 
   useEffect(() => {
@@ -50,7 +53,7 @@ export function Sidebar() {
 
   return (
     <>
-      {hasSelectedComponent ? (
+      {showTabs ? (
         <Tabs
           tabIndex={tabIndex}
           onChange={setTabIndex}
@@ -63,7 +66,7 @@ export function Sidebar() {
           <TabList
             position="sticky"
             top={0}
-            zIndex={1}
+            zIndex={2}
             bgColor="var(--chakra-colors-chakra-body-bg)"
             gap={0}
           >
@@ -109,6 +112,8 @@ export function Sidebar() {
           align="center"
           gap="64px"
           height="100%"
+          borderRight="2px solid"
+          borderRightColor="var(--chakra-colors-chakra-border-color)"
         >
           <Flex
             direction="column"
@@ -134,6 +139,7 @@ export function Sidebar() {
               bg="grey.400"
               px="4"
               top="0"
+              borderRadius={4}
             >
               or
             </AbsoluteCenter>

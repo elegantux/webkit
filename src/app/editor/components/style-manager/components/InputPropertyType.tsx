@@ -48,18 +48,12 @@ export const isNumberWithUnit = (value: string | number) => {
 
   const { number, unit } = splitNumberAndUnit(value);
 
-  console.log(
-    'isNumberWithUnit',
-    value,
-    !!(value && value.length > 0 && unit && (isNumber(number) || isFloat(number)) && UNITS.includes(unit))
-  );
-
   return !!(value && value.length > 0 && unit && (isNumber(number) || isFloat(number)) && UNITS.includes(unit));
 };
 
 export const getPropertyInitialValue = (property: ExtendedProperty) => (property.hasValue() ? property.getValue() : '');
 
-const InputProperty = memo(
+export const InputProperty = memo(
   ({
     value,
     units,
@@ -93,44 +87,47 @@ const InputProperty = memo(
     );
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-      console.log('Input -> handleInputChange');
-      const targetValue = event.target.value.trim();
+      // Trim only if there are units or options
+      const targetValue = units || options ? event.target.value.trim() : event.target.value;
       const selectedOption = options?.find((o) => o.value === targetValue);
 
-      if (isNumber(targetValue) || isFloat(targetValue) || isNumberWithUnit(targetValue)) {
-        let newValue = '';
+      if (units || options) {
+        if (isNumber(targetValue) || isFloat(targetValue) || isNumberWithUnit(targetValue)) {
+          let newValue = '';
 
-        // Get unit from typed value if exist
-        const { unit: newUnit, number } = splitNumberAndUnit(targetValue);
+          // Get unit from typed value if exist
+          const { unit: newUnit, number } = splitNumberAndUnit(targetValue);
 
-        // Get previous unit
-        const { unit: oldUnit } = splitNumberAndUnit(value);
+          // Get previous unit
+          const { unit: oldUnit } = splitNumberAndUnit(value);
 
-        // Update newValue with the new value and current unit
-        newValue = newUnit ? `${number}${newUnit}` : `${number}${oldUnit || units![0]}`;
-        console.log('valueUnit', value, oldUnit, newUnit);
-        console.log('newValue', newValue, number);
+          // Update newValue with the new value and current unit
+          newValue = newUnit ? `${number}${newUnit}` : `${number}${oldUnit || units![0]}`;
 
-        // Clear error display
-        setIsInvalid(false);
+          // Clear error display
+          setIsInvalid(false);
 
-        // Update external callback
-        onChange(newValue);
+          // Update external callback
+          onChange(newValue);
 
-        setInputValue(String(number));
-      } else if (selectedOption) {
-        // Else if value is valid css value
+          setInputValue(String(number));
+        } else if (selectedOption) {
+          // Else if value is valid css value
 
-        // Clear error display
-        setIsInvalid(false);
+          // Clear error display
+          setIsInvalid(false);
 
-        // Update external callback
-        onChange(String(selectedOption.value));
+          // Update external callback
+          onChange(String(selectedOption.value));
 
-        setInputValue(String(selectedOption.value));
+          setInputValue(String(selectedOption.value));
+        } else {
+          setIsInvalid(true);
+
+          setInputValue(targetValue);
+        }
       } else {
-        setIsInvalid(true);
-
+        onChange(targetValue);
         setInputValue(targetValue);
       }
     };
@@ -242,7 +239,6 @@ export const InputPropertyType = memo(({ property }: { property: ExtendedPropert
   const propertyOptions = useMemo(() => property.get('options'), []);
 
   const handleInputChange = (v: string) => {
-    console.log('InputPropertyType -> property.upValue');
     property.upValue(v);
     setValue(v);
   };

@@ -32,17 +32,19 @@ export const hasValueParent = (property: ExtendedProperty) => {
   return property.hasValueParent() && (parent ? parent.isDetached() : true);
 };
 
-const ColorPicker = memo(({ color, onChange }: { color: string; onChange?: (newShade: ColorResult) => void }) => {
-  const theme = useTheme();
-  const hasColor = color.length > 0;
+export const ColorPicker = memo(
+  ({ color, onChange }: { color: string; onChange?: (newShade: ColorResult) => void }) => {
+    const theme = useTheme();
+    const hasColor = color.length > 0;
 
-  return (
-    <Sketch
-      color={hasColor ? color : theme.colors.dodger[500]}
-      onChange={onChange}
-    />
-  );
-});
+    return (
+      <Sketch
+        color={hasColor ? color : theme.colors.dodger[500]}
+        onChange={onChange}
+      />
+    );
+  }
+);
 
 export const ColorPropertyType = memo(({ property }: { property: ExtendedProperty }) => {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
@@ -77,7 +79,7 @@ export const ColorPropertyType = memo(({ property }: { property: ExtendedPropert
   };
 
   const onStyleChange = useCallback(() => {
-    console.log('onStyleChange');
+    // console.log('onStyleChange');
     const lastSelectedComponent = editor.getSelected();
     const color = lastSelectedComponent?.getStyle(property.getName());
     if (typeof color === 'string') {

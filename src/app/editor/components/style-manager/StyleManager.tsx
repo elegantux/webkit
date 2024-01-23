@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Accordion,
   AccordionButton,
@@ -9,8 +9,10 @@ import {
   Grid,
   GridItem,
   Heading,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { Sector } from 'grapesjs';
+import { FaPen } from 'react-icons/fa6';
 
 import { EDITOR_STORE, useEditorStore, useStyleManagerSectorsStore } from '@app/editor/lib/store';
 import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
@@ -26,18 +28,30 @@ function StyleSector({ sector }: { sector: Sector }) {
   const sectorName = sector.getName();
   const propertyList = sector.getProperties() as ExtendedProperty[];
 
+  const changedCategoryColor = useColorModeValue('dodger.500', 'dodger.300');
+  const hasChanges = useMemo(() => propertyList.map((property) => property.hasValue()).includes(true), [propertyList]);
+
   return (
     <AccordionItem key={sector.getId()}>
       <AccordionButton
         as={Flex}
+        position="sticky"
+        top="40px"
         justifyContent="space-between"
         cursor="pointer"
         userSelect="none"
+        bgColor="var(--chakra-colors-chakra-body-bg)"
+        zIndex={1}
       >
         <Heading
           as="span"
+          display="flex"
+          alignItems="center"
+          gap="6px"
           fontSize="md"
+          {...(hasChanges ? { color: changedCategoryColor } : {})}
         >
+          {hasChanges && <FaPen size={10} />}
           {sectorName}
         </Heading>
         <AccordionIcon />

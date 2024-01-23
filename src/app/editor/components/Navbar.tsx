@@ -10,11 +10,13 @@ const SaveProject = memo(() => {
 
   const handleSave = () => {
     const { assets, pages, styles } = editor.getProjectData();
+    // Temp save
+    localStorage.setItem('gjsProject', JSON.stringify(editor.getProjectData()));
 
     // Get only types added via plugins
     const pluginsComponentTypes = editor.DomComponents.getTypes()
       .map((component) => component.id)
-      .filter((id) => id.includes('.') && !id.startsWith('default'));
+      .filter((id) => id.includes('_') && !id.startsWith('default'));
 
     // const wrapper = editor.getWrapper();
     // const html = wrapper.getInnerHTML();

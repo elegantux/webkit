@@ -3,6 +3,21 @@
 trait webkitFrontend
 {
 
+  /**
+   * @var string
+   */
+  protected $app_id = null;
+
+  /**
+   * @var waSmarty3View | waView | null
+   */
+  protected $view = null;
+
+  public function __construct($arg)
+  {
+    // wa_dumpc('$arg', $arg);
+  }
+
   public function frontHead($wa_active_theme_url)
   {
     $html_parser = new webkitHtmlParser();
@@ -128,18 +143,34 @@ trait webkitFrontend
    */
   public function template($wa_active_theme_url, $template_type)
   {
-    [$app_id, $theme_id] = $this->getThemeAndAppIds($wa_active_theme_url);
+    [$app_id, $theme_id] = $this->parseThemeAndAppIds($wa_active_theme_url);
 
     $front_content = (new webkitProjectModel())->getFrontendTemplateContent($app_id, $theme_id, $template_type);
 
-    return $front_content;
+    $view = $this->getView($wa_active_theme_url);
+
+    return $view->fetch('string:'.$front_content);
+  }
+
+  /**
+   * @param string $wa_active_theme_url
+   * @param string $template
+   * @param $params
+   * @return string
+   * @throws SmartyException
+   * @throws waException
+   */
+  public function assign($wa_active_theme_url, $template, $params = null)
+  {
+    $view = $this->getView($wa_active_theme_url);
+    return $view->fetch("string:".$template, $params);
   }
 
   /**
    * @param $wa_active_theme_url = '/wa-data/public/app_id/themes/theme_id/'
    * @return array = [$app_id, $theme_id]
    */
-  private function getThemeAndAppIds($wa_active_theme_url)
+  private function parseThemeAndAppIds($wa_active_theme_url)
   {
     [$left, $right] = explode("themes", $wa_active_theme_url);
     $exploded_app_path = explode("/", substr($left, 0, -1));
@@ -149,4 +180,19 @@ trait webkitFrontend
 
     return [$app_id, $theme_id];
   }
+
+  private function getView($wa_active_theme_url)
+  {
+    if (!$this->app_id) {
+      [$app_id] = $this->parseThemeAndAppIds($wa_active_theme_url);
+      $this->app_id = $app_id;
+    }
+
+    if (!$this->view) {
+      $this->view = wa($this->app_id)->getView();
+    }
+
+    return $this->view;
+  }
+
 }

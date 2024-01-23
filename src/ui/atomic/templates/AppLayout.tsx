@@ -35,6 +35,9 @@ export function AppLayout() {
     setColorMode(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
 
   useEffect(() => {
+    // Get Webasyst color mode on first load
+    handleColorModeChange();
+    // Subscribe for further color mode updates
     document.documentElement.addEventListener(WA_THEME_MODE_CHANGE_EVENT_NAME, handleColorModeChange);
     return () => document.documentElement.removeEventListener(WA_THEME_MODE_CHANGE_EVENT_NAME, handleColorModeChange);
   }, [handleColorModeChange]);

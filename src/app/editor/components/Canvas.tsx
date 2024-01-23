@@ -1,5 +1,7 @@
 import {
+  Box,
   Button,
+  ChakraProps,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -7,17 +9,39 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
   Input,
+  Spinner,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 
-export function Canvas() {
+import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
+
+export function Canvas(props: ChakraProps) {
   const disclosure = useDisclosure({ defaultIsOpen: false });
+  const arePluginsLoaded = useEditorStore(EDITOR_STORE.EDITOR_ARE_PLUGINS_LOADED);
 
   return (
-    <>
+    <Box {...props}>
       {/* <Button onClick={disclosure.onOpen}>Open</Button> */}
-      <div id="editor-container" />
+      <Box
+        id="editor-container"
+        display={arePluginsLoaded ? 'block' : 'none'}
+      />
+      {!arePluginsLoaded && (
+        <Flex
+          direction="column"
+          justify="center"
+          align="center"
+          gap="24px"
+          width="full"
+          height="full"
+        >
+          <Spinner size="xl" />
+          <Text>Loading components ...</Text>
+        </Flex>
+      )}
       <Drawer
         isOpen={disclosure.isOpen}
         placement="left"
@@ -42,6 +66,6 @@ export function Canvas() {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-    </>
+    </Box>
   );
 }
