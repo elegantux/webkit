@@ -1,6 +1,6 @@
 import { Property } from 'grapesjs';
 
-import { SelectOptionProps } from '@ui/atomic/molecules/Select';
+import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
 
 export type ExtendedProperty = Property<{
   options?: SelectOptionProps[];

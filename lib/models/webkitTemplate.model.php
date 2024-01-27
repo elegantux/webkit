@@ -52,4 +52,26 @@ class webkitTemplateModel extends waModel
     }
   }
 
+  /**
+   * @param $project_id
+   * @return array
+   * @throws webkitAPIException
+   */
+  public function getTemplates($filters, $offset = 0, $limit = 10)
+  {
+    try {
+      return $this
+        ->query('
+          SELECT wt.*
+          FROM webkit_template AS wt
+          JOIN webkit_template_project AS wtp ON wt.id = wtp.template_id
+          JOIN webkit_project AS wp ON wtp.project_id = wp.id
+          WHERE wtp.project_id = i:project_id
+        ', array('project_id' => $project_id))
+        ->fetchAll();
+    } catch (waDbException $exception) {
+      throw new webkitAPIException($exception->getMessage(), $exception->getCode());
+    }
+  }
+
 }

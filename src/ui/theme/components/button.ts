@@ -82,10 +82,12 @@ function overrideWebasystButton(props: StyleFunctionProps) {
 const variantSolid = (props: StyleFunctionProps) => {
   const styles = overrideWebasystButton(props);
   const color = props.colorMode === 'light' ? `white !important` : `black !important`;
+  const bgColor = getThemeColor(props);
 
   const disabled = {
     ...styles._disabled,
     color,
+    bgColor,
   };
 
   const hover = {

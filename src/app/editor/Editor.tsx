@@ -187,6 +187,7 @@ export function Editor() {
       gridTemplateRows="54px 1fr"
       gridTemplateColumns="320px 1fr"
       height="calc(100vh - 64px)"
+      bgColor="webasyst.backgroundColor"
     >
       {editor && (
         <>

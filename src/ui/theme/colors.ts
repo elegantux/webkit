@@ -1,4 +1,10 @@
 const colors = {
+  webasyst: {
+    // --background-color comes from the wa-...css file
+    // --background-color-blank comes from the wa-...css file
+    backgroundColor: "var(--background-color, '#07051c')",
+    backgroundColorBlank: "var(--background-color-blank, '#19172c')",
+  },
   ebony: {
     50: '#e9e9ec',
     100: '#bbbac3',

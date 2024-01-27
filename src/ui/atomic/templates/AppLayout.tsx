@@ -1,35 +1,13 @@
 import { useEffect } from 'react';
-import { Outlet, Link as RouterLink, useLocation } from 'react-router-dom';
-import { Flex, Link, useColorMode } from '@chakra-ui/react';
+import { Outlet } from 'react-router-dom';
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, useColorMode } from '@chakra-ui/react';
 
-import { appUrl } from '@lib/utils';
 import { WA_THEME_MODE_CHANGE_EVENT_NAME } from '@lib/constants';
-
-function Navbar() {
-  return (
-    <Flex gap="24px">
-      <Link
-        as={RouterLink}
-        to="/dashboard"
-      >
-        Home
-      </Link>
-      <Link
-        as={RouterLink}
-        to="/dashboard/about"
-      >
-        About
-      </Link>
-      <Link href={appUrl('/app/editor/2')}>Editor</Link>
-    </Flex>
-  );
-}
+import { useProjectListValidity } from '@lib/state';
 
 export function AppLayout() {
   const { setColorMode } = useColorMode();
-  const { pathname } = useLocation();
-
-  const showNavbar = !pathname.startsWith('/editor');
+  const { invalidProjects } = useProjectListValidity();
 
   const handleColorModeChange = () =>
     setColorMode(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
@@ -44,7 +22,25 @@ export function AppLayout() {
 
   return (
     <>
-      {showNavbar && <Navbar />}
+      {invalidProjects.length > 0 && (
+        <>
+          {invalidProjects.map((project) => (
+            <Alert
+              key={project.id}
+              status="error"
+              variant="solid"
+            >
+              <AlertIcon />
+              <Box>
+                <AlertTitle>Theme folder not found!</AlertTitle>
+                <AlertDescription>
+                  Cannot find the theme folder for the project &quot;{project.name}&quot;!
+                </AlertDescription>
+              </Box>
+            </Alert>
+          ))}
+        </>
+      )}
       <Outlet />
     </>
   );

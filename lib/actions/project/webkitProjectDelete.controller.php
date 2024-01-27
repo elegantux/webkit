@@ -17,6 +17,20 @@ class webkitProjectDeleteController extends webkitJsonController
        */
       $project = new webkitProject($project_id);
 
+
+      /**
+       * Delete theme folder if exists
+       */
+      $theme_path = webkitUrl::getAppPublicThemePath($project->app_id, $project->theme_id);
+      if (file_exists($theme_path.'/'.waTheme::PATH)) {
+        try {
+          $theme = new waTheme($project->theme_id, $project->app_id);
+          $theme->delete();
+        } catch (Exception $exception) {
+          throw new webkitAPIException($exception->getMessage());
+        }
+      }
+
       $template_project_model = new webkitTemplateProjectModel();
       $template_model = new webkitTemplateModel();
       $project_model = $project->getModel();

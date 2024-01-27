@@ -2,7 +2,7 @@ import { ButtonGroup, Flex, IconButton, Text, Tooltip, useColorModeValue, useThe
 import { memo, useEffect, useMemo, useState } from 'react';
 
 import { ExtendedProperty } from '@lib/models/grapesjs-extended';
-import { SelectOptionProps } from '@ui/atomic/molecules/Select';
+import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
 import { hexOpacity } from '@ui/theme/utils';
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { EDITOR_COMMANDS } from '@app/editor/lib/constant';

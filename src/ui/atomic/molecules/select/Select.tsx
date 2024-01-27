@@ -1,5 +1,5 @@
 import { Box, ChakraProps, Flex, Skeleton, useColorMode, useOutsideClick } from '@chakra-ui/react';
-import React, { PropsWithChildren, ReactElement, ReactNode, Ref, forwardRef, useCallback, useRef } from 'react';
+import { PropsWithChildren, ReactElement, ReactNode, Ref, forwardRef, useCallback, useRef } from 'react';
 import BaseSelect, {
   ClassNamesConfig,
   ClearIndicatorProps,

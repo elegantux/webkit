@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import { memo, useEffect, useMemo, useState } from 'react';
 
 import { Select } from '@ui/atomic/molecules';
-import { SelectOptionProps } from '@ui/atomic/molecules/Select';
+import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
 import { ExtendedProperty } from '@lib/models/grapesjs-extended';
 import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';

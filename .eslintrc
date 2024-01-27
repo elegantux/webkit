@@ -22,6 +22,7 @@
     "react",
     "react-refresh",
     "@typescript-eslint",
+    "@tanstack/query",
     "import", // https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/order.md#groups-array
     "prettier" // https://prettier.io/docs/en/install.html
   ],
@@ -36,6 +37,7 @@
     "no-underscore-dangle": "off",
     "react/prop-types": "off",
     "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": "off",
     "react/jsx-no-bind": "off",
     "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": "off",

@@ -2,17 +2,14 @@
 
 class webkitPaginatedResponse
 {
+  use webkitGetSet;
+
   const SEARCH_PARAMS = ['page', 'sort', 'order', 'keyword', 'per_page'];
 
   /**
    * @var int|string
    */
   protected $current_page;
-
-  /**
-   * @var mixed
-   */
-  protected $data;
 
   /**
    * @var int

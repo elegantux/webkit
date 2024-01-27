@@ -12,6 +12,10 @@ return array(
     'client' => 'http://localhost:5888/@vite/client', // host . '/@vite/client'
     'base' => 'http://localhost:5888', // URL to the vite host
     'active' => $_SERVER['SERVER_NAME'] === 'localhost', // boolean
-  ]
+  ],
 
+  /**
+   * Cross App Config
+   */
+  'supported_apps' => array('site', 'blog', 'shop'),
 );

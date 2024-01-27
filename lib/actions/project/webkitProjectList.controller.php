@@ -29,7 +29,7 @@ class webkitProjectListController extends webkitJsonController
         'per_page' => $per_page,
       ]);
 
-      $this->response = $project_list->getData();
+      $this->response = $project_list->getResponseData();
 
     } catch (webkitAPIException $exception) {
 

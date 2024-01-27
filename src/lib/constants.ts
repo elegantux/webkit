@@ -1,5 +1,7 @@
 export const APP_ID = 'webkit';
 
+export const APP_THEME_PREFIX = 'webkit_';
+
 export const APP_ROOT_ELEMENT_ID = `${APP_ID}-root`;
 
 export const HOST = `${window.location.protocol}//${window.location.host}`;

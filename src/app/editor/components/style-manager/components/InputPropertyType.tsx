@@ -6,7 +6,7 @@ import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { UNITS } from '@app/editor/components/style-manager/lib/constant';
 import { PropertyHeader } from '@app/editor/components/style-manager/components/PropertyHeader';
-import { SelectOptionProps } from '@ui/atomic/molecules/Select';
+import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
 
 // Constants
 const NUMBER_REGEX = /^-?\d+$/;

@@ -7,7 +7,10 @@ class webkitConst
 
   const APP_ID = 'webkit';
 
+  const THEME_ID_PREFIX = 'webkit_';
+
   const ERROR_LOG_FILE = 'webkit_error.log';
+
 
   /**
    * Events

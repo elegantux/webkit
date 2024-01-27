@@ -61,7 +61,7 @@ class webkitProjectList
    * @return array
    * @throws webkitAPIException
    */
-  public function getData()
+  public function getResponseData()
   {
     $offset = ($this->page - 1) * $this->items_per_page;
 
@@ -70,7 +70,7 @@ class webkitProjectList
 
     $response = new webkitPaginatedResponse(
       $this->page,
-      $data,
+      array_values($data),
       $this->items_per_page,
       $total
     );

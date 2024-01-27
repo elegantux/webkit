@@ -32,7 +32,7 @@ import { InputProperty } from '@app/editor/components/style-manager/components/I
 import { PropertyHeader } from '@app/editor/components/style-manager/components/PropertyHeader';
 import { debounce } from '@lib/utils';
 import { SelectProperty } from '@app/editor/components/style-manager/components/SelectPropertyType';
-import { SelectOptionProps } from '@ui/atomic/molecules/Select';
+import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
 import { EDITOR_COMMANDS, TRAIT_TYPES } from '@app/editor/lib/constant';
 import { hexOpacity } from '@ui/theme/utils';
 import { ColorPicker } from '@app/editor/components/style-manager/components/ColorPropertyType';

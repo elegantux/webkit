@@ -2,10 +2,11 @@ export default class ApiError extends Error {
   sourceError: any;
 
   constructor(error: any) {
-    super(error.error);
+    const apiErrors = error.errors;
+    super(apiErrors);
 
     this.name = 'ApiError';
-    this.message = error.message || this.message;
+    this.message = apiErrors.message || this.message;
     this.sourceError = error;
   }
 }

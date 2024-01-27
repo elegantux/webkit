@@ -14,7 +14,6 @@ return array(
     'editor_styles'     => array('mediumtext', 'null' => 1),
     'editor_assets'     => array('mediumtext', 'null' => 1),
 
-    'child_templates'   => array('varchar', 255, 'null' => 0),
     'plugins'           => array('varchar', 255, 'null' => 0),
 
     'create_datetime'   => array('datetime', 'null' => 0),
@@ -37,6 +36,16 @@ return array(
       'PRIMARY' => 'id',
       'app_id' => 'app_id',
       'theme_id' => 'theme_id',
+    ),
+  ),
+
+  'webkit_template_child' => array(
+    'id'                => array('int', 11, 'null' => 0, 'autoincrement' => 1),
+    'parent_id'         => array('int', 11, 'null' => 0),
+    'child_id'          => array('int', 11, 'null' => 0),
+    ':keys' => array(
+      'PRIMARY' => 'id',
+      'parent_id' => array('parent_id', 'child_id', 'unique' => 1),
     ),
   ),
 

@@ -1,3 +1,4 @@
-import { Select } from './Select';
+import { Select } from './select/Select';
+import { FormSkeleton } from './form/FromSkeleton';
 
-export { Select };
+export { Select, FormSkeleton };
