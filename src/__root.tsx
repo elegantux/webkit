@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // Local
 import { AppLayout } from '@ui/atomic/templates/AppLayout';
 import theme from '@ui/theme/theme';
+import { AppLoadingState } from '@ui/atomic/templates/AppLoadingState';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,7 +22,7 @@ export function Root() {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
-        <Suspense fallback={<h1>Root suspense...</h1>}>
+        <Suspense fallback={<AppLoadingState />}>
           <AppLayout />
         </Suspense>
       </ChakraProvider>

@@ -2,6 +2,8 @@ import { StyleFunctionProps } from '@chakra-ui/react';
 import { modalAnatomy as parts } from '@chakra-ui/anatomy';
 import { createMultiStyleConfigHelpers } from '@chakra-ui/styled-system';
 
+import colors from '@ui/theme/colors';
+
 const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(parts.keys);
 
 const baseStyle = definePartsStyle({
@@ -16,7 +18,8 @@ const baseStyle = definePartsStyle({
   dialog: {
     position: 'absolute',
     bottom: { base: '0', md: 'unset' },
-    bg: 'webasyst.backgroundColorBlank',
+    // bg: 'webasyst.backgroundColorBlank',
+    bg: `linear-gradient(225deg, ${colors.webasyst.backgroundColor} 0%, ${colors.webasyst.backgroundColorBlank} 99.49%)`,
     px: { base: '16px', md: '24px' },
     py: { base: '22px', md: '20px' },
     borderRadius: { base: '20px 20px 0 0', md: '20px' },

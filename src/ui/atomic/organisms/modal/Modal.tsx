@@ -47,6 +47,7 @@ export function Modal(props: PropsWithChildren<IModal>) {
     primaryButtonVariant = 'solid',
     secondaryButtonVariant = 'quiet',
     tertiaryButtonVariant = 'quiet',
+    primaryButtonColorScheme = 'dodger',
     primaryButtonEnabled = true,
     secondaryButtonEnabled = true,
     tertiaryButtonEnabled = true,
@@ -209,6 +210,7 @@ export function Modal(props: PropsWithChildren<IModal>) {
                   variant={primaryButtonVariant}
                   onClick={onPrimaryButtonClick}
                   isLoading={isPrimaryButtonLoading}
+                  colorScheme={primaryButtonColorScheme}
                 >
                   {primaryButtonLabel}
                 </Button>

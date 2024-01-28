@@ -1,41 +1,10 @@
-import { Box, Button, ChakraProps, Flex, Link, useColorModeValue } from '@chakra-ui/react';
-import { FaHouse, FaList, FaQuestion, FaRegSquarePlus, FaScrewdriverWrench } from 'react-icons/fa6';
-import { PropsWithChildren, Suspense } from 'react';
+import { Box, ChakraProps, Flex, Link, useColorModeValue } from '@chakra-ui/react';
+import { FaHouse, FaList, FaScrewdriverWrench } from 'react-icons/fa6';
+import { PropsWithChildren } from 'react';
 import { LinkProps, Link as RouterLink } from '@tanstack/react-router';
 
-import { Modal, ModalProvider, useModal } from '@ui/atomic/organisms/modal';
-import { UpsertProjectForm } from '@app/dashboard/project/components/UpsertProjectForm';
-import { FormSkeleton } from '@ui/atomic/molecules';
 import { dashboardRoute, projectListRoute } from '../../routes';
-
-function CreateProjectButton(props: ChakraProps) {
-  const modal = useModal();
-  return (
-    <>
-      <Button
-        size="sm"
-        py={4}
-        leftIcon={<FaRegSquarePlus size={18} />}
-        onClick={modal.modalDisclosure.onOpen}
-        {...props}
-      >
-        Create Project
-      </Button>
-      <ModalProvider {...modal}>
-        <Modal
-          title="Create Project"
-          isCentered
-          {...modal.modalProps}
-          {...modal.modalDisclosure}
-        >
-          <Suspense fallback={<FormSkeleton />}>
-            <UpsertProjectForm />
-          </Suspense>
-        </Modal>
-      </ModalProvider>
-    </>
-  );
-}
+import { CreateProjectButton } from '@app/dashboard/project/components/CreateProjectButton';
 
 function SidebarLink(props: PropsWithChildren<ChakraProps & LinkProps>) {
   const activeColor = useColorModeValue('dodger.600', 'dodger.200');
@@ -110,13 +79,13 @@ export function DashboardSidebar() {
           <FaList size={18} />
           Project List
         </SidebarLink>
-        <SidebarLink
-          to={dashboardRoute.to}
-          params={{}}
-        >
-          <FaQuestion size={18} />
-          About
-        </SidebarLink>
+        {/* <SidebarLink */}
+        {/*  to={dashboardRoute.to} */}
+        {/*  params={{}} */}
+        {/* > */}
+        {/*  <FaQuestion size={18} /> */}
+        {/*  About */}
+        {/* </SidebarLink> */}
       </Flex>
       <Flex
         direction="column"

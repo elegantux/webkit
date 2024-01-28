@@ -1,10 +1,17 @@
-import { useMutation, useQueryClient, useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseInfiniteQuery,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import { Template } from '@lib/models/template';
 import { PaginatedResponse, Response, SearchParams } from '@lib/models/response';
 import { api } from '@lib/api';
-import { CreateProjectPayload, Project } from '@lib/models/project';
+import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models/project';
 import { getNextPageParam } from '@lib/utils/state-utils';
 import { WebasystApp } from '@lib/models/cross-app';
 
@@ -60,7 +67,7 @@ export const useTemplateList = (projectId: Project['id'], filters: SearchParams 
 
 export const useWebasystApplicationList = () => {
   const getAppList = () => api.crossApp.apps();
-  const { data, refetch } = useSuspenseQuery<Response<WebasystApp[]>>({
+  const { data, refetch } = useQuery<Response<WebasystApp[]>>({
     queryKey: [STATE_TYPES.WEBASYST_APP_LIST],
     queryFn: getAppList,
     notifyOnChangeProps: ['data', 'error'],
@@ -77,7 +84,7 @@ export const useWebasystApplicationList = () => {
 export const useProjectList = (filters: SearchParams = {}) => {
   const queryClient = useQueryClient();
   const getProjectList = () => api.project.getProjectList(filters);
-  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useSuspenseInfiniteQuery<
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useInfiniteQuery<
     PaginatedResponse<Project>
   >({
     queryKey: [STATE_TYPES.PROJECT_LIST],
@@ -104,6 +111,18 @@ export const useProjectList = (filters: SearchParams = {}) => {
     queryClient
   );
 
+  const updateProject = ({ id, payload }: { id: Project['id']; payload: UpdateProjectPayload }) =>
+    api.project.updateProject(id, payload);
+  const { mutateAsync: mutateUpdateProject, isPending: isUpdating } = useMutation(
+    {
+      mutationFn: updateProject,
+      onSettled: async () => {
+        return queryClient.invalidateQueries({ queryKey: [STATE_TYPES.PROJECT_LIST] });
+      },
+    },
+    queryClient
+  );
+
   const deleteProject = (id: Project['id']) => api.project.deleteProject(id);
   const { mutateAsync: mutateDeleteProject, isPending: isDeleting } = useMutation(
     {
@@ -121,8 +140,10 @@ export const useProjectList = (filters: SearchParams = {}) => {
   return {
     projectList,
     createProject: mutateCreateProject,
+    updateProject: mutateUpdateProject,
     deleteProject: mutateDeleteProject,
-    isMutating: isCreating || isDeleting,
+    isMutating: isCreating || isUpdating || isDeleting,
+    isLoading,
     // Lazy pagination props
     fetchNextPage,
     hasNextPage,

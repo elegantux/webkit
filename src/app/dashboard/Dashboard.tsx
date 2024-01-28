@@ -76,10 +76,13 @@ function LastProjectListSlider() {
       >
         {projectList.map((project) => (
           <SwiperSlide
-            style={{ padding: '12px' }}
+            style={{ padding: '12px', height: 'auto' }}
             key={project.id}
           >
-            <ProjectCard project={project} />
+            <ProjectCard
+              project={project}
+              showMenu={false}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { PropsWithChildren, useEffect } from 'react';
 import { AxiosError } from 'axios';
+import { useNavigate } from '@tanstack/react-router';
 
 import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models/project';
 import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
@@ -25,6 +26,7 @@ import { useProjectList, useWebasystApplicationList } from '@lib/state';
 import { WebasystApp } from '@lib/models/cross-app';
 import { useModalContext } from '@ui/atomic/organisms/modal';
 import { APP_THEME_PREFIX } from '@lib/constants';
+import { projectRoute } from '../../../../routes';
 
 type FormValues = Pick<Project, 'name' | 'app_id' | 'theme_id'>;
 
@@ -93,10 +95,11 @@ function RadioCard(props: PropsWithChildren<RadioProps & { label: string; imageU
 
 export function UpsertProjectForm({ project }: { project?: Project }) {
   const { setModalProps, modalDisclosure } = useModalContext();
+  const navigate = useNavigate();
   const toast = useToast();
 
   const { appList, refetch: refetchWebasystApplicationList } = useWebasystApplicationList();
-  const { createProject, isMutating } = useProjectList();
+  const { createProject, updateProject, isMutating } = useProjectList();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(
@@ -121,43 +124,56 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
       })
     ),
     mode: 'onChange',
-    // defaultValues: getInitialFormData(allergy),
+    defaultValues: {
+      name: project?.name ?? '',
+      app_id: project?.app_id ?? '',
+      theme_id: project?.theme_id ?? '',
+    },
   });
 
   const appSelectOptions = appListToOptions(appList);
 
   const onAppRadioButtonChange = (value: string) => {
-    form.setValue('app_id', value);
-    form.trigger('app_id');
+    if (!project) {
+      form.setValue('app_id', value);
+      form.trigger('app_id');
+    }
   };
 
   const { getRadioProps } = useRadioGroup({
     name: 'app_id',
-    // defaultValue: 'react',
+    defaultValue: form.getValues('app_id'),
     onChange: onAppRadioButtonChange,
   });
 
   const onSubmit = async (formValues: FormValues) => {
-    console.log('onSubmit', formValues);
-
     const payload: CreateProjectPayload | UpdateProjectPayload = {
       name: formValues.name,
       app_id: formValues.app_id,
       theme_id: formValues.theme_id,
     };
 
+    let createdProject;
     try {
       if (project) {
+        await updateProject({ id: project.id, payload });
       } else {
-        await createProject(payload);
-        refetchWebasystApplicationList();
+        createdProject = await createProject(payload);
       }
+
+      await refetchWebasystApplicationList();
+
+      modalDisclosure.onClose();
+
+      if (createdProject) {
+        await navigate({ to: projectRoute.to, params: { projectId: createdProject.data.id } });
+      }
+
       toast({
         title: 'Project saved successfully',
         status: 'success',
         duration: 3000,
       });
-      modalDisclosure.onClose();
     } catch (error: AxiosError | any) {
       const responseErrorMessage = error?.response?.data?.errors?.message ?? 'Something went wrong!';
       toast({
@@ -178,14 +194,27 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
 
   return (
     <FormProvider {...form}>
-      <Box
+      <FormControl
         mt={6}
         mb={8}
+        isDisabled={!!project}
+        opacity={project ? 0.5 : 1}
       >
-        <FormLabel mb={4}>Select an application for the project:</FormLabel>
+        <FormLabel
+          fontSize="sm"
+          mb={4}
+        >
+          Select an application for the project:
+        </FormLabel>
         <Flex
           justify="space-between"
           gap="32px"
+          {...(project
+            ? {
+                userSelect: 'none',
+                pointerEvents: 'none',
+              }
+            : {})}
         >
           {appSelectOptions.map((app) => (
             <RadioCard
@@ -196,7 +225,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
             />
           ))}
         </Flex>
-      </Box>
+      </FormControl>
       <FormControl isInvalid={!!form.formState.errors.name}>
         <FormLabel fontSize="sm">Name of the project*</FormLabel>
         <Input
@@ -208,10 +237,12 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
       <FormControl
         mt="24px"
         isInvalid={!!form.formState.errors.theme_id}
+        isDisabled={!!project}
+        opacity={project ? 0.5 : 1}
       >
         <FormLabel fontSize="sm">Name of new theme*</FormLabel>
         <InputGroup>
-          <InputLeftAddon>webkit-</InputLeftAddon>
+          <InputLeftAddon>webkit_</InputLeftAddon>
           <Input
             placeholder="blog"
             {...form.register('theme_id')}

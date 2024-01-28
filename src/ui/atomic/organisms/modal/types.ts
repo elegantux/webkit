@@ -13,6 +13,7 @@ export interface IModal extends UseDisclosureProps {
   primaryButtonVariant?: string;
   secondaryButtonVariant?: string;
   tertiaryButtonVariant?: string;
+  primaryButtonColorScheme?: string;
   primaryButtonEnabled?: boolean;
   secondaryButtonEnabled?: boolean;
   tertiaryButtonEnabled?: boolean;
