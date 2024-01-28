@@ -1,10 +1,11 @@
 import { Button, Card, CardBody, CardFooter, Heading, IconButton, Image, Stack, useToast } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 import { FaArrowRight, FaTrash } from 'react-icons/fa6';
-import { NavLink } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 
 import { useProjectList, useWebasystApplicationList } from '@lib/state';
 import { Project } from '@lib/models/project';
+import { projectRoute } from '../../../../routes';
 
 export function ProjectCard({ project }: { project: Project }) {
   const toast = useToast();
@@ -31,7 +32,11 @@ export function ProjectCard({ project }: { project: Project }) {
   };
 
   return (
-    <Card shadow="xs">
+    <Card
+      shadow="xs"
+      bg="grey.50"
+      _dark={{ bg: 'ebony.500' }}
+    >
       <CardBody>
         <Image
           src={project.preview_image_url}
@@ -58,8 +63,9 @@ export function ProjectCard({ project }: { project: Project }) {
           icon={<FaTrash />}
         />
         <Button
-          as={NavLink}
-          to={`/dashboard/project-list/${project.id}`}
+          as={Link}
+          to={projectRoute.to}
+          params={{ projectId: project.id }}
           variant="link"
           colorScheme="dodger"
           ml="auto !important"

@@ -1,11 +1,12 @@
 import { Box, Button, ChakraProps, Flex, Link, useColorModeValue } from '@chakra-ui/react';
-import { LinkProps, NavLink as RouterLink, useLocation, useMatch } from 'react-router-dom';
 import { FaHouse, FaList, FaQuestion, FaRegSquarePlus, FaScrewdriverWrench } from 'react-icons/fa6';
 import { PropsWithChildren, Suspense } from 'react';
+import { LinkProps, Link as RouterLink } from '@tanstack/react-router';
 
 import { Modal, ModalProvider, useModal } from '@ui/atomic/organisms/modal';
 import { UpsertProjectForm } from '@app/dashboard/project/components/UpsertProjectForm';
 import { FormSkeleton } from '@ui/atomic/molecules';
+import { dashboardRoute, projectListRoute } from '../../routes';
 
 function CreateProjectButton(props: ChakraProps) {
   const modal = useModal();
@@ -37,46 +38,42 @@ function CreateProjectButton(props: ChakraProps) {
 }
 
 function SidebarLink(props: PropsWithChildren<ChakraProps & LinkProps>) {
-  const { pathname } = useLocation();
-  const color = useColorModeValue('grey.800', 'grey.200');
   const activeColor = useColorModeValue('dodger.600', 'dodger.200');
   const activeBgColor = useColorModeValue('stratos.50', 'ebony.600');
 
   const { to } = props;
-  const isMatch = useMatch(to.toString());
-  const toPathName = String(to).split('?')[0];
-  const match = pathname === toPathName;
 
   const hoverStyle = {
-    bg: activeBgColor,
+    // bg: activeBgColor,
     color: activeColor,
   };
-  const style = {
-    bg: match ? activeBgColor : 'transparent',
-    color: match ? activeColor : color,
+  const activeStyle = {
+    background: activeBgColor,
+    color: activeColor,
   };
 
   return (
-    <RouterLink
+    <Link
+      as={RouterLink}
       to={to}
-      className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
-    >
-      {isMatch && 'isMatch'}
-      <Link
-        // as={RouterLink}
-        as="span"
-        display="flex"
-        alignItems="center"
-        gap="12px"
-        px={3}
-        py={2}
-        mx={3}
-        borderRadius="lg"
-        _hover={hoverStyle}
-        {...style}
-        {...props}
-      />
-    </RouterLink>
+      activeProps={{
+        className: 'active',
+      }}
+      display="flex"
+      alignItems="center"
+      gap="12px"
+      px={3}
+      py={2}
+      mx={3}
+      bg="transparent"
+      transition="background 0.5s ease, color 0.2s ease"
+      borderRadius="lg"
+      _hover={hoverStyle}
+      sx={{
+        '&.active': activeStyle,
+      }}
+      {...props}
+    />
   );
 }
 
@@ -98,25 +95,37 @@ export function DashboardSidebar() {
         direction="column"
         gap="14px"
       >
-        <SidebarLink to="/dashboard">
+        <SidebarLink
+          to={dashboardRoute.to}
+          params={{}}
+          activeOptions={{ exact: true }}
+        >
           <FaHouse size={18} />
           Home
         </SidebarLink>
-        <SidebarLink to="/dashboard/project-list">
+        <SidebarLink
+          to={projectListRoute.to}
+          params={{}}
+        >
           <FaList size={18} />
           Project List
         </SidebarLink>
-        <SidebarLink to="/dashboard/about">
+        <SidebarLink
+          to={dashboardRoute.to}
+          params={{}}
+        >
           <FaQuestion size={18} />
           About
         </SidebarLink>
-        {/* <Link href={appUrl('/app/editor/2')}>Editor</Link> */}
       </Flex>
       <Flex
         direction="column"
         mt="auto"
       >
-        <SidebarLink to="/dashboard/#">
+        <SidebarLink
+          to={dashboardRoute.to}
+          params={{}}
+        >
           <FaScrewdriverWrench size={18} />
           Settings
         </SidebarLink>

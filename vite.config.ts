@@ -7,6 +7,7 @@ import path from 'path';
 import dns from 'dns';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { TanStackRouterVite } from '@tanstack/router-vite-plugin'
 
 // https://vitejs.dev/config/server-options.html#server-host
 dns.setDefaultResultOrder('verbatim');
@@ -35,7 +36,8 @@ const plugins: Plugin[] = [
         server.ws.send({ type: 'full-reload' });
       }
     }
-  }
+  },
+  TanStackRouterVite(),
 ];
 
 // Server

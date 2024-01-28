@@ -1,14 +1,13 @@
 import { Container } from '@chakra-ui/react';
-import { useParams } from 'react-router-dom';
 
 import { PageHeading } from '@app/dashboard/components/PageComponents';
 import { useTemplateList } from '@lib/state';
+import { projectRoute } from '../../../routes';
 
 export function TemplateListPage() {
-  const { id: projectId } = useParams<{ id: string }>();
+  const { projectId } = projectRoute.useParams();
   const { templateList } = useTemplateList(projectId!);
 
-  console.log('params', projectId);
   return (
     <Container
       maxW="960px"

@@ -1,9 +1,9 @@
-import { PropsWithChildren } from 'react';
 import { Grid, GridItem } from '@chakra-ui/react';
+import { Outlet } from '@tanstack/react-router';
 
 import { DashboardSidebar } from '@app/dashboard/DashboardSidebar';
 
-export function DashboardLayout({ children }: PropsWithChildren) {
+export function DashboardLayout() {
   return (
     <Grid
       templateAreas={`"sidebar content"`}
@@ -21,7 +21,7 @@ export function DashboardLayout({ children }: PropsWithChildren) {
         area="content"
         overflowY="auto"
       >
-        {children}
+        <Outlet />
       </GridItem>
     </Grid>
   );

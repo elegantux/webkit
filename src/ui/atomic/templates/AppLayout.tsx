@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from '@tanstack/react-router';
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, useColorMode } from '@chakra-ui/react';
 
 import { WA_THEME_MODE_CHANGE_EVENT_NAME } from '@lib/constants';

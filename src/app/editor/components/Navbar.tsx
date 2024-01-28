@@ -1,6 +1,6 @@
 import { Button, Flex, IconButton, useColorModeValue } from '@chakra-ui/react';
 import { memo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/react-router';
 import { FaAngleLeft, FaCirclePlus, FaFloppyDisk } from 'react-icons/fa6';
 
 import { useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
@@ -103,7 +103,7 @@ export function Navbar() {
           _hover={{ textDecoration: 'none' }}
           // isLoading
           size="sm"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate({ to: '/app/dashboard/project-list' })}
           leftIcon={<FaAngleLeft />}
         >
           Back

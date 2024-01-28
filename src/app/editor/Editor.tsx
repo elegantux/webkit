@@ -1,7 +1,6 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import { Editor as EditorInterface } from 'grapesjs';
 import { useEffectOnce } from 'usehooks-ts';
-import { useParams } from 'react-router-dom';
 import 'grapesjs/dist/css/grapes.min.css';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
@@ -14,6 +13,7 @@ import { Sidebar } from '@app/editor/components/Sidebar';
 import { Canvas } from '@app/editor/components/Canvas';
 import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { styleManagerConfig } from '@app/editor/components/style-manager/lib/constant';
+import { editorRoute } from '../../routes';
 
 const loadPlugins = async (
   editor: EditorInterface,
@@ -168,7 +168,7 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
 };
 
 export function Editor() {
-  const { id: templateId } = useParams();
+  const { templateId } = editorRoute.useParams();
   const { template } = useTemplate(Number(templateId));
   const { pluginsDependencies } = usePluginsDependencies(Number(templateId));
 
