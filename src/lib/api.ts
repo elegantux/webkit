@@ -204,6 +204,22 @@ const project = {
 
     return data;
   },
+  async getRecentProjectList() {
+    const params = {
+      module: 'recentProjectList',
+    };
+
+    const { data, status } = await axios.get<Response<Project[]>>(`${HOST}${WA_APP_URL}`, {
+      headers: {},
+      params,
+    });
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
 };
 
 export const api = { template, project, crossApp };

@@ -6,6 +6,8 @@ class webkitProjectModel extends waModel
   protected $app_id = 'webkit';
   protected $table = 'webkit_project';
 
+  static $TABLE = 'webkit_project';
+
   /**
    * @return array
    * @throws webkitAPIException

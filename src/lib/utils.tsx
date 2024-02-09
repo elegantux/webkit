@@ -1,6 +1,8 @@
 import { RefObject, useEffect, useState } from 'react';
+import { Flex, Text, UseToastOptions } from '@chakra-ui/react';
+import { FaTelegram } from 'react-icons/fa6';
 
-import { WA_APP_PATH, WA_APP_URL } from './constants';
+import { HELP_LINKS, WA_APP_PATH, WA_APP_URL } from './constants';
 
 /**
  * This helper returns a new concatenated string with the application's URL.
@@ -97,3 +99,33 @@ export const useIntersected = (trackedNode: RefObject<any>, observerOptions = {}
 
   return intersected;
 };
+
+export function getInfoToastObject(props?: Partial<UseToastOptions>): UseToastOptions {
+  return {
+    title: 'Need Help?',
+    description: (
+      <Flex
+        gap="8px"
+        direction="column"
+      >
+        <Text fontSize="sm">
+          Join the WebKit community to get help, ask questions, or even submit your own ideas 🤔.
+        </Text>
+        <Flex
+          as="a"
+          href={HELP_LINKS.TELEGRAM_SUPPORT}
+          target="_blank"
+          rel="noreferrer"
+          gap="8px"
+          _hover={{ color: 'white' }}
+        >
+          Telegram 👉 <FaTelegram size={24} />
+        </Flex>
+      </Flex>
+    ),
+    status: 'info',
+    duration: 8000,
+    isClosable: true,
+    ...props,
+  };
+}
