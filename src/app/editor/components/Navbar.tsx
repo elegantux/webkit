@@ -1,17 +1,26 @@
-import { Button, Flex, IconButton, useColorModeValue } from '@chakra-ui/react';
+import { Button, Flex, useToast } from '@chakra-ui/react';
 import { memo } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { FaAngleLeft, FaCirclePlus, FaFloppyDisk } from 'react-icons/fa6';
+import { AxiosError } from 'axios';
 
 import { useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
+import { editorRoute } from '../../../routes';
+import { useTemplate } from '@lib/state';
 
 const SaveProject = memo(() => {
+  const toast = useToast();
+
+  const { templateId } = editorRoute.useParams();
+  const { template, updateTemplate } = useTemplate(Number(templateId));
+  console.log('SaveProject - template', template);
+
   const editor = useEditorStore((state) => state.editor);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const { assets, pages, styles } = editor.getProjectData();
     // Temp save
-    localStorage.setItem('gjsProject', JSON.stringify(editor.getProjectData()));
+    // localStorage.setItem('gjsProject', JSON.stringify(editor.getProjectData()));
 
     // Get only types added via plugins
     const pluginsComponentTypes = editor.DomComponents.getTypes()
@@ -68,6 +77,37 @@ const SaveProject = memo(() => {
       css,
       js,
     });
+
+    try {
+      // Save
+      await updateTemplate({
+        templateId: template.id,
+        payload: {
+          name: template.name,
+          wtp_id: template.wtp_id,
+          wtp_status: template.wtp_status,
+          //
+          editor_assets: JSON.stringify(assets),
+          editor_components: JSON.stringify(pages),
+          editor_styles: JSON.stringify(styles),
+          //
+          front_content: html,
+          front_styles: css ?? '',
+          front_scripts: js,
+        },
+      });
+      toast({
+        title: 'Project saved successfully',
+        status: 'success',
+        duration: 3000,
+      });
+    } catch (error: AxiosError | any) {
+      const responseErrorMessage = error?.response?.data?.errors?.message ?? 'Something went wrong!';
+      toast({
+        title: responseErrorMessage,
+        status: 'error',
+      });
+    }
   };
 
   return (

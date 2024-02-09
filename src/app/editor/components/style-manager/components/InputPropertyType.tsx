@@ -88,10 +88,10 @@ export const InputProperty = memo(
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
       // Trim only if there are units or options
-      const targetValue = units || options ? event.target.value.trim() : event.target.value;
+      const targetValue = units?.length || options?.length ? event.target.value.trim() : event.target.value;
       const selectedOption = options?.find((o) => o.value === targetValue);
 
-      if (units || options) {
+      if (units?.length || options?.length) {
         if (isNumber(targetValue) || isFloat(targetValue) || isNumberWithUnit(targetValue)) {
           let newValue = '';
 

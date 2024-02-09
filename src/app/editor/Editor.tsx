@@ -5,7 +5,7 @@ import 'grapesjs/dist/css/grapes.min.css';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { PluginDependencies } from '@lib/models/plugin';
-import { useTemplate } from '@lib/state';
+import { useTemplate, useTemplateProject } from '@lib/state';
 import { usePluginsDependencies } from '@app/editor/lib/state';
 import { Template } from '@lib/models/template';
 import { Navbar } from '@app/editor/components/Navbar';
@@ -57,8 +57,29 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
   });
 
   const onPluginsLoaded = async (e: EditorInterface) => {
+    const projectData = template.editor_components
+      ? {
+          pages: template.editor_components,
+          assets: template.editor_assets,
+          styles: template.editor_styles,
+        }
+      : {
+          pages: [
+            {
+              id: 'current-page',
+              // styles: `.my-class { color: red }`, // or a JSON of styles
+              // component: '<div class="my-class">My element</div>', // or a JSON of components
+            },
+          ],
+          assets: [],
+          styles: [],
+        };
+
+    console.log('projectData', projectData);
+    e.loadProjectData(projectData);
+
     // Load project data before canvas render
-    e.loadProjectData(JSON.parse(localStorage.getItem('gjsProject')));
+    // e.loadProjectData(JSON.parse(localStorage.getItem('gjsProject')));
     // Rerender Editor canvas when plugins are loaded
     e.render();
     // Enable canvas

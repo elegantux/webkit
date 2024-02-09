@@ -18,4 +18,9 @@ return array(
    * Cross App Config
    */
   'supported_apps' => array('site', 'blog', 'shop'),
+  'template_locations' => array(
+    'site' => array('header', 'footer', 'page'),
+    'blog' => array('header', 'footer', 'page', 'blog_post', 'blog_archive', 'blog_search', 'blog_empty'),
+    'shop' => array('header', 'footer', 'page', 'shop_home', 'shop_category', 'shop_search', 'shop_empty', 'shop_product', 'shop_order', 'shop_order_success', 'shop_order_error')
+  ),
 );

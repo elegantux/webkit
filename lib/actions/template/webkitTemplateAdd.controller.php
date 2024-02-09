@@ -1,17 +1,5 @@
 <?php
 
-/**
- * Query Params:
- * ?module=templateAdd&id={project_id}
- *
- * Payload object type:
- * {
- *  status: int,
- *  scope: string,
- *  template_type: string,
- *  ...webkitTemplate,
- * }
- */
 class webkitTemplateAddController extends webkitJsonController
 {
 
@@ -20,12 +8,7 @@ class webkitTemplateAddController extends webkitJsonController
   /**
    * @var string[]
    */
-  protected $available_params = ['id'];
-
-  /**
-   * @var string[]
-   */
-  protected $required_fields = ['project_id', 'status', 'scope', 'template_type'];
+  protected $required_fields = ['name', 'wtp_project_id', 'wtp_status', 'wtp_template_location', 'wtp_template_type'];
 
   public function execute()
   {
@@ -34,25 +17,24 @@ class webkitTemplateAddController extends webkitJsonController
     try {
       $post = waRequest::post();
 
-      $this->validate(array_diff(waRequest::get(), ["templateAdd"]), $this->available_params);
       $this->validateRequired($post, $this->required_fields);
 
       /**
        * Get Template-Project info
        */
-      $project_id = $post['project_id'];
-      $status = $post['status'];
-      $scope = $post['scope'];
-      $template_type = $post['template_type'];
+      $project_id = $post['wtp_project_id'];
+      $status = $post['wtp_status'];
+      $template_type = $post['wtp_template_type'];
+      $template_location = $post['wtp_template_location'];
 
       /**
        * Clear $post of garbage
        */
       unset(
-        $post['project_id'],
-        $post['status'],
-        $post['scope'],
-        $post['template_type']
+        $post['wtp_project_id'],
+        $post['wtp_status'],
+        $post['wtp_template_type'],
+        $post['wtp_template_location']
       );
 
       /**
@@ -60,21 +42,22 @@ class webkitTemplateAddController extends webkitJsonController
        */
       new webkitProject($project_id);
 
-      $template = new webkitTemplate(null);
+      $template_project_service = new webkitTemplateProjectService(
+        new webkitTemplate(null),
+        new webkitTemplateProject(null)
+      );
 
-      $template->save($post);
-
-      $template_project = new webkitTemplateProject(null);
-
-      $template_project->save([
-        'template_id' => $template->getId(),
+      $template_project_service->addTemplateAndTemplateProject($post, [
         'project_id' => $project_id,
         'status' => $status,
-        'scope' => $scope,
         'template_type' => $template_type,
+        'template_location' => $template_location,
       ]);
 
-      $this->response = $template->getData();
+      $this->response = $template_project_service->collection->getByTemplateAndProjectIds(
+        $template_project_service->template_manager->getId(),
+        $project_id
+      );
 
     } catch (webkitAPIException $exception) {
 

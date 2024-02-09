@@ -154,18 +154,19 @@ export function Modal(props: PropsWithChildren<IModal>) {
               )}
               {[SCROLL_OVERFLOW_INDICATOR_POSITION.TOP, SCROLL_OVERFLOW_INDICATOR_POSITION.MIDDLE].includes(
                 scrollOverflowIndicator
-              ) && (
-                <Box
-                  position="absolute"
-                  bottom={`${(footerRef?.current?.scrollHeight || 0) + 42}px`}
-                  left={0}
-                  width="full"
-                  height="24px"
-                  bg="linear-gradient(0deg, #0000000d, transparent)"
-                  userSelect="none"
-                  pointerEvents="none"
-                />
-              )}
+              ) &&
+                showModalFooter && (
+                  <Box
+                    position="absolute"
+                    bottom={`${(footerRef?.current?.scrollHeight || 0) + 42}px`}
+                    left={0}
+                    width="full"
+                    height="24px"
+                    bg="linear-gradient(0deg, #0000000d, transparent)"
+                    userSelect="none"
+                    pointerEvents="none"
+                  />
+                )}
             </>
           )}
           {children}

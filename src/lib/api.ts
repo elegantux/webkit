@@ -3,7 +3,7 @@ import axios from 'axios';
 import { PaginatedResponse, Response, SearchParams } from '@lib/models/response';
 import ApiError from '@lib/classes/ApiError';
 import { HOST, WA_APP_URL } from '@lib/constants';
-import { Template } from '@lib/models/template';
+import { CreateTemplatePayload, Template, TemplateProject, UpdateTemplatePayload } from '@lib/models/template';
 import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models/project';
 import { createFormData } from '@lib/utils';
 import { WebasystApp } from '@lib/models/cross-app';
@@ -33,6 +33,71 @@ const template = {
     const { data, status } = await axios.get<PaginatedResponse<Template[]>>(`${HOST}${WA_APP_URL}`, {
       params,
     });
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
+  async getTemplateProject(wtpId: TemplateProject['wtp_id']) {
+    const params = {
+      module: 'templateProject',
+      id: wtpId,
+    };
+
+    const { data, status } = await axios.get<Response<TemplateProject>>(`${HOST}${WA_APP_URL}`, {
+      params,
+    });
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
+  async createTemplate(payload: CreateTemplatePayload) {
+    const formData = createFormData();
+
+    Object.keys(payload).forEach((key: string) => {
+      // @ts-ignore
+      formData.append(key, payload[key]);
+    });
+
+    const { data, status } = await axios.post<Response<Project>>(`${HOST}${WA_APP_URL}?module=templateAdd`, formData);
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
+  async updateTemplate(templateId: Template['id'], payload: UpdateTemplatePayload) {
+    const formData = createFormData();
+
+    Object.keys(payload).forEach((key: string) => {
+      // @ts-ignore
+      formData.append(key, payload[key]);
+    });
+
+    const { data, status } = await axios.post<Response<Project>>(
+      `${HOST}${WA_APP_URL}?module=templateUpdate&id=${templateId}`,
+      formData
+    );
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
+  async deleteTemplate(templateId: Template['id']) {
+    const formData = createFormData();
+
+    const { data, status } = await axios.post<Response<boolean>>(
+      `${HOST}${WA_APP_URL}?module=templateDelete&id=${templateId}`,
+      formData
+    );
 
     if (status !== 200) {
       throw new ApiError(data);

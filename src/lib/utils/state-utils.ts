@@ -3,7 +3,7 @@ import { InfiniteData, QueryClient, QueryKey } from '@tanstack/react-query';
 import { PaginatedResponse } from '@lib/models/response';
 
 export const getNextPageParam = (lastPage: PaginatedResponse<any>) =>
-  lastPage.data.current_page < lastPage.data.last_page ? lastPage.data.current_page + 1 : undefined;
+  lastPage?.data?.current_page < lastPage?.data?.last_page ? lastPage?.data?.current_page + 1 : undefined;
 
 /**
  * For each filter property, we have a new cached list.

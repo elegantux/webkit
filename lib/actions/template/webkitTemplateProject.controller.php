@@ -10,7 +10,7 @@ class webkitTemplateProjectController extends webkitJsonController
     try {
       $condition_model = new webkitTemplateProjectModel();
 
-      $condition = $condition_model->getByField('template_id', waRequest::get('id'));
+      $condition = $condition_model->getById(waRequest::get('id'));
 
       $this->response = $condition;
 

@@ -29,33 +29,25 @@ class webkitTemplateListController extends webkitJsonController
 
       $project_id = waRequest::get('project_id', null, waRequest::TYPE_INT);
       $page = waRequest::get('page', 1, waRequest::TYPE_INT);
-      $sort = waRequest::get('sort', 'id', waRequest::TYPE_STRING);
+      $sort = waRequest::get('sort', 'DESC', waRequest::TYPE_STRING);
       $order = waRequest::get('order', 'create_datetime', waRequest::TYPE_STRING);
       $keyword = waRequest::get('keyword', null, waRequest::TYPE_STRING_TRIM);
       $per_page = waRequest::get('per_page', 10, waRequest::TYPE_INT);
 
-      // Create an instance of the class
-      $templates_collection = new webkitTemplatesCollection();
+      $templates_collection = new webkitTemplateProjectCollection();
 
-      // Set the project_id to filter the templates
-      $templates_collection->filterByProjectId($project_id);
+      $templates_collection->applyFilters($page, $sort, $order, $keyword, $per_page);
+      $template_list = $templates_collection->getByProjectId($project_id);
+      $total_count = $templates_collection->countAllByProjectId($project_id);
 
-      // Optionally, set pagination if needed
-      $templates_collection->setPagination($page, $per_page);
+      $response = new webkitPaginatedResponse(
+        $page,
+        array_values($template_list),
+        $per_page,
+        $total_count
+      );
 
-      if (isset($keyword) && !empty($keyword)) {
-        $templates_collection->filterByKeyword($keyword);
-      }
-
-      if (!empty($sort)) {
-        if (!empty($order)) {
-          $templates_collection->setSortOrder($sort, $order);
-        } else {
-          $templates_collection->setSortOrder($sort);
-        }
-      }
-
-      $this->response = $templates_collection->getPaginatedTemplates();
+      $this->response = $response->getData();
 
     } catch (webkitAPIException $exception) {
 

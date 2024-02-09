@@ -45,7 +45,7 @@ class webkitTemplate
         $this->data = $this->model->getById($data);
 
         if (is_null($this->getId())) {
-          throw new webkitAPIException(_w('Record not found!'), webkitHttp::NOT_FOUND_CODE);
+          throw new webkitAPIException(_w('Template not found!'), webkitHttp::NOT_FOUND_CODE);
         }
       } else {
         $this->data = $this->model->getEmptyRow();
@@ -54,6 +54,15 @@ class webkitTemplate
       throw new webkitAPIException($exception->getMessage(), $exception->getCode());
     }
 
+  }
+
+  /**
+   * @param $id
+   * @return void
+   */
+  public function deleteById($id)
+  {
+    $this->model->deleteById($id);
   }
 
 }

@@ -23,22 +23,6 @@ return array(
     ),
   ),
 
-  'webkit_project' => array(
-    'id'                => array('int', 11, 'null' => 0, 'autoincrement' => 1),
-    'name'              => array('varchar', 255, 'null' => 0),
-    'app_id'            => array('varchar', 255, 'null' => 0),
-    'theme_id'          => array('varchar', 255, 'null' => 0),
-    'preview_image_url' => array('text', 'null' => 0),
-
-    'create_datetime'   => array('datetime', 'null' => 0),
-    'update_datetime'   => array('datetime', 'null' => 0),
-    ':keys'             => array(
-      'PRIMARY' => 'id',
-      'app_id' => 'app_id',
-      'theme_id' => 'theme_id',
-    ),
-  ),
-
   'webkit_template_child' => array(
     'id'                => array('int', 11, 'null' => 0, 'autoincrement' => 1),
     'parent_id'         => array('int', 11, 'null' => 0),
@@ -54,13 +38,28 @@ return array(
     'template_id'       => array('int', 11, 'unsigned' => 1, 'null' => 0),
     'project_id'        => array('int', 11, 'unsigned' => 1, 'null' => 0),
     'status'            => array('int', 11, 'unsigned' => 1, 'null' => 0),
-    'scope'             => array('varchar', 255, 'null' => 0),
     'template_type'     => array('varchar', 255, 'null' => 0),
-
+    'template_location' => array('varchar', 255, 'null' => 0),
     ':keys'             => array(
       'PRIMARY' => 'id',
-      'template_id' => 'template_id',
       'project_id' => 'project_id',
+      'template_id' => 'template_id',
+    ),
+  ),
+
+  'webkit_project' => array(
+    'id'                => array('int', 11, 'null' => 0, 'autoincrement' => 1),
+    'name'              => array('varchar', 255, 'null' => 0),
+    'app_id'            => array('varchar', 255, 'null' => 0),
+    'theme_id'          => array('varchar', 255, 'null' => 0),
+    'preview_image_url' => array('text', 'null' => 0),
+
+    'create_datetime'   => array('datetime', 'null' => 0),
+    'update_datetime'   => array('datetime', 'null' => 0),
+    ':keys'             => array(
+      'PRIMARY' => 'id',
+      'app_id' => 'app_id',
+      'theme_id' => 'theme_id',
     ),
   ),
 );

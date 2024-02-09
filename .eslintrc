@@ -45,6 +45,7 @@
 
     // Typescript
     "@typescript-eslint/default-param-last": "off",
+    "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/naming-convention": [
       "warn",
       {

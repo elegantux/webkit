@@ -196,7 +196,7 @@
           this.model.components(null);
 
           // Update content
-          this.model.set('content', responseBody.data.model);
+          this.model.set('components', responseBody.data.model);
 
           // Update the widget view in the canvas
           this.updateInnerHtml(responseBody.data.view);

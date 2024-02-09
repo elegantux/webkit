@@ -153,7 +153,6 @@ export function ProjectCard({ project, showMenu = true }: { project: Project; sh
             >
               <Image
                 src={appIconUrl}
-                fallbackSrc={appPath('/img/webkit.svg')}
                 alt={project.app_id}
                 width="24px"
                 height="auto"

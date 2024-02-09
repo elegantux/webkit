@@ -1,4 +1,44 @@
-import { RefObject, useEffect, useState } from 'react';
+import { useStep } from 'usehooks-ts';
+import React, { Dispatch, RefObject, SetStateAction, useEffect, useState } from 'react';
+
+export interface StepperReturn<T> {
+  // State
+  stepperState: T;
+  updateState: React.Dispatch<React.SetStateAction<T>>;
+  // Stepper
+  currentStep: number;
+  canGoToPrevStep: boolean;
+  canGoToNextStep: boolean;
+  goToNextStep: () => void;
+  goToPrevStep: () => void;
+  resetStepper: () => void;
+  setStep: Dispatch<SetStateAction<number>>;
+}
+
+/**
+ * @param steps
+ * @param initialState
+ */
+export const useStepper = <T>(steps: number = 0, initialState: T): StepperReturn<T> => {
+  const [state, setState] = useState(initialState);
+  const [currentStep, helpers] = useStep(steps);
+
+  const { canGoToPrevStep, canGoToNextStep, goToNextStep, goToPrevStep, reset, setStep } = helpers;
+
+  return {
+    // State
+    stepperState: state,
+    updateState: setState,
+    // Stepper
+    currentStep,
+    canGoToPrevStep,
+    canGoToNextStep,
+    goToNextStep,
+    goToPrevStep,
+    resetStepper: reset,
+    setStep,
+  };
+};
 
 /**
  * This hook monitors the appearance of the page element in the screen scope.

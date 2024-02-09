@@ -9,9 +9,15 @@ class webkitTemplateController extends webkitJsonController
 
     try {
 
-      $template = new webkitTemplate(waRequest::get('id'));
+      $template_project_service = new webkitTemplateProjectService(
+        new webkitTemplate(waRequest::get('id')),
+        new webkitTemplateProject(null)
+      );
+      $this->response = $template_project_service->collection->getByTemplateId(waRequest::get('id'));
 
-      $this->response = $template->getData();
+//      $template = new webkitTemplate(waRequest::get('id'));
+//
+//      $this->response = $template->getData();
 
     } catch (webkitAPIException $exception) {
 

@@ -32,6 +32,7 @@ class webkitCrossAppActions extends webkitJsonActions
         ];
       }
 
+      $template_locations = wa(webkitConst::APP_ID)->getConfig()->getOption('template_locations');
       foreach ($supported_apps as $app_id => $app_info)
       {
         // Skip unsupported apps
@@ -53,6 +54,7 @@ class webkitCrossAppActions extends webkitJsonActions
           'app_id' => $app_id,
           'icon' => $app_info['icon'],
           'theme_id_list' => array_keys($theme_list),
+          'template_locations' => $template_locations[$app_id],
         ];
       }
 

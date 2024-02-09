@@ -39,7 +39,7 @@ class webkitProject
         $this->data = $this->model->getById($data);
 
         if (is_null($this->getId())) {
-          throw new webkitAPIException(_w('Record not found!'), webkitHttp::NOT_FOUND_CODE);
+          throw new webkitAPIException(_w('Project not found!'), webkitHttp::NOT_FOUND_CODE);
         }
       } else {
         $this->data = $this->model->getEmptyRow();

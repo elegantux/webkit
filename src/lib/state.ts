@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-import { Template } from '@lib/models/template';
+import { CreateTemplatePayload, Template, TemplateProject, UpdateTemplatePayload } from '@lib/models/template';
 import { PaginatedResponse, Response, SearchParams } from '@lib/models/response';
 import { api } from '@lib/api';
 import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models/project';
@@ -19,31 +19,80 @@ import { WebasystApp } from '@lib/models/cross-app';
 export const STATE_TYPES = {
   TEMPLATE: 'template',
   TEMPLATE_LIST: 'template_list',
+  TEMPLATE_PROJECT: 'template_project',
+  PROJECT: 'project',
   PROJECT_LIST: 'project_list',
   WEBASYST_APP_LIST: 'webasyst_app_list',
 };
 
+const sharedTemplateMethods = (queryKey: any[]) => {
+  const queryClient = useQueryClient();
+
+  const updateTemplate = ({ templateId, payload }: { templateId: Template['id']; payload: UpdateTemplatePayload }) =>
+    api.template.updateTemplate(templateId, payload);
+  const { mutateAsync: mutateUpdateTemplate, isPending: isUpdating } = useMutation(
+    {
+      mutationFn: updateTemplate,
+      onSettled: async () => {
+        return queryClient.invalidateQueries({ queryKey });
+      },
+    },
+    queryClient
+  );
+
+  return {
+    mutateUpdateTemplate,
+    isUpdating,
+  };
+};
+
 export const useTemplate = (templateId: Template['id']) => {
+  const queryKey = [STATE_TYPES.TEMPLATE, templateId];
+
   const getTemplate = () => api.template.getTemplate(templateId);
   const { data } = useSuspenseQuery<Response<Template>>({
-    queryKey: [STATE_TYPES.TEMPLATE],
+    queryKey,
     queryFn: getTemplate,
     notifyOnChangeProps: ['data', 'error'],
     refetchOnWindowFocus: false,
     staleTime: Infinity,
   });
 
+  const { mutateUpdateTemplate, isUpdating } = sharedTemplateMethods(queryKey);
+
   return {
     template: data.data,
+    updateTemplate: mutateUpdateTemplate,
+    isLoading: isUpdating,
+  };
+};
+
+export const useTemplateProject = (wtpId: TemplateProject['wtp_id']) => {
+  const queryKey = [STATE_TYPES.TEMPLATE_PROJECT, wtpId];
+
+  const getTemplateProject = () => api.template.getTemplateProject(wtpId);
+  const { data } = useSuspenseQuery<Response<TemplateProject>>({
+    queryKey,
+    queryFn: getTemplateProject,
+    notifyOnChangeProps: ['data', 'error'],
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+  });
+
+  return {
+    templateProject: data.data,
   };
 };
 
 export const useTemplateList = (projectId: Project['id'], filters: SearchParams = {}) => {
+  const queryClient = useQueryClient();
+  const queryKey = [STATE_TYPES.TEMPLATE_LIST, projectId, filters];
+
   const getTemplateList = () => api.template.getTemplateList(projectId, filters);
   const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useSuspenseInfiniteQuery<
     PaginatedResponse<Template[]>
   >({
-    queryKey: [STATE_TYPES.TEMPLATE_LIST, projectId],
+    queryKey,
     queryFn: getTemplateList,
     getNextPageParam,
     initialPageParam: 1,
@@ -52,11 +101,50 @@ export const useTemplateList = (projectId: Project['id'], filters: SearchParams 
     staleTime: Infinity,
   });
 
+  const createTemplate = (payload: CreateTemplatePayload) => api.template.createTemplate(payload);
+  const { mutateAsync: mutateCreateTemplate, isPending: isCreating } = useMutation(
+    {
+      mutationFn: createTemplate,
+      onSettled: async () => {
+        return queryClient.invalidateQueries({ queryKey });
+      },
+    },
+    queryClient
+  );
+
+  const { mutateUpdateTemplate, isUpdating } = sharedTemplateMethods(queryKey);
+  // const updateTemplate = ({ templateId, payload }: { templateId: Template['id']; payload: UpdateTemplatePayload }) =>
+  //   api.template.updateTemplate(templateId, payload);
+  // const { mutateAsync: mutateUpdateTemplate, isPending: isUpdating } = useMutation(
+  //   {
+  //     mutationFn: updateTemplate,
+  //     onSettled: async () => {
+  //       return queryClient.invalidateQueries({ queryKey });
+  //     },
+  //   },
+  //   queryClient
+  // );
+
+  const deleteTemplate = (id: Template['id']) => api.template.deleteTemplate(id);
+  const { mutateAsync: mutateDeleteTemplate, isPending: isDeleting } = useMutation(
+    {
+      mutationFn: deleteTemplate,
+      onSettled: async () => {
+        return queryClient.invalidateQueries({ queryKey });
+      },
+    },
+    queryClient
+  );
+
   // Concatenate all data pages into a single array
   const templateList = data?.pages?.flatMap((page) => page?.data?.data || []) || [];
 
   return {
     templateList,
+    createTemplate: mutateCreateTemplate,
+    updateTemplate: mutateUpdateTemplate,
+    deleteTemplate: mutateDeleteTemplate,
+    isLoading: isCreating || isUpdating || isDeleting,
     // Lazy pagination props
     fetchNextPage,
     hasNextPage,
@@ -150,6 +238,19 @@ export const useProjectList = (filters: SearchParams = {}) => {
     isFetching,
     isFetchingNextPage,
   };
+};
+
+export const useProject = (projectId: Project['id']) => {
+  const getProjectList = () => api.project.getProject(projectId);
+  const { data } = useSuspenseQuery<Response<Project>>({
+    queryKey: [STATE_TYPES.PROJECT, projectId],
+    queryFn: getProjectList,
+    notifyOnChangeProps: ['data', 'error'],
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+  });
+
+  return { project: data.data };
 };
 
 export const useProjectListValidity = () => {
