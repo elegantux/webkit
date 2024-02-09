@@ -15,3 +15,9 @@ export const WA_APP_PATH = window.webkitBackendUrls.backendAppStaticUrl;
 
 export const WA_THEME_MODE_LS_KEY = 'wa_theme_user_mode';
 export const WA_THEME_MODE_CHANGE_EVENT_NAME = 'wa-theme-change';
+
+export const HELP_LINKS = {
+  VENDOR_URL: 'https://elegantux.com',
+  TELEGRAM_SUPPORT: 'https://t.me/webasyst_webkit_support',
+  HELP_EMAIL: 'webasyst@elegantux.com',
+};

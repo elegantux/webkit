@@ -1,0 +1,96 @@
+import { Box, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+
+export function TableSkeleton() {
+  const startColor = useColorModeValue('grey.50', 'ebony.400');
+  const endColor = useColorModeValue('grey.100', 'ebony.500');
+  return (
+    <Box
+      p="24px"
+      border="1px solid"
+      borderColor="grey.200"
+      _dark={{ borderColor: 'grey.700' }}
+      borderRadius="lg"
+    >
+      <Flex
+        gap="24px"
+        width="full"
+        mb="24px"
+      >
+        <Skeleton
+          width="full"
+          height="34px"
+          borderRadius="4px"
+          startColor={startColor}
+          endColor={endColor}
+        />
+        <Skeleton
+          width="full"
+          height="34px"
+          borderRadius="4px"
+          startColor={startColor}
+          endColor={endColor}
+        />
+        <Skeleton
+          width="full"
+          height="34px"
+          borderRadius="4px"
+          startColor={startColor}
+          endColor={endColor}
+        />
+      </Flex>
+      <Flex
+        gap="24px"
+        width="full"
+        mb="24px"
+      >
+        <Skeleton
+          width="full"
+          height="34px"
+          borderRadius="4px"
+          startColor={startColor}
+          endColor={endColor}
+        />
+        <Skeleton
+          width="full"
+          height="34px"
+          borderRadius="4px"
+          startColor={startColor}
+          endColor={endColor}
+        />
+        <Skeleton
+          width="full"
+          height="34px"
+          borderRadius="4px"
+          startColor={startColor}
+          endColor={endColor}
+        />
+      </Flex>
+      <Flex
+        gap="24px"
+        width="full"
+      >
+        <Skeleton
+          width="full"
+          height="34px"
+          borderRadius="4px"
+          startColor={startColor}
+          endColor={endColor}
+        />
+        <Skeleton
+          width="full"
+          height="34px"
+          borderRadius="4px"
+          startColor={startColor}
+          endColor={endColor}
+        />
+        <Skeleton
+          width="full"
+          height="34px"
+          borderRadius="4px"
+          startColor={startColor}
+          endColor={endColor}
+        />
+      </Flex>
+    </Box>
+  );
+}

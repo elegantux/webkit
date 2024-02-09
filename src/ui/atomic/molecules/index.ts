@@ -1,4 +1,6 @@
 import { Select } from './select/Select';
-import { FormSkeleton } from './form/FromSkeleton';
+import { FormSkeleton } from './skeleton/FromSkeleton';
+import { TableSkeleton } from './skeleton/TableSkeleton';
+import { SliderSkeleton } from './skeleton/SliderSkeleton';
 
-export { Select, FormSkeleton };
+export { Select, FormSkeleton, TableSkeleton, SliderSkeleton };
