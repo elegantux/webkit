@@ -101,10 +101,9 @@ function MoreActionsColumn({ template }: { template: Template }) {
       <Menu
         isOpen={menu.isOpen}
         onClose={menu.onClose}
-        placement="top-end"
+        placement="bottom-end"
       >
         <MenuButton
-          // ref={menuButtonRef}
           as={IconButton}
           size="sm"
           aria-label="Options"
@@ -112,6 +111,7 @@ function MoreActionsColumn({ template }: { template: Template }) {
           variant="outline"
           colorScheme="grey"
           borderRadius="full"
+          border="none"
           mr={0}
           flexShrink={0}
           onClick={menu.onOpen}

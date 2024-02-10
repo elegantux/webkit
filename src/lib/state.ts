@@ -189,9 +189,6 @@ export const useProjectList = (filters: SearchParams = {}) => {
   const { mutateAsync: mutateCreateProject, isPending: isCreating } = useMutation(
     {
       mutationFn: createProject,
-      // onSuccess: async (response) => {
-      //   prependLazyPaginatedListEntity(queryClient, [STATE_TYPES.PROJECT_LIST], response);
-      // },
       onSettled: async () => {
         return queryClient.invalidateQueries({ queryKey: [STATE_TYPES.PROJECT_LIST] });
       },
@@ -204,7 +201,9 @@ export const useProjectList = (filters: SearchParams = {}) => {
   const { mutateAsync: mutateUpdateProject, isPending: isUpdating } = useMutation(
     {
       mutationFn: updateProject,
-      onSettled: async () => {
+      // @ts-ignore
+      onSettled: async (response, error, variables) => {
+        await queryClient.invalidateQueries({ queryKey: [STATE_TYPES.PROJECT, variables.id] });
         return queryClient.invalidateQueries({ queryKey: [STATE_TYPES.PROJECT_LIST] });
       },
     },
@@ -215,7 +214,9 @@ export const useProjectList = (filters: SearchParams = {}) => {
   const { mutateAsync: mutateDeleteProject, isPending: isDeleting } = useMutation(
     {
       mutationFn: deleteProject,
-      onSettled: async () => {
+      // @ts-ignore
+      onSettled: async (response, error, variables) => {
+        await queryClient.invalidateQueries({ queryKey: [STATE_TYPES.PROJECT, variables] });
         return queryClient.invalidateQueries({ queryKey: [STATE_TYPES.PROJECT_LIST] });
       },
     },

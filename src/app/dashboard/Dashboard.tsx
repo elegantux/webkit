@@ -111,10 +111,7 @@ function RecentProjectListSlider() {
                 style={{ padding: '12px', height: 'auto' }}
                 key={project.id}
               >
-                <ProjectCard
-                  project={project}
-                  showMenu={false}
-                />
+                <ProjectCard project={project} />
               </SwiperSlide>
             ))}
           </Swiper>
