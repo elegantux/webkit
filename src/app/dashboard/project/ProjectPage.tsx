@@ -223,7 +223,10 @@ export function TemplateList() {
               Create Template
             </CreateTemplateButton>
           </Flex>
-          <TemplateListTable templateList={templateList} />
+          <TemplateListTable
+            templateList={templateList}
+            project={project}
+          />
         </>
       )}
     </>

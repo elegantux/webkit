@@ -24,12 +24,15 @@ import { MouseEvent } from 'react';
 import { AxiosError } from 'axios';
 
 import { Template } from '@lib/models/template';
-import { Modal } from '@ui/atomic/organisms/modal';
+import { Modal, ModalProvider, useModal } from '@ui/atomic/organisms/modal';
 import { useTemplateList } from '@lib/state';
-import { appUrl } from '@lib/utils';
+import { appUrl, getInfoToastObject } from '@lib/utils';
 import { TEMPLATE_LOCATION_NAME_MAP } from '@app/dashboard/lib/constants';
+import { UpsertTemplateForm } from '@app/dashboard/template/components/UpsertTemplateForm';
+import { Project } from '@lib/models/project';
 
-function MoreActionsColumn({ template }: { template: Template }) {
+function MoreActionsColumn({ template, project }: { template: Template; project: Project }) {
+  const upsertModal = useModal();
   const deleteModal = useDisclosure();
   const menu = useDisclosure();
   const toast = useToast();
@@ -58,14 +61,31 @@ function MoreActionsColumn({ template }: { template: Template }) {
         title: responseErrorMessage,
         status: 'error',
       });
+      toast(getInfoToastObject());
     }
   };
 
   return (
     <Td
+      width="100px"
       textAlign="right"
       onClick={handleMenuItemClick}
     >
+      <ModalProvider {...upsertModal}>
+        <Modal
+          title="Update Template"
+          primaryButtonLabel="Update"
+          showSecondaryButton={false}
+          isCentered
+          {...upsertModal.modalProps}
+          {...upsertModal.modalDisclosure}
+        >
+          <UpsertTemplateForm
+            template={template}
+            project={project}
+          />
+        </Modal>
+      </ModalProvider>
       <Modal
         title="Delete Template"
         onPrimaryButtonClick={handleDeleteTemplate}
@@ -126,7 +146,7 @@ function MoreActionsColumn({ template }: { template: Template }) {
             colorScheme="grey"
             size="sm"
             icon={<FaRegPenToSquare size={14} />}
-            // onClick={modal.modalDisclosure.onOpen}
+            onClick={upsertModal.modalDisclosure.onOpen}
           >
             Edit
           </MenuItem>
@@ -148,9 +168,11 @@ function MoreActionsColumn({ template }: { template: Template }) {
 
 export function TemplateListTable({
   templateList,
+  project,
   showActions = true,
 }: {
   templateList: Template[];
+  project: Project;
   showActions?: boolean;
 }) {
   const handleTableRowClick = (template: Template) => {
@@ -187,7 +209,12 @@ export function TemplateListTable({
                   {template.wtp_status === '1' ? 'On' : 'Off'}
                 </Tag>
               </Td>
-              {showActions && <MoreActionsColumn template={template} />}
+              {showActions && (
+                <MoreActionsColumn
+                  template={template}
+                  project={project}
+                />
+              )}
             </Tr>
           ))}
         </Tbody>

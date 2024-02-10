@@ -26,6 +26,7 @@ import {
   Switch,
   Table,
   TableContainer,
+  Tag,
   Tbody,
   Td,
   Text,
@@ -210,14 +211,32 @@ function TemplateLocationStep({
 }
 
 function BasicInfoStep({
+  project,
+  stepperState,
   initialState,
   onSubmit,
   onPrevious,
 }: {
+  project: Project;
+  stepperState: ATFStepperState;
   initialState?: ATFBasicInfoPayload;
   onSubmit: Function;
   onPrevious: Function;
 }) {
+  const theme = useTheme();
+  const boxShadowColor = useColorModeValue(theme.colors.grey[50], theme.colors.ebony[900]);
+  const mode = useColorMode();
+
+  const { appList } = useWebasystApplicationList();
+
+  const templateLocationOptionList: SelectOptionProps[] = appList
+    .find((app) => app.app_id === project.app_id)!
+    .template_locations.map((templateLocation) => ({ label: templateLocation, value: templateLocation }));
+
+  const selectedOption = templateLocationOptionList.find(
+    (option) => option.value === stepperState[ADD_TEMPLATE_STEPS.TEMPLATE_LOCATION]?.templateLocation
+  )!;
+
   const form = useForm<ATFBasicInfoPayload>({
     resolver: zodResolver(
       z.object({
@@ -238,79 +257,117 @@ function BasicInfoStep({
 
   return (
     <FormProvider {...form}>
-      <Heading
-        as="h5"
-        size="md"
-        mt="52px"
-        mb="8px"
-      >
-        Basic Info
-      </Heading>
-      <Text
-        fontSize="sm"
-        mb="32px"
-      >
-        The <b>Template Name</b> field is an indicator that allows you to differentiate between templates created for
-        the same location.
-      </Text>
-      <Grid
-        gridTemplateColumns="1fr 1fr"
-        gap="32px"
-      >
-        <GridItem>
-          <FormControl isInvalid={!!form.formState.errors.name}>
-            <FormLabel fontSize="sm">Template Name*</FormLabel>
-            <Input
-              placeholder="Site Header Template"
-              {...form.register('name')}
-            />
-            <FormErrorMessage>This field is required</FormErrorMessage>
-          </FormControl>
-        </GridItem>
-        <GridItem>
-          <FormControl>
-            <FormLabel fontSize="sm">Enable template?</FormLabel>
-            <Flex>
-              <FormLabel
-                htmlFor="status"
-                fontSize="sm"
-                fontWeight="400"
-              >
-                Should this template be displayed on the website immediately after creation?
-              </FormLabel>
-              <Switch
-                id="status"
-                {...form.register('status')}
-              />
-            </Flex>
-          </FormControl>
-        </GridItem>
-      </Grid>
       <Flex
-        justify="center"
-        gap="24px"
-        mt="32px"
-        mx="auto"
-        width="max-content"
-        position="sticky"
-        bottom="24px"
+        gap="42px"
+        mt="52px"
       >
-        <Button
-          variant="ghost"
-          colorScheme="grey"
-          leftIcon={<FaArrowLeft />}
-          onClick={() => onPrevious()}
+        <Box
+          width="222px"
+          flexShrink={0}
         >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          rightIcon={<FaArrowRight />}
-          onClick={form.handleSubmit(handleFromSubmit)}
-          isDisabled={!form.formState.isValid}
-        >
-          Continue
-        </Button>
+          <Flex
+            justify="space-between"
+            alignItems="center"
+            height="28px"
+            mb="8px"
+            color="dodger.500"
+          >
+            <Text
+              fontSize="14px"
+              fontWeight="600"
+            >
+              {TEMPLATE_LOCATION_NAME_MAP[selectedOption.value]}
+            </Text>
+            <FaCircleCheck size={18} />
+          </Flex>
+          <Box width="full">
+            <Image
+              src={appPath(`/img/templates/${selectedOption.value}-${mode.colorMode}.svg`)}
+              fallback={<Text>Image Not Found!</Text>}
+              borderRadius="lg"
+              boxShadow={`0 0 12px 4px ${boxShadowColor}`}
+              border="1px solid"
+              borderColor="dodger.500"
+            />
+          </Box>
+        </Box>
+        <Box>
+          <Heading
+            as="h5"
+            size="md"
+            mt="52px"
+            mb="8px"
+          >
+            Basic Info
+          </Heading>
+          <Text
+            fontSize="sm"
+            mb="32px"
+            color="ebony.100"
+          >
+            The <b>Template Name</b> field is an indicator that allows you to differentiate between templates created
+            for the same location.
+          </Text>
+          <Grid
+            gridTemplateColumns="1fr"
+            gap="32px"
+          >
+            <GridItem>
+              <FormControl isInvalid={!!form.formState.errors.name}>
+                <FormLabel fontSize="sm">Template Name*</FormLabel>
+                <Input
+                  placeholder="Site Header Template"
+                  {...form.register('name')}
+                />
+                <FormErrorMessage>This field is required</FormErrorMessage>
+              </FormControl>
+            </GridItem>
+            <GridItem>
+              <FormControl>
+                <FormLabel fontSize="sm">Enable template?</FormLabel>
+                <Flex>
+                  <FormLabel
+                    htmlFor="status"
+                    fontSize="sm"
+                    fontWeight="400"
+                  >
+                    Should this template be displayed on the website immediately after creation?
+                  </FormLabel>
+                  <Switch
+                    id="status"
+                    {...form.register('status')}
+                  />
+                </Flex>
+              </FormControl>
+            </GridItem>
+          </Grid>
+          <Flex
+            justify="center"
+            gap="24px"
+            mt="32px"
+            mx="auto"
+            width="max-content"
+            position="sticky"
+            bottom="24px"
+          >
+            <Button
+              variant="ghost"
+              colorScheme="grey"
+              leftIcon={<FaArrowLeft />}
+              onClick={() => onPrevious()}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              rightIcon={<FaArrowRight />}
+              onClick={form.handleSubmit(handleFromSubmit)}
+              isDisabled={!form.formState.isValid}
+            >
+              Continue
+            </Button>
+          </Flex>
+        </Box>
       </Flex>
     </FormProvider>
   );
@@ -341,102 +398,102 @@ function ReviewStep({
     (option) => option.value === stepperState[ADD_TEMPLATE_STEPS.TEMPLATE_LOCATION]?.templateLocation
   )!;
   return (
-    <>
-      <Heading
-        as="h5"
-        size="md"
-        mt="52px"
-        mb="8px"
+    <Flex
+      gap="42px"
+      mt="52px"
+    >
+      <Box
+        width="222px"
+        flexShrink={0}
       >
-        Review
-      </Heading>
-      <Text
-        fontSize="sm"
-        mb="32px"
-      >
-        Confirm the template information before creating.
-      </Text>
-      <Flex gap="42px">
-        <Box
-          key={selectedOption.value}
-          width="max-content"
-          flexShrink={0}
+        <Flex
+          justify="space-between"
+          alignItems="center"
+          height="28px"
+          mb="8px"
+          color="dodger.500"
         >
-          <Flex
-            justify="space-between"
-            alignItems="center"
-            height="28px"
-            mb="8px"
-            color="dodger.500"
+          <Text
+            fontSize="14px"
+            fontWeight="600"
           >
-            <Text
-              fontSize="14px"
-              fontWeight="600"
-            >
-              {TEMPLATE_LOCATION_NAME_MAP[selectedOption.value]}
-            </Text>
-            <FaCircleCheck size={18} />
-          </Flex>
-          <Box width="full">
-            <Image
-              src={appPath(`/img/templates/${selectedOption.value}-${mode.colorMode}.svg`)}
-              fallback={<Text>Image Not Found!</Text>}
-              borderRadius="lg"
-              boxShadow={`0 0 12px 4px ${boxShadowColor}`}
-              border="1px solid"
-              borderColor="dodger.500"
-            />
-          </Box>
-        </Box>
-        <Box
-          width="full"
-          mt="32px"
-        >
-          <TableContainer
-            border="1px solid"
-            borderColor="grey.200"
-            _dark={{ borderColor: 'grey.700' }}
+            {TEMPLATE_LOCATION_NAME_MAP[selectedOption.value]}
+          </Text>
+          <FaCircleCheck size={18} />
+        </Flex>
+        <Box width="full">
+          <Image
+            src={appPath(`/img/templates/${selectedOption.value}-${mode.colorMode}.svg`)}
+            fallback={<Text>Image Not Found!</Text>}
             borderRadius="lg"
-          >
-            <Table variant="simple">
-              <Tbody>
-                <Tr>
-                  <Td>Template Name</Td>
-                  <Td>{stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.name}</Td>
-                </Tr>
-                <Tr>
-                  <Td>Status</Td>
-                  <Td>{stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.status ? 'On' : 'Off'}</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </TableContainer>
-          <Flex
-            justify="center"
-            gap="24px"
-            mt="98px"
-            mx="auto"
-            width="max-content"
-          >
-            <Button
-              variant="ghost"
-              colorScheme="grey"
-              leftIcon={<FaArrowLeft />}
-              onClick={() => onPrevious()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              rightIcon={<FaArrowRight />}
-              onClick={() => onSubmit()}
-            >
-              Create Template
-            </Button>
-          </Flex>
+            boxShadow={`0 0 12px 4px ${boxShadowColor}`}
+            border="1px solid"
+            borderColor="dodger.500"
+          />
         </Box>
-      </Flex>
-    </>
+      </Box>
+      <Box width="full">
+        <Heading
+          as="h5"
+          size="md"
+          mb="8px"
+        >
+          Review
+        </Heading>
+        <Text
+          fontSize="sm"
+          mb="32px"
+          color="ebony.100"
+        >
+          Confirm the template information before creating.
+        </Text>
+        <TableContainer
+          border="1px solid"
+          borderColor="grey.200"
+          _dark={{ borderColor: 'grey.700' }}
+          borderRadius="lg"
+        >
+          <Table variant="simple">
+            <Tbody>
+              <Tr>
+                <Td>Template Name</Td>
+                <Td>{stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.name}</Td>
+              </Tr>
+              <Tr>
+                <Td>Status</Td>
+                <Td>
+                  <Tag colorScheme={stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.status ? 'malachite' : 'grey'}>
+                    {stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.status ? 'On' : 'Off'}
+                  </Tag>
+                </Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </TableContainer>
+        <Flex
+          justify="center"
+          gap="24px"
+          mt="98px"
+          mx="auto"
+          width="max-content"
+        >
+          <Button
+            variant="ghost"
+            colorScheme="grey"
+            leftIcon={<FaArrowLeft />}
+            onClick={() => onPrevious()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => onSubmit()}
+          >
+            Create Template
+          </Button>
+        </Flex>
+      </Box>
+    </Flex>
   );
 }
 
@@ -532,6 +589,8 @@ export function CreateProjectTemplateFlow({ project }: { project: Project }) {
       )}
       {stepper.currentStep === ADD_TEMPLATE_STEPS.BASIC_INFO && (
         <BasicInfoStep
+          project={project}
+          stepperState={stepper.stepperState}
           initialState={stepper.stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]}
           onSubmit={basicInfoStepSubmitHandler}
           onPrevious={stepper.goToPrevStep}
