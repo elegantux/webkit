@@ -1,9 +1,9 @@
 <?php
 
-class webkitShopPlugin extends webkitEditorPlugin {
+class webkitBasicPlugin extends webkitEditorPlugin {
 
   /**
-   * @param $params
+   * @param array $params
    * @return array
    */
   public function dependencies($params)
@@ -28,7 +28,8 @@ class webkitShopPlugin extends webkitEditorPlugin {
   {
     return array(
       'scripts' => [
-        ['src' => $this->getPluginStaticUrl() . 'js/plugins/product.price.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.container.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.text.js' . '?v=' . $this->getVersion()],
       ],
     );
   }

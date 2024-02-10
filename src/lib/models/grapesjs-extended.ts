@@ -1,4 +1,4 @@
-import { Property } from 'grapesjs';
+import { Block, Property } from 'grapesjs';
 
 import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
 
@@ -7,3 +7,7 @@ export type ExtendedProperty = Property<{
   units?: string[];
   colSpan?: number;
 }>;
+
+export type ExtendedBlock = Block & {
+  attributes: Block['attributes'] & { image?: string; icon?: string };
+};

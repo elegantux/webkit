@@ -33,7 +33,6 @@ const loadPlugins = async (
       await plugin(editor, pluginListOptions[plugin]);
     } catch (error) {
       console.error(`Ошибка в функции под индексом ${i}:`, error);
-    } finally {
     }
   }
   console.log('>>>>>>>>>> onFinished');
@@ -99,9 +98,6 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     styleManager: styleManagerConfig,
     blockManager: { custom: true },
     traitManager: { custom: true },
-    // deviceManager: { custom: true },
-    // layerManager: { custom: true },
-    // selectorManager: { custom: true },
     panels: {
       defaults: [],
     },
@@ -141,40 +137,6 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
           },
         });
       },
-      (e) => {
-        e.DomComponents.addType('default_container', {
-          isComponent: (el) => {
-            if (el.tagName) {
-              console.log('el.dataset', el, el.tagName);
-              return el.dataset['data-gjs-type'] === 'default_container';
-            }
-            return false;
-          },
-          model: {
-            defaults: {
-              tagName: 'div',
-              name: 'Container',
-              attributes: { 'data-gjs-type': 'default.container' },
-              style: { 'padding-top': '12px', 'padding-bottom': '12px' },
-              resizable: true,
-              // components: `<div>Container</div>`,
-            },
-          },
-        });
-        const block = {
-          label: 'Container',
-          category: 'Basic',
-          // content: { type: 'image' },
-          content: { type: 'default_container' },
-          // The component `image` is activatable (shows the Asset Manager).
-          // We want to activate it once dropped in the canvas.
-          activate: true,
-          // select: true, // Default with `activate: true`
-        };
-
-        e.Blocks.add('default_container', block);
-      },
-      // (e) => initPluginsComponents(pluginsComponents, e),
       (e) => {
         console.log('types', e.DomComponents.getTypes());
       },
