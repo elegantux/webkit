@@ -93,22 +93,6 @@ export function ProjectCard({ project }: { project: Project }) {
           </Flex>
         </Flex>
       </CardBody>
-      {/* <CardFooter */}
-      {/*  pt={0} */}
-      {/*  justify="space-between" */}
-      {/*  alignItems="center" */}
-      {/* > */}
-      {/*  <Button */}
-      {/*    as={Link} */}
-      {/*    to={projectRoute.to} */}
-      {/*    params={{ projectId: project.id }} */}
-      {/*    size="md" */}
-      {/*    variant="outline" */}
-      {/*    colorScheme="dodger" */}
-      {/*  > */}
-      {/*    View Project */}
-      {/*  </Button> */}
-      {/* </CardFooter> */}
     </Card>
   );
 }
