@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
+import { ExtendedBlock } from '@lib/models/grapesjs-extended';
 
 interface Section {
   category: string;
@@ -44,7 +45,7 @@ const formatBlockListToSections = (blocks: Blocks) => {
   return result;
 };
 
-const getBlockMedia = (block: Block) => {
+const getBlockMedia = (block: ExtendedBlock) => {
   if (block.attributes.image?.length) {
     return (
       <Image

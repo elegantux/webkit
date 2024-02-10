@@ -1,6 +1,6 @@
 <?php
 
-class webkitBlogPlugin extends webkitEditorPlugin {
+class webkitBasicPlugin extends webkitEditorPlugin {
 
   /**
    * @param array $params
@@ -35,7 +35,8 @@ class webkitBlogPlugin extends webkitEditorPlugin {
   {
     return array(
       'scripts' => [
-        ['src' => $this->getPluginStaticUrl() . 'js/plugins/post.title.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.container.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.text.js' . '?v=' . $this->getVersion()],
       ],
     );
   }
