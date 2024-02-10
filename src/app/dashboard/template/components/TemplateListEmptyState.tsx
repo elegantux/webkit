@@ -19,7 +19,9 @@ export function TemplateListEmptyState(props: ChakraProps) {
       <CreateTemplateButton
         width="max-content"
         mt="12px"
-      />
+      >
+        Create Template
+      </CreateTemplateButton>
     </Flex>
   );
 }

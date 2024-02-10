@@ -4,7 +4,7 @@ import { Root } from './__root';
 import { DashboardLayout } from '@app/dashboard/DashboardLayout';
 import { Dashboard } from '@app/dashboard/Dashboard';
 import { ProjectListPage } from '@app/dashboard/project/ProjectListPage';
-import { TemplateListPage } from '@app/dashboard/template/TemplateListPage';
+import { ProjectPage } from '@app/dashboard/project/ProjectPage';
 import { Editor } from '@app/editor/Editor';
 
 const rootRoute = createRootRoute({
@@ -38,7 +38,7 @@ const projectListRoute = createRoute({
 const projectRoute = createRoute({
   getParentRoute: () => dashboardLayout,
   path: 'app/dashboard/project-list/$projectId',
-  component: TemplateListPage,
+  component: ProjectPage,
 });
 
 const routeTree = rootRoute.addChildren([
