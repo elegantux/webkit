@@ -40,6 +40,21 @@ const template = {
 
     return data;
   },
+  async getRecentTemplateList() {
+    const params = {
+      module: 'recentTemplateList',
+    };
+
+    const { data, status } = await axios.get<Response<Template[]>>(`${HOST}${WA_APP_URL}`, {
+      params,
+    });
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
   async getTemplateProject(wtpId: TemplateProject['wtp_id']) {
     const params = {
       module: 'templateProject',

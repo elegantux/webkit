@@ -27,6 +27,7 @@ import { Template } from '@lib/models/template';
 import { Modal } from '@ui/atomic/organisms/modal';
 import { useTemplateList } from '@lib/state';
 import { appUrl } from '@lib/utils';
+import { TEMPLATE_LOCATION_NAME_MAP } from '@app/dashboard/lib/constants';
 
 function MoreActionsColumn({ template }: { template: Template }) {
   const deleteModal = useDisclosure();
@@ -145,7 +146,13 @@ function MoreActionsColumn({ template }: { template: Template }) {
   );
 }
 
-export function TemplateListTable({ templateList }: { templateList: Template[] }) {
+export function TemplateListTable({
+  templateList,
+  showActions = true,
+}: {
+  templateList: Template[];
+  showActions?: boolean;
+}) {
   const handleTableRowClick = (template: Template) => {
     window.location.href = appUrl(`/app/editor/${template.id}`);
   };
@@ -163,7 +170,7 @@ export function TemplateListTable({ templateList }: { templateList: Template[] }
             <Th>Name</Th>
             <Th>Location</Th>
             <Th>Status</Th>
-            <Th textAlign="right">Actions</Th>
+            {showActions && <Th textAlign="right">Actions</Th>}
           </Tr>
         </Thead>
         <Tbody>
@@ -174,13 +181,13 @@ export function TemplateListTable({ templateList }: { templateList: Template[] }
               onClick={() => handleTableRowClick(template)}
             >
               <Td>{template.name}</Td>
-              <Td>{template.wtp_template_location}</Td>
+              <Td>{TEMPLATE_LOCATION_NAME_MAP[template.wtp_template_location]}</Td>
               <Td>
                 <Tag colorScheme={template.wtp_status === '1' ? 'malachite' : 'grey'}>
                   {template.wtp_status === '1' ? 'On' : 'Off'}
                 </Tag>
               </Td>
-              <MoreActionsColumn template={template} />
+              {showActions && <MoreActionsColumn template={template} />}
             </Tr>
           ))}
         </Tbody>
