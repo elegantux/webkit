@@ -26,15 +26,15 @@ export type CreateTemplatePayload = Omit<TemplateProject, 'wtp_id'> & {
 };
 
 export type UpdateTemplatePayload = {
-  name: Template['name'];
-  cover_url: Template['cover_url'];
-  front_content: Template['front_content'];
-  front_styles: Template['front_styles'];
-  front_scripts: Template['front_scripts'];
-  editor_components: Template['editor_components'];
-  editor_assets: Template['editor_assets'];
-  editor_styles: Template['editor_styles'];
-  plugins: Template['plugins'];
-  wtp_id: Template['wtp_id'];
-  wtp_status: Template['wtp_status'];
+  name?: Template['name'];
+  cover_url?: Template['cover_url'];
+  front_content?: Template['front_content'];
+  front_styles?: Template['front_styles'];
+  front_scripts?: Template['front_scripts'];
+  editor_components?: Template['editor_components'];
+  editor_assets?: Template['editor_assets'];
+  editor_styles?: Template['editor_styles'];
+  plugins?: Template['plugins'];
+  wtp_id?: Template['wtp_id'];
+  wtp_status?: Template['wtp_status'];
 };
