@@ -44,6 +44,7 @@ class webkitQueryBuilder
    * @param string $sql
    * @param string $fetch_type
    * @return $this
+   * @throws waDbException
    */
   public function raw($sql, $fetch_type = 'object') {
     $this->_query = $this->model->query($sql);
@@ -280,11 +281,15 @@ class webkitQueryBuilder
    * @param $table
    * @param $where
    * @return false|webkitQueryBuilder
+   * @throws waDbException
    */
   public function get($table, $where) {
     return $this->select('*')->from($table)->where($where)->fetch();
   }
 
+  /**
+   * @throws waDbException
+   */
   public function query($sql, $params = array(), $inser_update = FALSE) {
     $this->_query = $this->model->query($sql, $params);
     return $this;
@@ -292,6 +297,7 @@ class webkitQueryBuilder
 
   /**
    * @return $this|false
+   * @throws waDbException
    */
   public function fetch() {
     $_sql = $this->_select . $this->_from . $this->_join . $this->_where . $this->_in . $this->_not_in . $this->_like . $this->_not_like . $this->_regex . $this->_not_regex . $this->_having . $this->_between . $this->_not_between . $this->_null . $this->_not_null . $this->_if_null . $this->_and . $this->_or . $this->_order . $this->_group . $this->_limit;
@@ -352,6 +358,7 @@ class webkitQueryBuilder
   /**
    * @param $table
    * @return false|webkitQueryBuilder
+   * @throws waDbException
    */
   public function get_all($table) {
     return $this->select('*')->from($table)->fetch();
@@ -360,11 +367,15 @@ class webkitQueryBuilder
   /**
    * @param $table
    * @return false|webkitQueryBuilder
+   * @throws waDbException
    */
   public function count_all($table) {
     return $this->select('COUNT(*) as ' . $table . '_count')->from($table)->fetch();
   }
 
+  /**
+   * @throws waDbException
+   */
   public function count_by($table, $where = array()) {
     return $this->select('COUNT(*) as ' . $table . '_count')->from($table)->where($where)->fetch();
   }
@@ -446,7 +457,7 @@ class webkitQueryBuilder
    * @return int
    */
   public function count() {
-    return $this->_count;;
+    return $this->_count;
   }
 
   /**

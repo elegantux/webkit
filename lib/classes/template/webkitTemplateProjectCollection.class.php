@@ -107,6 +107,24 @@ class webkitTemplateProjectCollection
     return $data[0];
   }
 
+  /**
+   * @return mixed
+   * @throws waDbException
+   */
+  public function getRecentTemplates()
+  {
+    $data = (new webkitQueryBuilder())
+      ->select("wt.*, {$this->wtp_fields}")
+      ->from("{$this->template_table} wt")
+      ->join("{$this->template_project_table} wtp", 'wt.id = wtp.template_id')
+      ->order('update_datetime', 'DESC')
+      ->limit(10)
+      ->fetch()
+      ->results();
+
+    return $data;
+  }
+
   public function countAllByProjectId($project_id)
   {
     $total_templates_key = 'total_count';

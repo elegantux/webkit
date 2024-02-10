@@ -52,16 +52,7 @@ import {
   ATFStepperState,
   ATFTemplateLocationPayload,
 } from '@app/dashboard/template/components/add-project-template-flow/models';
-
-const TEMPLATE_LOCATION_NAME_MAP: Record<string, string> = {
-  header: 'Header',
-  footer: 'Footer',
-  page: 'Info Page',
-  blog_post: 'Post',
-  blog_archive: 'Archive',
-  blog_search: 'Search',
-  blog_empty: 'Empty Blog',
-};
+import { TEMPLATE_LOCATION_NAME_MAP } from '@app/dashboard/lib/constants';
 
 const stepList = [
   { title: 'Location', description: 'Template Location' },

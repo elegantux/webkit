@@ -1,20 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-  Box,
-  Container,
-  Flex,
-  Heading,
-  IconButton,
-  Spacer,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Container, Flex, Heading, IconButton, Spacer, useToast } from '@chakra-ui/react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import { Swiper as ISwiper } from 'swiper';
 import { Navigation, Scrollbar } from 'swiper/modules';
@@ -24,16 +9,20 @@ import { AxiosError } from 'axios';
 // Import Swiper styles
 import 'swiper/css';
 
-import { useProjectList } from '@lib/state';
 import { PageHeading } from '@app/dashboard/components/PageComponents';
 import { ProjectCard } from '@app/dashboard/project/components/ProjectCard';
 import { Project } from '@lib/models/project';
 import { api } from '@lib/api';
 import { ProjectListEmptyState } from '@app/dashboard/project/components/ProjectListEmptyState';
-import { SliderSkeleton } from '@ui/atomic/molecules';
+import { SliderSkeleton, TableSkeleton } from '@ui/atomic/molecules';
 import { getInfoToastObject } from '@lib/utils';
+import { Template } from '@lib/models/template';
+import { TemplateListTable } from '@app/dashboard/template/components/TemplateListTable';
+import { RecentTemplateListEmptyState } from '@app/dashboard/template/components/TemplateListEmptyState';
 
-function LastProjectListSlider() {
+const FETCH_DELAY = 500;
+
+function RecentProjectListSlider() {
   const [swiper, setSwiper] = useState<ISwiper>();
   const [projectList, setProjectList] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -49,7 +38,7 @@ function LastProjectListSlider() {
 
       if (makeDelay) {
         await new Promise((r) => {
-          setTimeout(r, 1000);
+          setTimeout(r, FETCH_DELAY);
         });
       }
       setProjectList(response.data);
@@ -85,7 +74,7 @@ function LastProjectListSlider() {
               size="md"
               mb={0}
             >
-              Last Projects
+              Recent Projects
             </Heading>
             <Flex>
               <IconButton
@@ -135,72 +124,66 @@ function LastProjectListSlider() {
   );
 }
 
-function LastTemplateListTable() {
-  const { projectList } = useProjectList();
+function RecentTemplateListTable() {
+  const [templateList, setTemplateList] = useState<Template[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const toast = useToast();
+
+  const loadRecentTemplateList = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await api.template.getRecentTemplateList();
+
+      const makeDelay = response.data.length > 0;
+
+      if (makeDelay) {
+        await new Promise((r) => {
+          setTimeout(r, FETCH_DELAY);
+        });
+      }
+      setTemplateList(response.data);
+    } catch (error: AxiosError | any) {
+      const responseErrorMessage = error?.response?.data?.errors?.message ?? 'Something went wrong!';
+      toast({
+        title: responseErrorMessage,
+        status: 'error',
+      });
+      toast(getInfoToastObject());
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadRecentTemplateList();
+  }, []);
 
   return (
     <>
-      <Flex
-        justify="space-between"
-        align="center"
-        mb="24px"
-      >
-        <Heading
-          as="h4"
-          size="md"
-          mb={0}
-        >
-          Last Templates
-        </Heading>
-      </Flex>
-      <TableContainer
-        border="1px solid"
-        borderColor="grey.200"
-        _dark={{ borderColor: 'grey.700' }}
-        borderRadius="lg"
-      >
-        <Table variant="simple">
-          {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
-          <Thead>
-            <Tr>
-              <Th>Name</Th>
-              <Th>Created By</Th>
-              <Th isNumeric>Created At</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {projectList.map((project) => (
-              <Tr
-                key={project.id}
-                cursor="pointer"
-                onClick={() => alert(project.id)}
-              >
-                <Td>{project.name}</Td>
-                <Td>{project.app_id}</Td>
-                <Td textAlign="right">{project.create_datetime}</Td>
-              </Tr>
-            ))}
-            {/* <Tr */}
-            {/*  cursor="pointer" */}
-            {/*  onClick={() => alert('hey')} */}
-            {/* > */}
-            {/*  <Td>inches</Td> */}
-            {/*  <Td>millimetres (mm)</Td> */}
-            {/*  <Td isNumeric>25.4</Td> */}
-            {/* </Tr> */}
-            {/* <Tr> */}
-            {/*  <Td>feet</Td> */}
-            {/*  <Td>centimetres (cm)</Td> */}
-            {/*  <Td isNumeric>30.48</Td> */}
-            {/* </Tr> */}
-            {/* <Tr> */}
-            {/*  <Td>yards</Td> */}
-            {/*  <Td>metres (m)</Td> */}
-            {/*  <Td isNumeric>0.91444</Td> */}
-            {/* </Tr> */}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      {isLoading && <TableSkeleton />}
+      {!isLoading && templateList.length === 0 && <RecentTemplateListEmptyState alignItems="center" />}
+      {!isLoading && templateList.length > 0 && (
+        <>
+          <Flex
+            justify="space-between"
+            align="center"
+            mb="24px"
+          >
+            <Heading
+              as="h4"
+              size="md"
+              mb={0}
+            >
+              Recent Templates
+            </Heading>
+          </Flex>
+          <TemplateListTable
+            templateList={templateList}
+            showActions={false}
+          />
+        </>
+      )}
     </>
   );
 }
@@ -212,9 +195,9 @@ export function Dashboard() {
       padding="3rem 5rem"
     >
       <PageHeading>Dashboard</PageHeading>
-      <LastProjectListSlider />
+      <RecentProjectListSlider />
       <Spacer height="62px" />
-      <LastTemplateListTable />
+      <RecentTemplateListTable />
     </Container>
   );
 }
