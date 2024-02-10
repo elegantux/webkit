@@ -8,14 +8,7 @@ class webkitBlogPlugin extends webkitEditorPlugin {
    */
   public function dependencies($params)
   {
-    return array(
-//      'styles' => [
-//        ['href' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css', 'rel' => 'stylesheet']
-//      ],
-//      'scripts' => [
-//        ['src' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js'],
-//      ],
-    );
+    return array();
   }
 
   public function frontendHead($params)
