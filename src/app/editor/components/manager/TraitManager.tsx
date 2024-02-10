@@ -4,8 +4,10 @@ import {
   Button,
   ButtonGroup,
   Checkbox,
+  Flex,
   Grid,
   GridItem,
+  Heading,
   IconButton,
   NumberDecrementStepper,
   NumberIncrementStepper,
@@ -627,26 +629,43 @@ export function TraitManager() {
   }, []);
 
   return (
-    <Grid
-      templateColumns="repeat(2, 1fr)"
-      gap={3}
-      p="16px"
-    >
-      <h1>{traitList?.length}</h1>
-      {traitList?.map((trait) => (
-        <GridItem
-          key={trait.getId()}
-          colSpan={trait.get('colSpan') ?? 2}
+    <>
+      {traitList?.length === 0 && (
+        <Flex
+          direction="column"
+          alignItems="center"
+          py="36px"
+          px="16px"
         >
-          {trait.getType() === TRAIT_TYPES.TEXT && <InputTrait trait={trait} />}
-          {trait.getType() === TRAIT_TYPES.NUMBER && <NumberTrait trait={trait} />}
-          {trait.getType() === TRAIT_TYPES.TEXTAREA && <TextareaTrait trait={trait} />}
-          {trait.getType() === TRAIT_TYPES.CHECKBOX && <CheckboxTrait trait={trait} />}
-          {trait.getType() === TRAIT_TYPES.SELECT && <SelectTrait trait={trait} />}
-          {trait.getType() === TRAIT_TYPES.BUTTON_GROUP && <ButtonGroupTrait trait={trait} />}
-          {trait.getType() === TRAIT_TYPES.COLOR && <ColorTrait trait={trait} />}
-        </GridItem>
-      ))}
-    </Grid>
+          <Heading
+            size="md"
+            textAlign="center"
+          >
+            There are no settings for this component
+          </Heading>
+          <Text fontSize="42px">🤷</Text>
+        </Flex>
+      )}
+      <Grid
+        templateColumns="repeat(2, 1fr)"
+        gap={3}
+        p="16px"
+      >
+        {traitList?.map((trait) => (
+          <GridItem
+            key={trait.getId()}
+            colSpan={trait.get('colSpan') ?? 2}
+          >
+            {trait.getType() === TRAIT_TYPES.TEXT && <InputTrait trait={trait} />}
+            {trait.getType() === TRAIT_TYPES.NUMBER && <NumberTrait trait={trait} />}
+            {trait.getType() === TRAIT_TYPES.TEXTAREA && <TextareaTrait trait={trait} />}
+            {trait.getType() === TRAIT_TYPES.CHECKBOX && <CheckboxTrait trait={trait} />}
+            {trait.getType() === TRAIT_TYPES.SELECT && <SelectTrait trait={trait} />}
+            {trait.getType() === TRAIT_TYPES.BUTTON_GROUP && <ButtonGroupTrait trait={trait} />}
+            {trait.getType() === TRAIT_TYPES.COLOR && <ColorTrait trait={trait} />}
+          </GridItem>
+        ))}
+      </Grid>
+    </>
   );
 }
