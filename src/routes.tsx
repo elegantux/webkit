@@ -6,6 +6,7 @@ import { Dashboard } from '@app/dashboard/Dashboard';
 import { ProjectListPage } from '@app/dashboard/project/ProjectListPage';
 import { ProjectPage } from '@app/dashboard/project/ProjectPage';
 import { Editor } from '@app/editor/Editor';
+import { SettingsPage } from '@app/dashboard/settings/SettingsPage';
 
 const rootRoute = createRootRoute({
   component: Root,
@@ -41,9 +42,15 @@ const projectRoute = createRoute({
   component: ProjectPage,
 });
 
+const settingsRoute = createRoute({
+  getParentRoute: () => dashboardLayout,
+  path: 'app/dashboard/settings',
+  component: SettingsPage,
+});
+
 const routeTree = rootRoute.addChildren([
   editorRoute,
-  dashboardLayout.addChildren([dashboardRoute, projectListRoute, projectRoute]),
+  dashboardLayout.addChildren([dashboardRoute, projectListRoute, projectRoute, settingsRoute]),
 ]);
 
-export { routeTree, rootRoute, editorRoute, dashboardRoute, projectListRoute, projectRoute };
+export { routeTree, rootRoute, editorRoute, dashboardRoute, projectListRoute, projectRoute, settingsRoute };

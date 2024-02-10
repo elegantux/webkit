@@ -3,7 +3,7 @@ import { FaHouse, FaList, FaScrewdriverWrench } from 'react-icons/fa6';
 import { PropsWithChildren } from 'react';
 import { LinkProps, Link as RouterLink } from '@tanstack/react-router';
 
-import { dashboardRoute, projectListRoute } from '../../routes';
+import { dashboardRoute, projectListRoute, settingsRoute } from '../../routes';
 import { CreateProjectButton } from '@app/dashboard/project/components/CreateProjectButton';
 
 function SidebarLink(props: PropsWithChildren<ChakraProps & LinkProps>) {
@@ -92,7 +92,7 @@ export function DashboardSidebar() {
         mt="auto"
       >
         <SidebarLink
-          to={dashboardRoute.to}
+          to={settingsRoute.to}
           params={{}}
         >
           <FaScrewdriverWrench size={18} />
