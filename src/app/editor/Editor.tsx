@@ -99,7 +99,6 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     blockManager: { custom: true },
     traitManager: { custom: true },
     selectorManager: {
-      // appendTo: `#${SELECTORS.SELECTOR_MANAGER_ID}`,
       componentFirst: true,
       custom: true,
     },
