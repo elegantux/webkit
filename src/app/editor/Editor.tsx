@@ -98,6 +98,10 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     styleManager: styleManagerConfig,
     blockManager: { custom: true },
     traitManager: { custom: true },
+    selectorManager: {
+      componentFirst: true,
+      custom: true,
+    },
     panels: {
       defaults: [],
     },

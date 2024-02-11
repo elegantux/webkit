@@ -56,11 +56,13 @@ export const getPropertyInitialValue = (property: ExtendedProperty) => (property
 export const InputProperty = memo(
   ({
     value,
+    placeholder = '',
     units,
     options,
     onChange,
   }: {
     value: string;
+    placeholder?: string;
     units?: string[];
     options?: SelectOptionProps[] | null;
     onChange: (v: string) => void;
@@ -187,6 +189,7 @@ export const InputProperty = memo(
           type="text"
           textAlign="left"
           variant="filled"
+          placeholder={placeholder}
           value={inputValue}
           onChange={handleInputChange}
           isInvalid={isInvalid}

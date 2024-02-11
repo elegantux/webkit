@@ -25,6 +25,7 @@ import { TraitManager } from '@app/editor/components/manager/TraitManager';
 import { BlockManager } from '@app/editor/components/manager/BlockManager';
 import { StyleManager } from '@app/editor/components/style-manager/StyleManager';
 import { EDITOR_STORE, useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
+import { SelectorManager } from '@app/editor/components/manager/SelectorManager';
 
 export function Sidebar() {
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -98,6 +99,7 @@ export function Sidebar() {
           </TabList>
           <TabPanels>
             <TabPanel p={0}>
+              <SelectorManager />
               <StyleManager />
             </TabPanel>
             <TabPanel p={0}>
