@@ -47,6 +47,7 @@ function InputTrait({ trait }: { trait: Trait }) {
   const traitName = trait.getName();
   const traitLabel = trait.getLabel();
   const traitDefaultValue = trait.getDefault() ?? '';
+  const traitPlaceholder = trait.attributes?.placeholder ?? '';
   const traitOptions = trait
     .getOptions()
     // The trait option type in GrapesJS has "id" and "label" keys, but we use the "value" key instead of "id".
@@ -107,6 +108,7 @@ function InputTrait({ trait }: { trait: Trait }) {
       />
       <InputProperty
         value={value}
+        placeholder={traitPlaceholder}
         options={traitOptions}
         onChange={handleInputChange}
       />

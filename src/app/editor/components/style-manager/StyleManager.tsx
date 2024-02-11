@@ -42,6 +42,9 @@ function StyleSector({ sector }: { sector: Sector }) {
         userSelect="none"
         bgColor="var(--chakra-colors-chakra-body-bg)"
         zIndex={1}
+        _hover={{
+          bgColor: 'var(--chakra-colors-chakra-body-bg)',
+        }}
       >
         <Heading
           as="span"
