@@ -8,7 +8,11 @@ class webkitBasicPlugin extends webkitEditorPlugin {
    */
   public function dependencies($params)
   {
-    return array();
+    return array(
+      'styles' => [
+        ['href' => $this->getPluginStaticUrl() . 'css/fontawesome/all.min.css' . '?v=' . $this->getVersion(), 'rel' => 'stylesheet'],
+      ],
+    );
   }
 
   public function frontendHead($params)
@@ -32,6 +36,7 @@ class webkitBasicPlugin extends webkitEditorPlugin {
         ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.heading.js' . '?v=' . $this->getVersion()],
         ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.text.js' . '?v=' . $this->getVersion()],
         ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.button.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.icon.js' . '?v=' . $this->getVersion()],
       ],
     );
   }

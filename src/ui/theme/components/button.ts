@@ -70,7 +70,7 @@ function overrideWebasystButton(props: StyleFunctionProps) {
       },
     },
     _active: {
-      top: 0,
+      top: 'unset',
     },
     _disabled: {
       ...disabled,

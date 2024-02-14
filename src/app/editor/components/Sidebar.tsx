@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react';
 import { FaComputerMouse as ComputerMouseIcon, FaCirclePlus } from 'react-icons/fa6';
 import { Component } from 'grapesjs';
 
-import { TraitManager } from '@app/editor/components/manager/TraitManager';
+import { TraitManager } from '@app/editor/components/trait-manager/TraitManager';
 import { BlockManager } from '@app/editor/components/manager/BlockManager';
 import { StyleManager } from '@app/editor/components/style-manager/StyleManager';
 import { EDITOR_STORE, useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
