@@ -51,7 +51,7 @@
             target: '_self',
           },
           tagName: 'a',
-          droppable: `[${DATA_KEY}=basic_text]`,
+          droppable: `[${DATA_KEY}=basic_text], [${DATA_KEY}=basic_icon]`,
           style: {
             'display': 'inline-block',
             'padding-left': '24px',

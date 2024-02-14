@@ -6,6 +6,7 @@ export interface IModal extends UseDisclosureProps {
   title?: string | ReactNode;
   titleFontSize?: string;
   minWidth?: string;
+  scrollBehavior?: 'inside' | 'outside';
   primaryButtonLabel?: string | ReactNode;
   secondaryButtonLabel?: string | ReactNode;
   tertiaryButtonLabel?: string | ReactNode;

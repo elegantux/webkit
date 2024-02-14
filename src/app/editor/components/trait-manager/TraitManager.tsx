@@ -38,6 +38,7 @@ import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
 import { EDITOR_COMMANDS, TRAIT_TYPES } from '@app/editor/lib/constant';
 import { hexOpacity } from '@ui/theme/utils';
 import { ColorPicker } from '@app/editor/components/style-manager/components/ColorPropertyType';
+import { IconTrait } from '@app/editor/components/trait-manager/IconTrait';
 
 function InputTrait({ trait }: { trait: Trait }) {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
@@ -656,6 +657,7 @@ export function TraitManager() {
         {traitList?.map((trait) => (
           <GridItem
             key={trait.getId()}
+            // @ts-ignore
             colSpan={trait.get('colSpan') ?? 2}
           >
             {trait.getType() === TRAIT_TYPES.TEXT && <InputTrait trait={trait} />}
@@ -665,6 +667,7 @@ export function TraitManager() {
             {trait.getType() === TRAIT_TYPES.SELECT && <SelectTrait trait={trait} />}
             {trait.getType() === TRAIT_TYPES.BUTTON_GROUP && <ButtonGroupTrait trait={trait} />}
             {trait.getType() === TRAIT_TYPES.COLOR && <ColorTrait trait={trait} />}
+            {trait.getType() === TRAIT_TYPES.ICON && <IconTrait trait={trait} />}
           </GridItem>
         ))}
       </Grid>

@@ -112,7 +112,7 @@ trait webkitFrontend
       if (count($dependency) > 0) {
         if (count($dependency['styles']) > 0) {
           foreach ($dependency['styles'] as $dep) {
-            $head_style_links[] = $html_parser->tagToHtml('style', $dep);
+            $head_style_links[] = $html_parser->tagToHtml('link', $dep);
           }
         }
         if (count($dependency['scripts']) > 0) {
@@ -126,12 +126,12 @@ trait webkitFrontend
     $head_style_links = array_unique($head_style_links);
     $head_script_links = array_unique($head_script_links);
 
-    $result_head = '<!-- WebKit Head -->';
+    $result_head = '<!-- [WebKit] Head - Start -->';
     $result_head_styles = join('', $head_style_links) . $child_head_inline_styles . $parents_head_inline_styles;
     $result_head_scripts = join('', $head_script_links) . $child_head_inline_scripts . $parents_head_inline_scripts;
     $result_head .= $result_head_styles;
     $result_head .= $result_head_scripts;
-    $result_head .= '<!-- WebKit Head -->';
+    $result_head .= '<!-- [WebKit] Head - End -->';
     return $result_head;
   }
 

@@ -12,4 +12,5 @@ export const TRAIT_TYPES = {
   SELECT: 'select',
   BUTTON_GROUP: 'button_group',
   COLOR: 'color',
+  ICON: 'icon',
 };
