@@ -7,6 +7,7 @@ import { CreateTemplatePayload, Template, TemplateProject, UpdateTemplatePayload
 import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models/project';
 import { createFormData } from '@lib/utils';
 import { WebasystApp } from '@lib/models/cross-app';
+import { ImageAsset } from '@lib/models/asset';
 
 const template = {
   async getTemplate(templateId: Template['id']) {
@@ -237,4 +238,59 @@ const project = {
   },
 };
 
-export const api = { template, project, crossApp };
+const assets = {
+  async getImageList() {
+    const params = {
+      module: 'assetImageList',
+    };
+
+    const { data, status } = await axios.get<Response<ImageAsset[]>>(`${HOST}${WA_APP_URL}`, {
+      headers: {},
+      params,
+    });
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
+  async addImage(file: File) {
+    const params = {
+      module: 'assetImageAdd',
+    };
+
+    const formData = createFormData();
+    formData.append('image', file);
+
+    const { data, status } = await axios.post<Response<ImageAsset>>(`${HOST}${WA_APP_URL}`, formData, {
+      params,
+    });
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
+  async deleteImage(id: ImageAsset['id']) {
+    const params = {
+      module: 'assetImageDelete',
+      id,
+    };
+
+    const formData = createFormData();
+
+    const { data, status } = await axios.post<Response<boolean>>(`${HOST}${WA_APP_URL}`, formData, {
+      params,
+    });
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
+};
+
+export const api = { template, project, crossApp, assets };

@@ -217,7 +217,7 @@ function IconList() {
   );
 }
 
-export function IconTraitContent({ trait }: { trait: Trait }) {
+function IconTraitContent({ trait }: { trait: Trait }) {
   const [value, setValue] = useState<string | undefined>(trait.getValue());
 
   const theme = useTheme();
@@ -252,8 +252,10 @@ export function IconTraitContent({ trait }: { trait: Trait }) {
   };
 
   const handleClearButton = () => {
-    updateTraitValue();
+    component?.set(traitName, traitDefaultValue);
+    trait.setValue(traitDefaultValue);
     setValue(traitDefaultValue);
+    setActiveIcon(undefined);
   };
 
   const updatePropertyStyles = () => {
@@ -268,9 +270,13 @@ export function IconTraitContent({ trait }: { trait: Trait }) {
   // 3. removed
   useEffect(() => {
     editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updatePropertyStyles);
+    editor.on('undo', updatePropertyStyles);
+    editor.on('redo', updatePropertyStyles);
 
     return () => {
       editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updatePropertyStyles);
+      editor.off('undo', updatePropertyStyles);
+      editor.off('redo', updatePropertyStyles);
     };
   }, [editor]);
 

@@ -54,6 +54,7 @@
           droppable: `[${DATA_KEY}=basic_text], [${DATA_KEY}=basic_icon]`,
           style: {
             'display': 'inline-block',
+            'width': 'max-content',
             'padding-left': '24px',
             'padding-right': '24px',
             'padding-top': '18px',

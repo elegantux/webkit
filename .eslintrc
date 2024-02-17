@@ -5,7 +5,7 @@
     "es2021": true
   },
   // Ignore plugins scripts
-  "ignorePatterns": ["**/plugins/*.js"],
+  "ignorePatterns": ["**/plugins/**/*.js"],
   "extends": [
     "airbnb",
     "airbnb-typescript",
