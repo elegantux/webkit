@@ -40,14 +40,6 @@
           ],
         },
       },
-      view: {
-        init({ model }) {
-          this.listenTo(model, 'change:attributes:src', this.handleSrcChange);
-        },
-        handleSrcChange() {
-
-        }
-      },
     };
 
     const block = {
