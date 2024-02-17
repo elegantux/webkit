@@ -62,4 +62,18 @@ return array(
       'theme_id' => 'theme_id',
     ),
   ),
+
+  'webkit_assets' => array(
+    'id'                => array('int', 11, 'null' => 0, 'autoincrement' => 1),
+    'type'              => array('varchar', 255, 'null' => 0),
+    'original_filename' => array('varchar', 255, 'null' => 0),
+    'ext'               => array('varchar', 255, 'null' => 0),
+    'file_size'         => array('varchar', 255, 'null' => 0),
+    'full_path'         => array('text', 'null' => 0),
+
+    'uploaded_datetime' => array('datetime', 'null' => 0),
+    ':keys'             => array(
+      'PRIMARY' => 'id',
+    ),
+  ),
 );

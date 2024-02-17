@@ -14,6 +14,7 @@ import { api } from '@lib/api';
 import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models/project';
 import { getNextPageParam } from '@lib/utils/state-utils';
 import { WebasystApp } from '@lib/models/cross-app';
+import { ImageAsset } from '@lib/models/asset';
 
 // Constants
 export const STATE_TYPES = {
@@ -23,6 +24,7 @@ export const STATE_TYPES = {
   PROJECT: 'project',
   PROJECT_LIST: 'project_list',
   WEBASYST_APP_LIST: 'webasyst_app_list',
+  IMAGE_ASSET_LIST: 'image_asset_list',
 };
 
 const sharedTemplateMethods = (queryKey: any[]) => {
@@ -269,5 +271,40 @@ export const useProjectListValidity = () => {
 
   return {
     invalidProjects,
+  };
+};
+
+export const useImageAssetList = () => {
+  const queryClient = useQueryClient();
+
+  const getImageList = () => api.assets.getImageList();
+  const { data } = useSuspenseQuery<Response<ImageAsset[]>>({
+    queryKey: [STATE_TYPES.IMAGE_ASSET_LIST],
+    queryFn: getImageList,
+    notifyOnChangeProps: ['data', 'error'],
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+  });
+
+  const addImage = (file: File) => api.assets.addImage(file);
+  const { mutateAsync: mutateAddImage } = useMutation({
+    mutationFn: addImage,
+    onSettled: async () => {
+      return queryClient.invalidateQueries({ queryKey: [STATE_TYPES.IMAGE_ASSET_LIST] });
+    },
+  });
+
+  const deleteImage = (id: ImageAsset['id']) => api.assets.deleteImage(id);
+  const { mutateAsync: mutateDeleteImage } = useMutation({
+    mutationFn: deleteImage,
+    onSettled: async () => {
+      return queryClient.invalidateQueries({ queryKey: [STATE_TYPES.IMAGE_ASSET_LIST] });
+    },
+  });
+
+  return {
+    imageList: data?.data ?? [],
+    addImage: mutateAddImage,
+    deleteImage: mutateDeleteImage,
   };
 };

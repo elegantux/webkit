@@ -33,6 +33,37 @@ trait webkitUrl
     return wa(webkitConst::APP_ID)->getAppStaticUrl(webkitConst::APP_ID) . $path;
   }
 
+  /**
+   * @param $path
+   * @return string
+   * @throws waException
+   */
+  public static function getPublicPath($path)
+  {
+    return wa(webkitConst::APP_ID)->getDataPath($path, true);
+  }
+
+  /**
+   * @param $path
+   * @param $absolute
+   * @return string
+   * @throws waException
+   */
+  public static function getPublicUrl($path, $absolute = false)
+  {
+    return wa(webkitConst::APP_ID)->getDataUrl($path, true, null, $absolute);
+  }
+
+  /**
+   * @param $path
+   * @return string
+   * @throws waException
+   */
+  public static function getProtectedPath($path)
+  {
+    return wa(webkitConst::APP_ID)->getDataPath($path);
+  }
+
   public static function getBackendUrls()
   {
     $backend_api_url = webkitUrl::getBackendApiUrl();

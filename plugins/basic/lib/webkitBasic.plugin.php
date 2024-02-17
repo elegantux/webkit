@@ -32,11 +32,12 @@ class webkitBasicPlugin extends webkitEditorPlugin {
   {
     return array(
       'scripts' => [
-        ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.container.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.heading.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.text.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.button.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/plugins/basic.icon.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.container.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.heading.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.text.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.button.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.icon.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.image.js' . '?v=' . $this->getVersion()],
       ],
     );
   }

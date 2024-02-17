@@ -4,25 +4,6 @@ class webkitHtmlParser
 {
 
   /**
-   * Function to convert array of style links to HTML
-   * @param array $array array(
-   *  ['href' => 'https://cdn.com/dependency.css', 'rel' => 'stylesheet'],
-   * );
-   * @return string HTML string
-   */
-  public function arrayToHtmlLink($array) {
-    $html = '';
-
-    if (!empty($array)) {
-      foreach ($array as $style) {
-        $html .= $this->tagToHtml('link', $style);
-      }
-    }
-
-    return $html;
-  }
-
-  /**
    * Function to convert array of script links to HTML
    * @param array $array array(
    *  ['src' => 'https://cdn.com/dependency.js']

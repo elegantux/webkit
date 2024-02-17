@@ -13,4 +13,5 @@ export const TRAIT_TYPES = {
   BUTTON_GROUP: 'button_group',
   COLOR: 'color',
   ICON: 'icon',
+  IMAGE: 'image',
 };
