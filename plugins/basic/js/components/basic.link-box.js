@@ -33,7 +33,7 @@
           traits: [
             {
               type: 'text',
-              label: 'Link URL',
+              label: 'Box URL',
               name: 'href',
             },
             {
