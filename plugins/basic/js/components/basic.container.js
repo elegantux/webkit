@@ -21,7 +21,7 @@
       id: COMPONENT_TYPE,
       label: COMPONENT_NAME,
       category: CATEGORY,
-      icon: `<svg width="100%" height="52px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      icon: `<svg width="100%" height="42px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="0.5" y="4.5" width="23" height="15" rx="1.5" stroke="currentColor"/>
     <path d="M3 7H4" stroke="currentColor" stroke-linecap="round"/>
     <path d="M3 17H4" stroke="currentColor" stroke-linecap="round"/>

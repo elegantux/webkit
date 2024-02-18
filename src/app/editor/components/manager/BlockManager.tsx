@@ -13,12 +13,14 @@ import {
   GridItem,
   Heading,
   Image,
-  Stack,
   Text,
+  useColorModeValue,
+  useTheme,
 } from '@chakra-ui/react';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { ExtendedBlock } from '@lib/models/grapesjs-extended';
+import { hexOpacity } from '@ui/theme/utils';
 
 interface Section {
   category: string;
@@ -66,6 +68,11 @@ function BlockCard({ block }: { block: Block }) {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
   const blockMedia = getBlockMedia(block);
 
+  const theme = useTheme();
+  const color = useColorModeValue('ebony.500', 'grey.100');
+  const bgColor = useColorModeValue(hexOpacity(theme.colors.grey[100], 0.6), hexOpacity(theme.colors.ebony[500], 0.8));
+  const bgHoverColor = useColorModeValue('grey.200', 'ebony.400');
+
   return (
     <GridItem
       onDragStart={() => editor.Blocks.startDrag(block)}
@@ -75,31 +82,37 @@ function BlockCard({ block }: { block: Block }) {
       minW={0}
       cursor="move"
     >
-      <Card height="100%">
+      <Card
+        height="100%"
+        borderRadius="4px"
+        boxShadow="none"
+        color={color}
+        bgColor={bgColor}
+        _hover={{ bgColor: bgHoverColor }}
+      >
         <CardBody
           px="12px"
           py="12px"
         >
           <Flex
             width="100%"
-            height="64px"
+            height="42px"
             justifyContent="center"
             alignItems="center"
           >
             {blockMedia}
           </Flex>
-          <Stack>
-            <Text
-              fontSize="sm"
-              overflow="hidden"
-              textOverflow="ellipsis"
-              whiteSpace="nowrap"
-              textAlign="center"
-            >
-              {block.getLabel()}
-            </Text>
-            {/* <Text>{block.get('description')}</Text> */}
-          </Stack>
+          <Text
+            mt="8px"
+            fontSize="13px"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+            textAlign="center"
+            letterSpacing="0.5px"
+          >
+            {block.getLabel()}
+          </Text>
         </CardBody>
       </Card>
     </GridItem>

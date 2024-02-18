@@ -421,7 +421,7 @@ function CheckboxTrait({ trait }: { trait: Trait }) {
         isChecked={value}
         onChange={handleChange}
       >
-        {traitText}
+        <Text fontSize="sm">{traitText}</Text>
       </Checkbox>
     </Box>
   );

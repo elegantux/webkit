@@ -423,31 +423,36 @@ function ImageTraitContent({ trait }: { trait: Trait }) {
       >
         {hasValue && (
           <Box
-            as="img"
             position="absolute"
             inset={0}
             m="auto"
-            fontSize="62px"
-            width="max-content"
-            height="100%"
-            objectFit="cover"
-            src={value}
-          />
+            width="full"
+            height="full"
+          >
+            <Image
+              width="max-content"
+              height="100%"
+              objectFit="contain"
+              mx="auto"
+              src={value}
+            />
+          </Box>
         )}
         <Button
           position="absolute"
           width="full"
-          bottom="-24px"
           top="unset"
+          bottom="0px"
           opacity={0}
+          transform="translateY(24px)"
           borderRadius={0}
-          transition="bottom 0.3s ease, opacity 0.3s ease"
+          transition="transform 0.3s ease, opacity 0.3s ease"
           _groupHover={{
-            bottom: '0px',
+            transform: 'translateY(0px)',
             opacity: 1,
           }}
-          _hover={{ top: 'unset', bottom: 0 }}
-          _active={{ top: 'unset', bottom: 0 }}
+          _hover={{ top: 'unset' }}
+          _active={{ top: 'unset' }}
         >
           Select Image
         </Button>

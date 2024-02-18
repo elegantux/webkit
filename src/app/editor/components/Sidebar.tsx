@@ -36,19 +36,24 @@ export function Sidebar() {
   const showTabs = !!selectedComponent && selectedComponent?.get('type') !== 'wrapper';
 
   const handleComponentChange = () => {
-    console.log('Sidebar -> handleComponentChange');
     setSelectedComponent(editor.getSelected());
+  };
+
+  const handleCloseBlockDrawerOnDrop = () => {
+    setTimeout(disclosure.onClose, 200);
   };
 
   useEffect(() => {
     editor.on('component:selected', handleComponentChange);
     editor.on('component:deselected', handleComponentChange);
     editor.on('component:remove', handleComponentChange);
+    editor.on('block:drag:stop', handleCloseBlockDrawerOnDrop);
 
     return () => {
       editor.off('component:selected', handleComponentChange);
       editor.off('component:deselected', handleComponentChange);
       editor.off('component:remove', handleComponentChange);
+      editor.off('block:drag:stop', handleCloseBlockDrawerOnDrop);
     };
   }, []);
 
