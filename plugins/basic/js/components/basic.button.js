@@ -126,7 +126,7 @@
       id: COMPONENT_TYPE,
       label: COMPONENT_NAME,
       category: CATEGORY,
-      icon: `<svg width="100%" height="62px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      icon: `<svg width="100%" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="2.5" y="4.5" width="19" height="9" rx="1.5" stroke="currentColor"/>
     <path d="M13.7765 12.9086L14.0467 18.8189L15.6192 16.8602L18.1304 16.9146L13.7765 12.9086Z" stroke="currentColor" stroke-width="0.546144" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M15.7 17.0334L16.854 19.5084" stroke="currentColor" stroke-width="0.546144" stroke-linecap="round" stroke-linejoin="round"/>

@@ -28,6 +28,7 @@
           tagName: "img",
           style: { 'width': '200px' },
           droppable: false,
+          resizable: true,
 
           // Traits
           traits: [
@@ -46,7 +47,7 @@
       id: COMPONENT_TYPE,
       label: COMPONENT_NAME,
       category: CATEGORY,
-      icon: `<svg width="100%" height="52px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      icon: `<svg width="100%" height="42px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clip-path="url(#clip0_1182_339)">
         <path d="M24 17.4348L17.0632 8.20318C16.6781 7.69073 15.8589 7.80798 15.6025 8.39547C14.7509 10.347 13.0032 13.6678 10.9318 13.7826C9.74349 13.8485 8.77314 12.7823 8.13102 11.7853C7.69869 11.114 6.65558 11.0031 6.19455 11.655L1 19" stroke="currentColor"/>
         <rect x="4.5" y="7.5" width="2" height="2" rx="1" stroke="currentColor"/>
