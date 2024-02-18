@@ -77,7 +77,6 @@
               type: 'text',
               label: 'Video ID',
               name: TRAITS.VIDEO_ID,
-              // default: '',
               changeProp: 1,
             },
             {

@@ -70,7 +70,6 @@ function BlockCard({ block }: { block: Block }) {
 
   const theme = useTheme();
   const color = useColorModeValue('ebony.500', 'grey.100');
-  // const bgColor = useColorModeValue(hexOpacity(theme.colors.grey[100], 0.5), 'ebony.500');
   const bgColor = useColorModeValue(hexOpacity(theme.colors.grey[100], 0.6), hexOpacity(theme.colors.ebony[500], 0.8));
   const bgHoverColor = useColorModeValue('grey.200', 'ebony.400');
 
