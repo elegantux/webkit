@@ -453,7 +453,6 @@
                         &copy; {time()|wa_datetime:"Y"}
                         <a href="{$wa_url}">{$wa->accountName()}</a>
                     </div>
-                    {include file="./footer.html" inline}
                 </div>
 
                 {if empty($theme_settings.footer_notice)}
@@ -533,5 +532,6 @@
             }
         })();
     </script>
+    {include file="./footer.html" inline}
 </body>
 </html>

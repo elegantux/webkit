@@ -11,6 +11,10 @@ class webkitBasicPlugin extends webkitEditorPlugin {
     return array(
       'styles' => [
         ['href' => $this->getPluginStaticUrl() . 'css/fontawesome/all.min.css' . '?v=' . $this->getVersion(), 'rel' => 'stylesheet'],
+        ['href' => 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', 'rel' => 'stylesheet'],
+      ],
+      'scripts' => [
+        ['src' => 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js']
       ],
     );
   }
@@ -41,6 +45,7 @@ class webkitBasicPlugin extends webkitEditorPlugin {
         ['src' => $this->getPluginStaticUrl() . 'js/components/basic.link-box.js' . '?v=' . $this->getVersion()],
         ['src' => $this->getPluginStaticUrl() . 'js/components/basic.link.js' . '?v=' . $this->getVersion()],
         ['src' => $this->getPluginStaticUrl() . 'js/components/basic.icon.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.slider.js' . '?v=' . $this->getVersion()],
       ],
     );
   }

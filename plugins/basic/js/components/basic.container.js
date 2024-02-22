@@ -13,6 +13,8 @@
           attributes: { [DATA_KEY]: COMPONENT_TYPE },
           style: { 'padding-top': '12px', 'padding-bottom': '12px' },
           resizable: true,
+
+          traits: [],
         },
       },
     };
