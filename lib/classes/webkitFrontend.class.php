@@ -18,7 +18,7 @@ trait webkitFrontend
     // wa_dumpc('$arg', $arg);
   }
 
-  public function frontHead($wa_active_theme_url)
+  public function frontendHead($wa_active_theme_url)
   {
     $html_parser = new webkitHtmlParser();
 
@@ -133,6 +133,32 @@ trait webkitFrontend
     $result_head .= $result_head_scripts;
     $result_head .= '<!-- [WebKit] Head - End -->';
     return $result_head;
+  }
+
+  public function frontendFooter($wa_active_theme_url) {
+    $html_parser = new webkitHtmlParser();
+
+    [$app_id, $theme_id] = $this->getThemeAndAppIds($wa_active_theme_url);
+
+    $templates = (new webkitProjectModel())->getTemplatesByAppAndThemeIds($app_id, $theme_id);
+
+    /**
+     * Collect inline scripts from templates
+     */
+    $parents_head_inline_scripts = '';
+    foreach ($templates as $template)
+    {
+      $front_scripts = $template['front_scripts'];
+
+      if (strlen($front_scripts)) {
+        $parents_head_inline_scripts .= $html_parser->tagToHtml('script', [], $front_scripts);
+      }
+    }
+
+    $result_html = '<!-- [WebKit] Footer - Start -->';
+    $result_html .= $parents_head_inline_scripts;
+    $result_html .= '<!-- [WebKit] Footer - End -->';
+    return $result_html;
   }
 
   /**

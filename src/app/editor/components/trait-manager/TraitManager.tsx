@@ -126,6 +126,11 @@ function NumberTrait({ trait }: { trait: Trait }) {
   const traitName = trait.getName();
   const traitLabel = trait.getLabel();
   const traitDefaultValue = trait.getDefault() ?? '';
+  const traitMinValue = trait.attributes?.min;
+  const traitMaxValue = trait.attributes?.max;
+  const traitStep = trait.attributes?.step;
+  // @ts-ignore
+  const traitDebounce = trait.get('debounce') ?? 0;
 
   const updateTraitValue = (v: string) => {
     component?.set(traitName, v);
@@ -135,12 +140,19 @@ function NumberTrait({ trait }: { trait: Trait }) {
   // Debounce updating the display color
   const debouncedUpdateTraitValue = useMemo(() => {
     if (component) {
-      return debounce(updateTraitValue, 500);
+      return debounce(updateTraitValue, traitDebounce);
     }
     return () => {};
   }, [component]);
 
   const handleInputChange = (v: string) => {
+    if (typeof traitMinValue !== 'undefined' && Number(v) < traitMinValue) {
+      return;
+    }
+    if (typeof traitMaxValue !== 'undefined' && Number(v) > traitMaxValue) {
+      return;
+    }
+
     debouncedUpdateTraitValue(v);
     setValue(v);
   };
@@ -178,8 +190,11 @@ function NumberTrait({ trait }: { trait: Trait }) {
       <NumberInput
         value={value}
         onChange={handleInputChange}
+        {...(traitMinValue ? { min: traitMinValue } : {})}
+        {...(traitMaxValue ? { max: traitMaxValue } : {})}
+        {...(traitStep ? { step: traitStep } : {})}
       >
-        <NumberInputField />
+        <NumberInputField value={value} />
         <NumberInputStepper>
           <NumberIncrementStepper />
           <NumberDecrementStepper />
@@ -192,7 +207,7 @@ function NumberTrait({ trait }: { trait: Trait }) {
 function ColorTrait({ trait }: { trait: Trait }) {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
   const [value, setValue] = useState<string>(trait.getValue());
-  const [displayColor, setDisplayColor] = useState<string>('');
+  const [displayColor, setDisplayColor] = useState<string>(value);
 
   const component = editor.getSelected();
   const traitName = trait.getName();
@@ -591,6 +606,31 @@ export function TraitManager() {
   const [traitList, setTraitList] = useState<Traits | undefined>(undefined);
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
 
+  const groupedTraitList: Record<string, Trait[]> = useMemo(() => {
+    if (!traitList || traitList.length === 0) {
+      return {};
+    }
+
+    const groups: Record<string, Trait[]> = {
+      default: [],
+    };
+    traitList?.forEach((trait) => {
+      // @ts-ignore
+      const group = trait.get('group');
+
+      if (group) {
+        if (groups[group]) {
+          groups[group].push(trait);
+        } else {
+          groups[group] = [trait];
+        }
+      } else {
+        groups.default.push(trait);
+      }
+    });
+    return groups;
+  }, [traitList]);
+
   const handleUpdateTraitList = () => {
     const selectedComponent = editor.getSelected();
 
@@ -650,29 +690,46 @@ export function TraitManager() {
           <Text fontSize="42px">🤷</Text>
         </Flex>
       )}
-      <Grid
-        templateColumns="repeat(2, 1fr)"
-        gap={3}
-        p="16px"
-      >
-        {traitList?.map((trait) => (
-          <GridItem
-            key={trait.getId()}
-            // @ts-ignore
-            colSpan={trait.get('colSpan') ?? 2}
+      {Object.keys(groupedTraitList).map((group: string) => (
+        <Box
+          key={group}
+          mb="14px"
+          py="16px"
+          bgColor="webasyst.backgroundColorBlank"
+        >
+          <Heading
+            px="16px"
+            size="sm"
+            fontWeight="600"
+            mb="0px"
           >
-            {trait.getType() === TRAIT_TYPES.TEXT && <InputTrait trait={trait} />}
-            {trait.getType() === TRAIT_TYPES.NUMBER && <NumberTrait trait={trait} />}
-            {trait.getType() === TRAIT_TYPES.TEXTAREA && <TextareaTrait trait={trait} />}
-            {trait.getType() === TRAIT_TYPES.CHECKBOX && <CheckboxTrait trait={trait} />}
-            {trait.getType() === TRAIT_TYPES.SELECT && <SelectTrait trait={trait} />}
-            {trait.getType() === TRAIT_TYPES.BUTTON_GROUP && <ButtonGroupTrait trait={trait} />}
-            {trait.getType() === TRAIT_TYPES.COLOR && <ColorTrait trait={trait} />}
-            {trait.getType() === TRAIT_TYPES.ICON && <IconTrait trait={trait} />}
-            {trait.getType() === TRAIT_TYPES.IMAGE && <ImageTrait trait={trait} />}
-          </GridItem>
-        ))}
-      </Grid>
+            {group === 'default' ? 'Common' : group}
+          </Heading>
+          <Grid
+            templateColumns="repeat(2, 1fr)"
+            gap={3}
+            p="16px"
+          >
+            {groupedTraitList[group]?.map((trait) => (
+              <GridItem
+                key={trait.getId()}
+                // @ts-ignore
+                colSpan={trait.get('colSpan') ?? 2}
+              >
+                {trait.getType() === TRAIT_TYPES.TEXT && <InputTrait trait={trait} />}
+                {trait.getType() === TRAIT_TYPES.NUMBER && <NumberTrait trait={trait} />}
+                {trait.getType() === TRAIT_TYPES.TEXTAREA && <TextareaTrait trait={trait} />}
+                {trait.getType() === TRAIT_TYPES.CHECKBOX && <CheckboxTrait trait={trait} />}
+                {trait.getType() === TRAIT_TYPES.SELECT && <SelectTrait trait={trait} />}
+                {trait.getType() === TRAIT_TYPES.BUTTON_GROUP && <ButtonGroupTrait trait={trait} />}
+                {trait.getType() === TRAIT_TYPES.COLOR && <ColorTrait trait={trait} />}
+                {trait.getType() === TRAIT_TYPES.ICON && <IconTrait trait={trait} />}
+                {trait.getType() === TRAIT_TYPES.IMAGE && <ImageTrait trait={trait} />}
+              </GridItem>
+            ))}
+          </Grid>
+        </Box>
+      ))}
     </>
   );
 }

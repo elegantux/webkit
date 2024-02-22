@@ -23,6 +23,7 @@
             'text-decoration': 'none',
           },
           droppable: true,
+          editable: false,
           components: [
             { type: 'basic_image' },
             { type: 'basic_heading', tagName: 'h4' },
