@@ -237,8 +237,11 @@
 
             var options = {
               slidesPerView: slidesPerView,
-              spaceBetween: spaceBetween,
             };
+
+            if (spaceBetween) {
+              options['spaceBetween'] = spaceBetween;
+            }
 
             if (shopNavigation) {
               options['navigation'] = {

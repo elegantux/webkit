@@ -46,6 +46,8 @@ class webkitBasicPlugin extends webkitEditorPlugin {
         ['src' => $this->getPluginStaticUrl() . 'js/components/basic.link.js' . '?v=' . $this->getVersion()],
         ['src' => $this->getPluginStaticUrl() . 'js/components/basic.icon.js' . '?v=' . $this->getVersion()],
         ['src' => $this->getPluginStaticUrl() . 'js/components/basic.slider.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.smarty.js' . '?v=' . $this->getVersion()],
+        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.html.js' . '?v=' . $this->getVersion()],
       ],
     );
   }

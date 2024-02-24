@@ -7,6 +7,16 @@
   {$wa_url}wa-content/js/jquery-wa/wa.js
 {/wa_js}
 
+<!-- ACE -->
+{* ACE *}
+<script type="text/javascript" src="{$wa_url}wa-content/js/ace/ace.js?v{$wa->version(true)}"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/elrte/elrte.min.js"></script>
+{if $lang!='en'}
+<script type="text/javascript" src="{$wa_url}wa-content/js/elrte/i18n/elrte.{$lang}.js"></script>
+{/if}
+<script type="text/javascript" src="{$wa_url}wa-content/js/elrte/elrte-wa.js"></script>
+<!-- ACE -->
+
 <!--
   // To be consistent and have the same settings object for all applications,
   // we need to have one place where we can configure this object.

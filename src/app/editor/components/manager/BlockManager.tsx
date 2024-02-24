@@ -134,7 +134,9 @@ function BlockSection({ section }: { section: Section }) {
         >
           <Heading
             as="span"
-            fontSize="md"
+            fontSize="sm"
+            fontWeight="500"
+            textTransform="uppercase"
           >
             {section.category}
           </Heading>
