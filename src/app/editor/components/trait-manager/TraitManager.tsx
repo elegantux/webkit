@@ -40,6 +40,7 @@ import { hexOpacity } from '@ui/theme/utils';
 import { ColorPicker } from '@app/editor/components/style-manager/components/ColorPropertyType';
 import { IconTrait } from '@app/editor/components/trait-manager/IconTrait';
 import { ImageTrait } from '@app/editor/components/trait-manager/ImageTrait';
+import { CodeEditorTrait } from '@app/editor/components/trait-manager/CodeEditorTrait';
 
 function InputTrait({ trait }: { trait: Trait }) {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
@@ -725,6 +726,7 @@ export function TraitManager() {
                 {trait.getType() === TRAIT_TYPES.COLOR && <ColorTrait trait={trait} />}
                 {trait.getType() === TRAIT_TYPES.ICON && <IconTrait trait={trait} />}
                 {trait.getType() === TRAIT_TYPES.IMAGE && <ImageTrait trait={trait} />}
+                {trait.getType() === TRAIT_TYPES.CODE_EDITOR && <CodeEditorTrait trait={trait} />}
               </GridItem>
             ))}
           </Grid>

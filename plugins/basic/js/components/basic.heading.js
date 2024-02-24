@@ -30,7 +30,6 @@
                 { value: 'h3', label: 'H3'},
                 { value: 'h4', label: 'H4'},
                 { value: 'h5', label: 'H5'},
-                { value: 'span', label: 'Span'},
               ],
             },
           ]

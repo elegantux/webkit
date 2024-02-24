@@ -14,4 +14,5 @@ export const TRAIT_TYPES = {
   COLOR: 'color',
   ICON: 'icon',
   IMAGE: 'image',
+  CODE_EDITOR: 'code_editor',
 };
