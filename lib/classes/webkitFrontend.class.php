@@ -22,7 +22,7 @@ trait webkitFrontend
   {
     $html_parser = new webkitHtmlParser();
 
-    [$app_id, $theme_id] = $this->getThemeAndAppIds($wa_active_theme_url);
+    [$app_id, $theme_id] = $this->parseThemeAndAppIds($wa_active_theme_url);
 
     $templates = (new webkitProjectModel())->getTemplatesByAppAndThemeIds($app_id, $theme_id);
 
@@ -32,7 +32,7 @@ trait webkitFrontend
      * Collect inline styles and scripts from parent templates
      */
     $child_template_ids = [];
-    $plugin_ids = [];
+    $component_types = [];
     $parents_head_inline_scripts = '';
     $parents_head_inline_styles = '';
     foreach ($templates as $template)
@@ -51,13 +51,13 @@ trait webkitFrontend
       if (strlen($template['child_templates']) && $ids = explode(',', $template['child_templates'])) {
         $child_template_ids = array_merge($ids, $child_template_ids);
       }
-      if (strlen($template['plugins']) && $ids = explode(',', $template['plugins'])) {
-        $plugin_ids = array_merge($ids, $plugin_ids);
+      if (strlen($template['component_types']) && $ids = explode(',', $template['component_types'])) {
+        $component_types = array_merge($ids, $component_types);
       }
     }
     // Removes duplicated ids
     $child_template_ids = array_unique($child_template_ids);
-    $plugin_ids = array_unique($plugin_ids);
+    $component_types = array_unique($component_types);
 
     /**
      * Get list of child templates
@@ -82,15 +82,15 @@ trait webkitFrontend
         $child_head_inline_styles .= $html_parser->tagToHtml('style', [], $front_styles);
       }
 
-      if (strlen($template['plugins']) && $ids = explode(',', $template['plugins'])) {
-        $plugin_ids = array_merge($ids, $plugin_ids);
+      if (strlen($template['component_types']) && $ids = explode(',', $template['component_types'])) {
+        $component_types = array_merge($ids, $component_types);
       }
     }
     // Removes duplicated ids
-    $plugin_ids = array_unique($plugin_ids);
+    $component_types = array_unique($component_types);
 
     $event_params = [
-      'plugin_ids' => $plugin_ids,
+      'component_types' => $component_types,
       'app_id' => $app_id,
       'theme_id' => $theme_id,
     ];
@@ -138,7 +138,7 @@ trait webkitFrontend
   public function frontendFooter($wa_active_theme_url) {
     $html_parser = new webkitHtmlParser();
 
-    [$app_id, $theme_id] = $this->getThemeAndAppIds($wa_active_theme_url);
+    [$app_id, $theme_id] = $this->parseThemeAndAppIds($wa_active_theme_url);
 
     $templates = (new webkitProjectModel())->getTemplatesByAppAndThemeIds($app_id, $theme_id);
 

@@ -7,8 +7,14 @@ class webkitViewDataProvider
    */
   public $blog;
 
+  /**
+   * @var webkitSiteDataProvider
+   */
+  public $site;
+
   public function __construct()
   {
+    $this->site = new webkitSiteDataProvider();
     $this->blog = new webkitBlogDataProvider();
   }
 

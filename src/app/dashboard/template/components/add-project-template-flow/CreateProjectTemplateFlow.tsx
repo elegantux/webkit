@@ -61,6 +61,15 @@ const stepList = [
   { title: 'Review', description: 'Create template' },
 ];
 
+const prepareTemplateImageUrl = (templateLocation: string, colorMode: string) => {
+  let templateImageFileName = `${templateLocation}-${colorMode}.svg`;
+
+  if (['header', 'footer', 'page'].find((item) => templateLocation.includes(item))) {
+    templateImageFileName = `${templateLocation.split('_')[1]}-${colorMode}.svg`;
+  }
+  return appPath(`/img/templates/${templateImageFileName}`);
+};
+
 function FromStepper({
   activeStep,
   steps,
@@ -177,7 +186,7 @@ function TemplateLocationStep({
             </Flex>
             <Box width="full">
               <Image
-                src={appPath(`/img/templates/${option.value}-${mode.colorMode}.svg`)}
+                src={prepareTemplateImageUrl(option.value as string, mode.colorMode)}
                 fallback={<Text>Image Not Found!</Text>}
                 borderRadius="lg"
                 boxShadow={`0 0 12px 4px ${boxShadowColor}`}
@@ -282,7 +291,7 @@ function BasicInfoStep({
           </Flex>
           <Box width="full">
             <Image
-              src={appPath(`/img/templates/${selectedOption.value}-${mode.colorMode}.svg`)}
+              src={prepareTemplateImageUrl(selectedOption.value as string, mode.colorMode)}
               fallback={<Text>Image Not Found!</Text>}
               borderRadius="lg"
               boxShadow={`0 0 12px 4px ${boxShadowColor}`}
@@ -423,7 +432,7 @@ function ReviewStep({
         </Flex>
         <Box width="full">
           <Image
-            src={appPath(`/img/templates/${selectedOption.value}-${mode.colorMode}.svg`)}
+            src={prepareTemplateImageUrl(selectedOption.value as string, mode.colorMode)}
             fallback={<Text>Image Not Found!</Text>}
             borderRadius="lg"
             boxShadow={`0 0 12px 4px ${boxShadowColor}`}

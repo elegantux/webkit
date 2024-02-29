@@ -1,6 +1,6 @@
 <?php
 
-class webkitBasicPluginDefaultActions extends waJsonActions
+class webkitBasicPluginDefaultActions extends webkitJsonActions
 {
 
   protected function preExecute()
@@ -15,6 +15,26 @@ class webkitBasicPluginDefaultActions extends waJsonActions
       ['value' => 1, 'label' => 'Blog 1'],
       ['value' => 2, 'label' => 'Blog 2'],
     ];
+  }
+
+  public function pageInfoAction()
+  {
+    try {
+
+      $component = new webkitBasicComponentPageInfo();
+
+      $this->response = [
+        'view' => $component->prepareView(),
+        'model' => $component->prepareModel(),
+      ];
+
+    } catch (webkitAPIException $exception) {
+
+      $this->setStatus($exception->getCode());
+
+      $this->errors = $exception->getPayload();
+
+    }
   }
 
 }

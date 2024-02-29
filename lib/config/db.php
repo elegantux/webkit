@@ -13,8 +13,7 @@ return array(
     'editor_components' => array('longtext', 'null' => 1),
     'editor_styles'     => array('mediumtext', 'null' => 1),
     'editor_assets'     => array('mediumtext', 'null' => 1),
-
-    'plugins'           => array('varchar', 255, 'null' => 0),
+    'component_types'   => array('mediumtext', 'null' => 1),
 
     'create_datetime'   => array('datetime', 'null' => 0),
     'update_datetime'   => array('datetime', 'null' => 0),

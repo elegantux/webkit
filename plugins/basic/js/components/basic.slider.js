@@ -19,6 +19,7 @@
             'padding-right': '24px',
             'padding-top': '24px',
             'padding-bottom': '24px',
+            'border-radius': '6px',
           },
           components: [
             { type: 'basic_image', style: { height: '200px', width: '100%', 'object-fit': 'cover' } },
@@ -41,15 +42,14 @@
     const COMPONENT_NAME = "Carousel Navigation";
 
     const component = {
-      extend: 'basic_icon',
       isComponent: (el) => el?.dataset?.[DATA_KEY] === COMPONENT_TYPE,
       model: {
         defaults: {
           name: COMPONENT_NAME,
           draggable: false,
+          copyable: false,
           attributes: {
             [DATA_KEY]: COMPONENT_TYPE,
-            class: 'fa-solid fa-caret-left fa-fw'
           },
           style: {
             position: 'absolute',
@@ -59,7 +59,9 @@
             'font-size': '34px',
             cursor: 'pointer',
           },
+          components: { type: 'basic_icon', class: 'fa-solid fa-caret-left fa-fw' },
 
+          traits: [],
           toolbar: [],
         },
       },
@@ -152,12 +154,14 @@
     const navigationComponents = [
       {
         type: 'basic_slider_navigation',
-        attributes: { 'data-wk-swiper-button-prev': 'swiper-button-prev', class: 'fa-solid fa-caret-left fa-fw' },
+        attributes: { 'data-wk-swiper-button-prev': 'swiper-button-prev' },
+        components: { type: 'basic_icon', attributes: { class: 'fa-solid fa-caret-left fa-fw' } },
         style: { ...navigationDefaults.style, left: '0px' },
       },
       {
         type: 'basic_slider_navigation',
-        attributes: { 'data-wk-swiper-button-next': 'swiper-button-next', class: 'fa-solid fa-caret-right fa-fw' },
+        attributes: { 'data-wk-swiper-button-next': 'swiper-button-next' },
+        components: { type: 'basic_icon', attributes: { class: 'fa-solid fa-caret-right fa-fw' } },
         style: { ...navigationDefaults.style, right: '0px' },
       }
     ];

@@ -24,7 +24,7 @@
       model: {
         defaults: {
           name: COMPONENT_NAME,
-          attributes: { [DATA_KEY]: COMPONENT_TYPE, src: '/wa-apps/webkit/plugins/basic/img/dummy-image.webp' },
+          attributes: { [DATA_KEY]: COMPONENT_TYPE, src: '/wa-apps/webkit/img/dummy-image.webp' },
           tagName: "img",
           style: { 'width': '200px' },
           droppable: false,
@@ -36,7 +36,7 @@
               type: 'image',
               label: 'Image',
               name: 'src',
-              default: '/wa-apps/webkit/plugins/basic/img/dummy-image.webp',
+              default: '/wa-apps/webkit/img/dummy-image.webp',
             },
           ],
         },

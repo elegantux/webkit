@@ -4,20 +4,6 @@ abstract class webkitEditorPlugin extends webkitPlugin
 {
 
   /**
-   * Plugin Script/Style dependencies. E.g. Tailwind.
-   * @param $params
-   * @return array array(
-   *  'styles' => [
-   *    ['href' => 'https://cdn.com/dependency.css', 'rel' => 'stylesheet'],
-   *  ],
-   *  'scripts' => [
-   *    ['src' => 'https://cdn.com/dependency.js']
-   *  ],
-   * );
-   */
-  abstract public function dependencies($params);
-
-  /**
    * Frontend Head Hook
    *
    * @event frontend_head
@@ -50,22 +36,19 @@ abstract class webkitEditorPlugin extends webkitPlugin
   public function frontendFooter($params) {}
 
   /**
-   * Hook - Should return Plugin Script/Style dependencies.
+   * Hook - Should return Plugin scripts
    *
-   * @event editor_canvas_head
+   * @event editor_page_head
    * @param array $params
    * @return array array(
-   * 'styles' => [
-   *    ['href' => 'https://cdn.com/dependency.css', 'rel' => 'stylesheet'],
-   *  ],
    *  'scripts' => [
-   *    ['src' => 'https://cdn.com/dependency.js']
+   *    ['src' => $this->getPluginStaticUrl() . 'js/plugins/post.title.js' . '?v=' . $this->getVersion()]
    *  ],
    * )
    */
-  public function pluginDependencies($params)
+  public function editorPageHead($params)
   {
-    return $this->dependencies($params);
+    return array();
   }
 
   /**
@@ -79,7 +62,7 @@ abstract class webkitEditorPlugin extends webkitPlugin
    *  ],
    * )
    */
-  public function pluginAssets($params)
+  public function editorCanvasHead($params)
   {
     return array();
   }
@@ -119,7 +102,12 @@ abstract class webkitEditorPlugin extends webkitPlugin
 
 
     // Replace traits in the file that are in the $traits
-    foreach($traits as $key => $value) {
+    foreach($traits as $key => $val) {
+      $value = is_int($val)
+        ? is_bool($val)
+          ? $val : '"'. $val . '"'
+        : '"'. $val . '"';
+
       // Replace all smarties first
       $content = str_replace('{$'. $key .'}', $value, $content);
 
