@@ -314,6 +314,8 @@ function TextareaTrait({ trait }: { trait: Trait }) {
   const traitName = trait.getName();
   const traitLabel = trait.getLabel();
   const traitDefaultValue = trait.getDefault() ?? '';
+  // @ts-ignore
+  const traitDescription: string | undefined = trait.get('description');
 
   const updateTraitValue = (v: string) => {
     component?.set(traitName, v);
@@ -371,6 +373,7 @@ function TextareaTrait({ trait }: { trait: Trait }) {
         value={value}
         onChange={handleInputChange}
       />
+      {traitDescription && <Box dangerouslySetInnerHTML={{ __html: traitDescription }} />}
     </Box>
   );
 }

@@ -1,55 +1,81 @@
 <?php
 
 class webkitBasicPlugin extends webkitEditorPlugin {
+  /**
+   * @var array Component types
+   */
+  private $component_types;
+
+  public function __construct($info)
+  {
+    parent::__construct($info);
+
+    $this->component_types = [
+      webkitBasicComponentContainer::$type,
+      webkitBasicComponentButton::$type,
+      webkitBasicComponentHeading::$type,
+      webkitBasicComponentText::$type,
+      webkitBasicComponentVideo::$type,
+      webkitBasicComponentImage::$type,
+      webkitBasicComponentLink::$type,
+      webkitBasicComponentLinkBox::$type,
+      webkitBasicComponentIcon::$type,
+      webkitBasicComponentSlider::$type,
+      webkitBasicComponentSmarty::$type,
+      webkitBasicComponentHtml::$type,
+      webkitBasicComponentPageInfo::$type,
+    ];
+
+    webkitComponentRegistry::register(webkitBasicComponentContainer::$type, 'webkitBasicComponentContainer');
+    webkitComponentRegistry::register(webkitBasicComponentButton::$type, 'webkitBasicComponentButton');
+    webkitComponentRegistry::register(webkitBasicComponentHeading::$type, 'webkitBasicComponentHeading');
+    webkitComponentRegistry::register(webkitBasicComponentText::$type, 'webkitBasicComponentText');
+    webkitComponentRegistry::register(webkitBasicComponentVideo::$type, 'webkitBasicComponentVideo');
+    webkitComponentRegistry::register(webkitBasicComponentImage::$type, 'webkitBasicComponentImage');
+    webkitComponentRegistry::register(webkitBasicComponentLink::$type, 'webkitBasicComponentLink');
+    webkitComponentRegistry::register(webkitBasicComponentLinkBox::$type, 'webkitBasicComponentLinkBox');
+    webkitComponentRegistry::register(webkitBasicComponentIcon::$type, 'webkitBasicComponentIcon');
+    webkitComponentRegistry::register(webkitBasicComponentSlider::$type, 'webkitBasicComponentSlider');
+    webkitComponentRegistry::register(webkitBasicComponentSmarty::$type, 'webkitBasicComponentSmarty');
+    webkitComponentRegistry::register(webkitBasicComponentHtml::$type, 'webkitBasicComponentHtml');
+    webkitComponentRegistry::register(webkitBasicComponentPageInfo::$type, 'webkitBasicComponentPageInfo');
+  }
 
   /**
-   * @param array $params
-   * @return array
+   * Hook
+   * @throws Exception
    */
-  public function dependencies($params)
-  {
-    return array(
-      'styles' => [
-        ['href' => $this->getPluginStaticUrl() . 'css/fontawesome/all.min.css' . '?v=' . $this->getVersion(), 'rel' => 'stylesheet'],
-        ['href' => $this->getPluginStaticUrl() . 'css/swiper/swiper-bundle.min.css' . '?v=' . $this->getVersion(), 'rel' => 'stylesheet'],
-      ],
-      'scripts' => [
-        ['src' => $this->getPluginStaticUrl() . 'js/swiper/swiper-bundle.min.js' . '?v=' . $this->getVersion()]
-      ],
-    );
-  }
-
   public function frontendHead($params)
   {
-    if (in_array($this->getId(), $params['plugin_ids'])) {
-      return $this->dependencies($params);
+    $component_types = $params['component_types'] ?? [];
+
+    $used_components = array_filter($component_types, function ($type) {
+      return in_array($type, $this->component_types);
+    });
+
+    if (empty($used_components)) {
+      return [];
     }
-    return [];
+
+    return webkitComponentFactory::getDependencySourcesByTypes($used_components, $params);
   }
 
-  public function pluginDependencies($params)
+  /**
+   * Hook
+   * @throws Exception
+   */
+  public function editorCanvasHead($params)
   {
-    return $this->dependencies($params);
+    return webkitComponentFactory::getDependencySourcesByTypes($this->component_types, $params);
   }
 
-  public function pluginAssets($params)
+  /**
+   * Hook
+   * @throws Exception
+   */
+  public function editorPageHead($params)
   {
-    return array(
-      'scripts' => [
-        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.container.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.button.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.heading.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.text.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.video.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.image.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.link-box.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.link.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.icon.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.slider.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.smarty.js' . '?v=' . $this->getVersion()],
-        ['src' => $this->getPluginStaticUrl() . 'js/components/basic.html.js' . '?v=' . $this->getVersion()],
-      ],
-    );
+    return webkitComponentFactory::getSourcesByTypes($this->component_types, $params);
   }
 
 }

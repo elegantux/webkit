@@ -416,6 +416,9 @@ function ImageTraitContent({ trait }: { trait: Trait }) {
         bgSize="12px 12px"
         bgPosition="0 0,calc(12px / 2) calc(12px / 2)"
         bgColor={bgColor}
+        border="1px solid"
+        borderColor={bgImageColor}
+        borderRadius="4px"
         overflow="hidden"
         role="group"
         cursor="pointer"

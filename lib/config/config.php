@@ -19,8 +19,8 @@ return array(
    */
   'supported_apps' => array('site', 'blog', 'shop'),
   'template_locations' => array(
-    'site' => array('header', 'footer', 'page'),
-    'blog' => array('header', 'footer', 'page', 'blog_post', 'blog_archive', 'blog_search', 'blog_empty'),
-    'shop' => array('header', 'footer', 'page', 'shop_home', 'shop_category', 'shop_search', 'shop_empty', 'shop_product', 'shop_order', 'shop_order_success', 'shop_order_error')
+    'site' => array('site_header', 'site_footer', 'site_page'),
+    'blog' => array('blog_header', 'blog_footer', 'blog_page', 'blog_post', 'blog_archive', 'blog_search', 'blog_empty'),
+    'shop' => array('shop_header', 'shop_footer', 'shop_page', 'shop_home', 'shop_category', 'shop_search', 'shop_empty', 'shop_product', 'shop_order', 'shop_order_success', 'shop_order_error')
   ),
 );

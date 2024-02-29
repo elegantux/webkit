@@ -8,6 +8,28 @@ import { useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
 import { editorRoute } from '../../../routes';
 import { useTemplate } from '@lib/state';
 
+function extractTypesFromJson(json: any): string[] {
+  const types = new Set<string>(); // Use a Set to ensure uniqueness
+
+  function traverse(node: any) {
+    if (Array.isArray(node)) {
+      // If the current node is an array, iterate over each element
+      node.forEach((element) => traverse(element));
+    } else if (typeof node === 'object' && node !== null) {
+      // If the current node is an object, check for the 'type' property
+      if (node.type) {
+        types.add(node.type); // Add the type to the Set if it exists
+      }
+      // Recurse into each property of the object
+      Object.values(node).forEach((value) => traverse(value));
+    }
+  }
+
+  traverse(json); // Start the traversal from the root
+
+  return Array.from(types); // Convert the Set to an Array and return it
+}
+
 const SaveProject = memo(() => {
   const toast = useToast();
 
@@ -22,54 +44,10 @@ const SaveProject = memo(() => {
     // Temp save
     // localStorage.setItem('gjsProject', JSON.stringify(editor.getProjectData()));
 
-    // Get only types added via plugins
-    const pluginsComponentTypes = editor.DomComponents.getTypes()
-      .map((component) => component.id)
-      .filter((id) => id.includes('_') && !id.startsWith('default'));
-
-    // const wrapper = editor.getWrapper();
-    // const html = wrapper.getInnerHTML();
-    // const css = editor.getCss({
-    //   // keepUnusedStyles: true,
-    // });
-    // const scripts = editor.getJs();
-    //
-    // console.log('editor.getProjectData()', editor.getProjectData());
-    // console.log({
-    //   html,
-    //   css,
-    //   scripts,
-    // });
-
-    // const page = editor.Pages.getAll()[0];
-    // console.log('page', page);
-    // const mainComponent = page.getMainComponent();
     const mainComponent = editor.getWrapper();
 
-    const pluginComponentsUsages = pluginsComponentTypes.map((type) => ({
-      type,
-      components: mainComponent?.findType(type) ?? [],
-    }));
-
-    // Find only used components and return their plugin names
-    const usedPluginName = pluginComponentsUsages
-      .filter((usage) => usage.components?.length > 0)
-      .map((usage) => usage.type.split('.')[0]);
-
-    const usedChildTemplateIdList = pluginComponentsUsages
-      .filter((usage) => {
-        const templateIdTriteList = usage.components.map((component) => {
-          return component.getTrait('templateId');
-        });
-        console.log('templateIdTriteList', templateIdTriteList);
-        return templateIdTriteList.length > 0;
-      })
-      .map((usage) => true);
-
-    // console.log('pluginsComponentTypes', pluginsComponentTypes, pluginComponentsUsages, usedPluginName);
-
-    const html = mainComponent.getInnerHTML();
-    // const html = editor.getHtml({ component: mainComponent });
+    // Keep smarty arrows {$wa->}
+    const html = mainComponent?.getInnerHTML().replace(/&lt;/g, '<').replace(/&gt;/g, '>');
     const css = editor.getCss({ component: mainComponent });
     const js = editor.getJs({ component: mainComponent });
     console.log({
@@ -77,6 +55,8 @@ const SaveProject = memo(() => {
       css,
       js,
     });
+
+    const projectComponentTypes = extractTypesFromJson(pages).filter((type: string) => type.includes('_'));
 
     try {
       // Save
@@ -94,6 +74,8 @@ const SaveProject = memo(() => {
           front_content: html,
           front_styles: css ?? '',
           front_scripts: js,
+          //
+          component_types: projectComponentTypes.join(','),
         },
       });
       toast({

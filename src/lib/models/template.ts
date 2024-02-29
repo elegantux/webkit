@@ -16,7 +16,7 @@ export interface Template extends TemplateProject {
   editor_components: string; // JSON
   editor_assets: string; // JSON
   editor_styles: string; // JSON
-  plugins: string;
+  component_types: string;
   create_datetime: string;
   update_datetime: string;
 }
@@ -34,7 +34,7 @@ export type UpdateTemplatePayload = {
   editor_components?: Template['editor_components'];
   editor_assets?: Template['editor_assets'];
   editor_styles?: Template['editor_styles'];
-  plugins?: Template['plugins'];
+  component_types?: Template['component_types'];
   wtp_id?: Template['wtp_id'];
   wtp_status?: Template['wtp_status'];
 };

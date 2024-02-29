@@ -1,3 +1,4 @@
+{*
 <h1>{$page.name}</h1>
 
 {$subpages = $wa->blog->pages($page.id)}
@@ -12,3 +13,7 @@
 <div id="page" role="main">
     {$page.content}
 </div>
+*}
+<!-- [WebKit] Post Content - Start -->
+{$wa->webkit->template($wa_active_theme_url, 'blog_page')}
+<!-- [WebKit] Post Content - End -->

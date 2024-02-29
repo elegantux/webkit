@@ -13,7 +13,7 @@ class webkitBlogPlugin extends webkitEditorPlugin {
 
   public function frontendHead($params)
   {
-    if (in_array($this->getId(), $params['plugin_ids'])) {
+    if (in_array($this->getId(), $params['component_types'])) {
       return $this->dependencies($params);
     }
     return [];

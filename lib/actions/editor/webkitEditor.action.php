@@ -9,7 +9,11 @@ class webkitEditorAction extends waViewAction
   {
     $template_id = intval(waRequest::param('template_id'));
 
-    $template = new webkitTemplate($template_id);
+    $template_project_service = new webkitTemplateProjectService(
+      new webkitTemplate($template_id),
+      new webkitTemplateProject(null)
+    );
+    $template = $template_project_service->collection->getByTemplateId($template_id);
 
     $event_params = ['template' => $template];
 
