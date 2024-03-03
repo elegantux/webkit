@@ -14,6 +14,7 @@ import { Canvas } from '@app/editor/components/Canvas';
 import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { styleManagerConfig } from '@app/editor/components/style-manager/lib/constant';
 import { editorRoute } from '../../routes';
+import { Breadcrumbs } from '@app/editor/components/Breadcrumbs';
 
 const loadPlugins = async (
   editor: EditorInterface,
@@ -170,8 +171,9 @@ export function Editor() {
       templateAreas={`
         "header header"
         "sidebar canvas"
+        "sidebar breadcrumbs"
       `}
-      gridTemplateRows="54px 1fr"
+      gridTemplateRows="54px 1fr 22px"
       gridTemplateColumns="320px 1fr"
       height="calc(100vh - 64px)"
       bgColor="webasyst.backgroundColor"
@@ -192,6 +194,23 @@ export function Editor() {
       <GridItem area="canvas">
         <Canvas />
       </GridItem>
+      {editor && (
+        <GridItem
+          area="breadcrumbs"
+          className="hide-scrollbar"
+          overflowY="auto"
+          display="flex"
+          alignItems="center"
+          gap="12px"
+          py="2px"
+          px="12px"
+          bgColor="webasyst.backgroundColor"
+          borderTop="2px solid"
+          borderTopColor="var(--chakra-colors-chakra-border-color)"
+        >
+          <Breadcrumbs />
+        </GridItem>
+      )}
     </Grid>
   );
 }

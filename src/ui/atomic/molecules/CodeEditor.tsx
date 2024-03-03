@@ -1,12 +1,13 @@
 import { Dispatch, useCallback, useEffect, useRef } from 'react';
-import { Box, useColorMode } from '@chakra-ui/react';
+import { Box, ChakraProps, useColorMode } from '@chakra-ui/react';
 
 export function CodeEditor({
   value,
   onChange,
   codeEditor,
   setCodeEditor,
-}: {
+  ...props
+}: ChakraProps & {
   value: string;
   onChange: (value: string) => void;
   codeEditor: Record<any, any> | null;
@@ -77,8 +78,10 @@ export function CodeEditor({
 
   return (
     <Box
-      height="300px"
+      height="120px"
+      zIndex={0}
       ref={editorRef}
+      {...props}
     />
   );
 }

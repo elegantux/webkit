@@ -24,4 +24,16 @@ export const global = () => ({
     '--sketch-background': "var(--background-color, '#07051c') !important",
     '--sketch-swatch-border-top': '1px solid red',
   },
+  'hide-scrollbar': {
+    /* IE and Edge */
+    msOverflowStyle: 'none',
+
+    /* Firefox */
+    scrollbarWidth: 'none',
+
+    /* Safari and Chrome */
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
+  },
 });
