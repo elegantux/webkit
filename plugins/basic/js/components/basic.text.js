@@ -11,7 +11,7 @@
       model: {
         defaults: {
           name: COMPONENT_NAME,
-          attributes: { [DATA_KEY]: COMPONENT_TYPE },
+          attributes: { [DATA_KEY]: COMPONENT_TYPE, class: COMPONENT_TYPE },
           style: { 'font-size': '16px', 'margin-top': '0px', 'margin-bottom': '0px' },
           tagName: 'p',
           components: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',

@@ -6,9 +6,8 @@
     const CATEGORY = 'Site';
     const API_ENDPOINT = webkit.webkitBackendUrls.backendApiUrl + '?plugin=basic&module=default&action=breadcrumbs';
     const GROUPS = {
-      PREFIX_SUFFIX: 'Link Prefix & Suffix',
+      LINKS: 'Links',
       DIVIDER: 'Divider',
-      STYLES: 'Styles',
     };
 
     const TRAITS = {
@@ -27,22 +26,6 @@
         placeholder: 'Main',
         changeProp: this,
       },
-      PREFIX_HTML: {
-        type: 'code_editor',
-        label: 'Prefix HTML',
-        name: `trait_${COMPONENT_TYPE}__prefix_html`,
-        changeProp: this,
-        colSpan: 1,
-        group: GROUPS.PREFIX_SUFFIX,
-      },
-      SUFFIX_HTML: {
-        type: 'code_editor',
-        label: 'Suffix HTML',
-        name: `trait_${COMPONENT_TYPE}__suffix_html`,
-        changeProp: this,
-        colSpan: 1,
-        group: GROUPS.PREFIX_SUFFIX,
-      },
       SHOW_DIVIDER: {
         type: 'checkbox',
         label: 'Links divider',
@@ -59,6 +42,38 @@
         changeProp: this,
         group: GROUPS.DIVIDER,
       },
+      DIVIDER_CSS_RULES: {
+        type: 'css_rule_manager_button',
+        label: 'Divider styles',
+        // text: 'Update styles',
+        name: `trait_${COMPONENT_TYPE}__divider_css_rules`,
+        description: `<p style="display: flex; align-items: center; font-size: 14px; margin-top: 4px; opacity: 0.5;">Change styles of the breadcrumb divider.</p>`,
+        group: GROUPS.DIVIDER,
+        command: function(_e) {
+          /**
+           * 1. Get selector by clicked element
+           * 2. Get cssRule by selector
+           * 3. Get styles object from cssRule https://grapesjs.com/docs/api/css_rule.html#cssrule
+           */
+          const component = editor.getSelected();
+
+          // Selector
+          /**
+           * Get element class name as selector first. If it doesn't have classes, then use id.
+           * @type {string}
+           */
+          const linksSelector = `.${COMPONENT_TYPE}__divider`;
+
+          // cssRule
+          let linkCssRule = editor.Css.getRule(linksSelector);
+
+          if (!linkCssRule) {
+            linkCssRule = editor.Css.setRule(linksSelector, {});
+          }
+
+          editor.runCommand('rule-manager:toggle-sidebar', { component, cssRule: linkCssRule });
+        },
+      },
       DIVIDER_HTML: {
         type: 'code_editor',
         label: 'Divider HTML',
@@ -66,38 +81,43 @@
         changeProp: this,
         group: GROUPS.DIVIDER,
       },
-      // Styles
-      STYLE_LINKS_COLOR: {
-        type: 'color',
-        label: 'Links color',
-        name: `trait_${COMPONENT_TYPE}__style_links_color`,
-        changeProp: this,
-        colSpan: 1,
-        group: GROUPS.STYLES,
-      },
-      STYLE_LINKS_TEXT_DECORATION: {
-        type: 'select',
-        label: 'Text Decoration',
-        name: `trait_${COMPONENT_TYPE}__style_text_decoration`,
-        default: '',
-        options: [
-          { label: 'None', value: 'none' },
-          { label: 'Line Through', value: 'line-through' },
-          { label: 'Overline', value: 'overline' },
-          { label: 'Underline', value: 'underline' },
-        ],
-        changeProp: this,
-        colSpan: 1,
-        group: GROUPS.STYLES,
-      },
-      STYLE_ICON_SIZE: {
-        type: 'number',
-        label: 'Icon Size',
-        name: `trait_${COMPONENT_TYPE}__style_icon_size`,
-        default: '',
-        options: [{ value: 'px', label: 'px' }],
-        changeProp: this,
-        group: GROUPS.STYLES,
+      LINKS_CSS_RULES: {
+        type: 'css_rule_manager_button',
+        label: 'Link styles',
+        name: `trait_${COMPONENT_TYPE}__links_css_rule`,
+        // text: 'Update styles',
+        description: `<p style="display: flex; align-items: center; font-size: 14px; margin-top: 4px; opacity: 0.5;">Change styles of the breadcrumb link.</p>`,
+        group: GROUPS.LINKS,
+        command: function(_e) {
+          /**
+           * 1. Get selector by clicked element
+           * 2. Get cssRule by selector
+           * 3. Get styles object from cssRule https://grapesjs.com/docs/api/css_rule.html#cssrule
+           */
+          const component = editor.getSelected();
+
+          const lTargets = editor.SelectorManager.getSelectedTargets()
+            .map((targetItem) => targetItem.getSelectorsString())
+            .join(', ');
+
+          // Selector
+          /**
+           * Get element class name as selector first. If it doesn't have classes, then use id.
+           * @type {string}
+           */
+          const linksSelector = `${lTargets} .${COMPONENT_TYPE}__link`;
+
+          console.log(linksSelector)
+
+          // cssRule
+          let linkCssRule = editor.Css.getRule(linksSelector);
+
+          if (!linkCssRule) {
+            linkCssRule = editor.Css.setRule(linksSelector, {});
+          }
+
+          editor.runCommand('rule-manager:toggle-sidebar', { component, cssRule: linkCssRule });
+        },
       },
     };
 
@@ -106,31 +126,29 @@
       model: {
         defaults: {
           name: COMPONENT_NAME,
-          attributes: { [DATA_KEY]: COMPONENT_TYPE, itemprop: 'breadcrumb' },
+          attributes: { [DATA_KEY]: COMPONENT_TYPE, itemprop: 'breadcrumb', class: COMPONENT_TYPE },
           droppable: false,
 
           // Traits
           [TRAITS.SHOW_MAIN_PAGE.name]: false,
           [TRAITS.MAIN_PAGE_NAME.name]: '',
-          [TRAITS.PREFIX_HTML.name]: '',
-          [TRAITS.SUFFIX_HTML.name]: '',
           [TRAITS.SHOW_DIVIDER.name]: true,
           [TRAITS.DIVIDER_ICON.name]: '',
           [TRAITS.DIVIDER_HTML.name]: '',
-          [TRAITS.STYLE_LINKS_COLOR.name]: '',
-          [TRAITS.STYLE_LINKS_TEXT_DECORATION.name]: '',
-          [TRAITS.STYLE_ICON_SIZE.name]: '',
+          // [TRAITS.STYLE_LINKS_COLOR.name]: '',
+          // [TRAITS.STYLE_LINKS_TEXT_DECORATION.name]: '',
+          // [TRAITS.STYLE_ICON_SIZE.name]: '',
           traits: [
             TRAITS.SHOW_MAIN_PAGE,
             TRAITS.MAIN_PAGE_NAME,
+            TRAITS.LINKS_CSS_RULES,
             TRAITS.SHOW_DIVIDER,
             TRAITS.DIVIDER_ICON,
+            TRAITS.DIVIDER_CSS_RULES,
             TRAITS.DIVIDER_HTML,
-            TRAITS.STYLE_LINKS_COLOR,
-            TRAITS.STYLE_LINKS_TEXT_DECORATION,
-            TRAITS.STYLE_ICON_SIZE,
-            TRAITS.PREFIX_HTML,
-            TRAITS.SUFFIX_HTML,
+            // TRAITS.STYLE_LINKS_COLOR,
+            // TRAITS.STYLE_LINKS_TEXT_DECORATION,
+            // TRAITS.STYLE_ICON_SIZE,
           ],
         },
       },
@@ -138,23 +156,13 @@
         listenToProps: [
           TRAITS.SHOW_MAIN_PAGE.name,
           TRAITS.MAIN_PAGE_NAME.name,
-          TRAITS.PREFIX_HTML.name,
-          TRAITS.SUFFIX_HTML.name,
           TRAITS.SHOW_DIVIDER.name,
           TRAITS.DIVIDER_ICON.name,
           TRAITS.DIVIDER_HTML.name,
         ],
-        listenToStyleProps: [
-          TRAITS.STYLE_LINKS_COLOR.name,
-          TRAITS.STYLE_LINKS_TEXT_DECORATION.name,
-          TRAITS.STYLE_ICON_SIZE.name,
-        ],
         init({ model }) {
           const propsList = this.listenToProps.map((prop) => `change:${prop}`).join(' ');
           this.listenTo(model, propsList, this.handleTraitsChange);
-
-          const stylePropsList = this.listenToStyleProps.map((prop) => `change:${prop}`).join(' ');
-          this.listenTo(model, stylePropsList, this.handleStyleChange);
         },
         onRender({ el, model }) {
           this.handleTraitsChange(model);
@@ -172,8 +180,6 @@
 
           const showMainPage = !!model.get(TRAITS.SHOW_MAIN_PAGE.name);
           const mainPageName = model.get(TRAITS.MAIN_PAGE_NAME.name);
-          const prefixHtml = model.get(TRAITS.PREFIX_HTML.name);
-          const suffixHtml = model.get(TRAITS.SUFFIX_HTML.name);
           const showDivider = !!model.get(TRAITS.SHOW_DIVIDER.name);
           const dividerIcon = model.get(TRAITS.DIVIDER_ICON.name);
           const dividerHtml = model.get(TRAITS.DIVIDER_HTML.name);
@@ -195,8 +201,6 @@
           const formData = new FormData();
           formData.append(TRAITS.SHOW_MAIN_PAGE.name, showMainPage);
           formData.append(TRAITS.MAIN_PAGE_NAME.name, mainPageName);
-          formData.append(TRAITS.PREFIX_HTML.name, prefixHtml);
-          formData.append(TRAITS.SUFFIX_HTML.name, suffixHtml);
           formData.append(TRAITS.SHOW_DIVIDER.name, showDivider);
           formData.append(TRAITS.DIVIDER_ICON.name, dividerIcon);
           formData.append(TRAITS.DIVIDER_HTML.name, dividerHtml);
@@ -220,46 +224,6 @@
 
           // Update the widget view in the canvas
           this.updateInnerHtml(responseBody.data.view);
-        },
-        // TODO: Hover state?
-        handleStyleChange() {
-          const elementId = this.model.getId();
-
-          const linksSelector = `#${elementId} a`;
-          const iconsSelector = `#${elementId} i`;
-
-          const linksColor = this.model.get(TRAITS.STYLE_LINKS_COLOR.name);
-          const textDecoration = this.model.get(TRAITS.STYLE_LINKS_TEXT_DECORATION.name);
-          const iconSize = this.model.get(TRAITS.STYLE_ICON_SIZE.name);
-
-          const linksResultRule = {};
-          const dividerIconResultRule = {};
-
-          if (linksColor?.length > 0) {
-            linksResultRule.color = linksColor;
-          }
-
-          if (textDecoration?.length > 0) {
-            linksResultRule['text-decoration'] = textDecoration;
-          }
-
-          if (iconSize?.length > 0) {
-            dividerIconResultRule['font-size'] = `${iconSize}px`;
-          }
-
-          if (Object.keys(linksResultRule).length > 0) {
-            const [linkCssRule] = editor.StyleManager.select(linksSelector);
-            linkCssRule.setStyle(linksResultRule);
-          }
-
-          if (Object.keys(dividerIconResultRule).length > 0) {
-            const [iconCssRule] = editor.StyleManager.select(iconsSelector);
-            iconCssRule.setStyle(dividerIconResultRule);
-          }
-
-          // Since we select selectors that cannot be selected in the editor we should
-          // select back the parent component to prevent unnecessary assignment of styles
-          editor.StyleManager.select(this.model);
         },
       },
     };

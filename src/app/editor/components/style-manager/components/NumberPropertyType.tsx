@@ -6,61 +6,31 @@ import {
   NumberInputField,
   NumberInputStepper,
 } from '@chakra-ui/react';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo } from 'react';
 
 import { ExtendedProperty } from '@lib/models/grapesjs-extended';
-import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
-import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { PropertyHeader } from '@app/editor/components/style-manager/components/PropertyHeader';
+import { useStyleProperty } from '@app/editor/components/style-manager/lib/utils';
 
 export const getPropertyInitialValue = (property: ExtendedProperty) => (property.hasValue() ? property.getValue() : '');
 
 export const NumberPropertyType = memo(({ property }: { property: ExtendedProperty }) => {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [value, setValue] = useState<string>('');
-
-  const propertyLabel = useMemo(() => property.getLabel(), []);
+  const { value, hasInheritedValue, clearProperty, propertyLabel } = useStyleProperty(property);
 
   const handleInputChange = (valueAsString: string) => {
     property.upValue(valueAsString);
-    setValue(valueAsString);
   };
-
-  const handleClearButton = () => {
-    property.clear();
-    setValue('');
-  };
-
-  const onStyleChange = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const propertyValue = lastSelectedComponent?.getStyle(property.getName());
-    if (typeof propertyValue === 'string') {
-      setValue(propertyValue);
-    } else {
-      setValue('');
-    }
-  };
-
-  // Update state when:
-  // 1. selected component is changed
-  // 2. undo/redo fired
-  useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY}`, onStyleChange);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY}`, onStyleChange);
-    };
-  }, [editor]);
 
   return (
     <Flex direction="column">
       <PropertyHeader
         propertyLabel={propertyLabel}
-        hasInheritedValue={false}
+        hasInheritedValue={hasInheritedValue}
         hasValue={!!value}
-        onClear={handleClearButton}
+        onClear={clearProperty}
       />
       <NumberInput
+        size="sm"
         value={value}
         onChange={handleInputChange}
       >

@@ -73,18 +73,21 @@ class webkitBasicComponentBreadcrumbs extends webkitEditorComponent
     $divider_icon_trait = $post['trait_'.self::$type.'__divider_icon'];
     $divider_html_trait = $post['trait_'.self::$type.'__divider_html'] ?? '/';
 
-    $link_html = '<a data-wk-type="'. webkitBasicComponentLink::$type .'" href="{$breadcrumb.url}">'. $prefix_html_trait .'{$breadcrumb.name|escape}'. $suffix_html_trait .'</a>';
+    $breadcrumb_link_class_name = self::$type . '__link';
+    $breadcrumb_divider_class_name = self::$type . '__divider';
+
+    $link_html = '<a class="'. $breadcrumb_link_class_name .'" data-wk-type="'. webkitBasicComponentLink::$type .'" href="{$breadcrumb.url}">'. $prefix_html_trait .'{$breadcrumb.name|escape}'. $suffix_html_trait .'</a>';
 
     $html = '';
     $divider_html = '';
     $divider_element_html = '';
     if (!empty($divider_html_trait) || !empty($divider_icon_trait)) {
       if (!empty($divider_html_trait)) {
-        $divider_element_html .= '<span>';
+        $divider_element_html .= '<span class="'. $breadcrumb_divider_class_name .'">';
         $divider_element_html .= $divider_html_trait;
         $divider_element_html .= '</span>';
       } else {
-        $divider_element_html .= '<i data-gjs-type="'. webkitBasicComponentIcon::$type .'" data-wk-type="'. webkitBasicComponentIcon::$type .'" class="'. $divider_icon_trait .'"></i>';
+        $divider_element_html .= '<i data-gjs-type="'. webkitBasicComponentIcon::$type .'" data-wk-type="'. webkitBasicComponentIcon::$type .'" class="'. $divider_icon_trait . ' ' . $breadcrumb_divider_class_name .'"></i>';
       }
     }
 
@@ -95,7 +98,7 @@ class webkitBasicComponentBreadcrumbs extends webkitEditorComponent
     }
 
     if ($show_main_page) {
-      $html .= '<a data-gjs-type="'. webkitBasicComponentLink::$type .'" data-wk-type="'. webkitBasicComponentLink::$type .'" href="{$wa_app_url}">'. $prefix_html_trait . $main_page_name . $suffix_html_trait .'</a>';
+      $html .= '<a class="'. $breadcrumb_link_class_name .'" data-gjs-type="'. webkitBasicComponentLink::$type .'" data-wk-type="'. webkitBasicComponentLink::$type .'" href="{$wa_app_url}">'. $prefix_html_trait . $main_page_name . $suffix_html_trait .'</a>';
 
       if ($show_divider_trait) {
         $html .= '{if !empty($breadcrumbs)}';

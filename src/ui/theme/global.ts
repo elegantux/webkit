@@ -19,6 +19,9 @@ export const global = () => ({
   '[data-theme][data-theme=light]': {
     '--chakra-colors-chakra-body-bg': colors.webasyst.backgroundColorBlank,
   },
+  '.gjs-cv-canvas-bg': { bgColor: 'transparent' },
+  '.gjs-editor.gjs-one-bg': { bgColor: 'transparent' },
+
   // @uiw/react-color
   "[data-theme*='dark'] .w-color-sketch": {
     '--sketch-background': "var(--background-color, '#07051c') !important",

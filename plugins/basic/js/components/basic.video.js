@@ -53,6 +53,7 @@
             src: '',
             frameBorder: 0,
             allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share',
+            class: COMPONENT_TYPE,
           },
           tagName: "iframe",
           style: { 'width': '620px', 'max-width': '100%', 'height': '480px' },

@@ -15,6 +15,7 @@
           attributes: {
             [DATA_KEY]: COMPONENT_TYPE,
             href: '',
+            class: COMPONENT_TYPE,
           },
           content: 'Click me!',
 

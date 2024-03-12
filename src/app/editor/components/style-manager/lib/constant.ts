@@ -117,7 +117,7 @@ export const displaySector = {
       label: 'Justify Content',
       property: 'justify-content',
       type: STYLE_TYPES.RADIO,
-      default: 'none',
+      default: '',
       colSpan: 2,
       options: [
         { value: 'flex-start', label: 'Flex Start', icon: FlexAlignStart },
@@ -132,7 +132,7 @@ export const displaySector = {
       label: 'Align Items',
       property: 'align-items',
       type: STYLE_TYPES.RADIO,
-      default: 'none',
+      default: '',
       colSpan: 2,
       options: [
         { value: 'center', label: 'Center', icon: FlexAlignMiddle },
@@ -146,7 +146,7 @@ export const displaySector = {
       label: 'Flex Direction',
       property: 'flex-direction',
       type: STYLE_TYPES.RADIO,
-      default: 'none',
+      default: '',
       colSpan: 2,
       options: [
         { value: 'column', label: 'Column', icon: ArrowDownIcon },
@@ -159,7 +159,7 @@ export const displaySector = {
       label: 'Flex Wrap',
       property: 'flex-wrap',
       type: STYLE_TYPES.RADIO,
-      default: 'none',
+      default: '',
       options: [
         { value: 'nowrap', label: 'No Wrap', icon: BanIcon },
         { value: 'wrap', label: 'Wrap', icon: ArrowDownIcon },
@@ -170,7 +170,7 @@ export const displaySector = {
       label: 'Gap',
       property: 'gap',
       type: STYLE_TYPES.INPUT,
-      default: '0',
+      default: '',
       units: ['px', 'vw'],
       min: 0,
     },
@@ -577,6 +577,7 @@ const borderSector = {
     {
       type: STYLE_TYPES.COLOR,
       label: 'Outline Color',
+      default: '',
       property: 'outline-color',
     },
   ],
@@ -674,14 +675,15 @@ const backgroundSector = {
     {
       type: STYLE_TYPES.COLOR,
       label: 'Background Gradient',
-      default: 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 100%)',
+      // default: 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 100%)',
+      default: '',
       property: 'background',
       isFullWidth: true,
     },
     {
       type: STYLE_TYPES.COLOR,
       label: 'Background Color',
-      default: 'white',
+      default: '',
       property: 'background-color',
       isFullWidth: true,
     },

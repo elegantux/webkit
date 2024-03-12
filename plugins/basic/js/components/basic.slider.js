@@ -11,7 +11,7 @@
       model: {
         defaults: {
           name: COMPONENT_NAME,
-          attributes: { [DATA_KEY]: COMPONENT_TYPE, class: 'swiper-slide' },
+          attributes: { [DATA_KEY]: COMPONENT_TYPE, class: `${COMPONENT_TYPE} swiper-slide` },
           draggable: false,
           style: {
             'min-height': '200px',
@@ -269,7 +269,7 @@
               }
             }
 
-            var slider = new Swiper(el, options);
+            new Swiper(el, options);
           },
 
           // Traits

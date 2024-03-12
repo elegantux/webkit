@@ -60,7 +60,7 @@ export function Breadcrumbs() {
               ? {
                   cursor: 'pointer',
                   _hover: { color: 'dodger.600' },
-                  color: index === componentBreadcrumbs.length - 1 ? 'dodger.800' : 'inherit',
+                  color: index === componentBreadcrumbs.length - 1 ? 'dodger.600' : 'inherit',
                   opacity: index === componentBreadcrumbs.length - 1 ? 1 : 0.8,
                   onClick:
                     index === componentBreadcrumbs.length - 1 ? undefined : () => handleBreadcrumbClick(component),

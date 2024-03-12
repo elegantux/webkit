@@ -10,8 +10,8 @@
       model: {
         defaults: {
           name: COMPONENT_NAME,
-          attributes: { [DATA_KEY]: COMPONENT_TYPE },
-          style: { 'padding-top': '12px', 'padding-bottom': '12px' },
+          attributes: { [DATA_KEY]: COMPONENT_TYPE, class: COMPONENT_TYPE },
+          style: { 'padding-top': '24px', 'padding-bottom': '24px', 'padding-left': '24px', 'padding-right': '24px' },
           resizable: true,
 
           traits: [],
