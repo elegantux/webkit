@@ -49,24 +49,30 @@
             [DATA_KEY]: COMPONENT_TYPE,
             href: '',
             target: '_self',
+            class: COMPONENT_TYPE,
           },
           tagName: 'a',
           droppable: `[${DATA_KEY}=basic_text], [${DATA_KEY}=basic_icon]`,
-          style: {
-            'display': 'inline-block',
-            'width': 'max-content',
-            'padding-left': '24px',
-            'padding-right': '24px',
-            'padding-top': '18px',
-            'padding-bottom': '18px',
-            'font-size': '16px',
-            'color': '#ffffffff',
-            'background-color': '#000000ff',
-            'text-decoration': 'none',
-            'border': 'none',
-            'outline': 'none',
-            'cursor': 'pointer',
-          },
+          styles: `
+            .${COMPONENT_TYPE} {
+              display: inline-block;
+              width: max-content;
+              padding-left: 24px;
+              padding-right: 24px;
+              padding-top: 16px;
+              padding-bottom: 16px;
+              font-size: 16px;
+              color: #ffffff;
+              background-color: #000000;
+              border-radius: 8px;
+              text-decoration: none;
+              border: none;
+              // outline-color: initial;
+              outline-style: none;
+              outline-width: initial;
+              cursor: pointer;
+            }
+          `,
           components: {
             type: 'basic_text',
             components: 'Click Me',
@@ -80,6 +86,7 @@
               label: 'Tag Name',
               name: 'tagName',
               default: 'a',
+              changeProp: true,
               options: [
                 { value: 'a', label: 'Link'},
                 { value: 'button', label: 'Button'},

@@ -14,6 +14,7 @@ import { Canvas } from '@app/editor/components/Canvas';
 import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { styleManagerConfig } from '@app/editor/components/style-manager/lib/constant';
 import { editorRoute } from '../../routes';
+import { Breadcrumbs } from '@app/editor/components/Breadcrumbs';
 
 const loadPlugins = async (
   editor: EditorInterface,
@@ -32,7 +33,7 @@ const loadPlugins = async (
       // eslint-disable-next-line no-await-in-loop
       await plugin(editor, pluginListOptions[plugin]);
     } catch (error) {
-      console.error(`Ошибка в функции под индексом ${i}:`, error);
+      console.error(`Error in function under index ${i}:`, error);
     }
   }
   console.log('>>>>>>>>>> onFinished');
@@ -102,6 +103,13 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
       componentFirst: true,
       custom: true,
     },
+    // deviceManager: {
+    //   devices: [
+    //     { id: 'desktop', name: 'Desktop', width: '' },
+    //     { id: 'tablet', name: 'Tablet', width: '770px' },
+    //     { id: 'mobile', name: 'Mobile', width: '' },
+    //   ],
+    // },
     panels: {
       defaults: [],
     },
@@ -113,6 +121,8 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
         * ::-webkit-scrollbar-track { background: #eee; }
         * ::-webkit-scrollbar-thumb { background: #ccc; }
         * ::-webkit-scrollbar { width: 8px }
+        .gjs-dashed *[data-gjs-highlightable] { outline-color: #8899aa; }
+        body.gjs-dashed { outline: none; }
       `,
     },
     // pluginsOpts: pluginOptions,
@@ -151,6 +161,7 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
   editor.Commands.add(EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY, { run() {} });
   editor.Commands.add(EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY, { run() {} });
   editor.Commands.add(EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY_LIST, { run() {} });
+  editor.Commands.add(EDITOR_COMMANDS.TOGGLE_RULE_MANAGER_SIDEBAR, () => {});
   editor.on('log:info', (msg, opts) => console.info(`[WebKit Editor] - ${msg}`, opts));
 };
 
@@ -170,8 +181,9 @@ export function Editor() {
       templateAreas={`
         "header header"
         "sidebar canvas"
+        "sidebar breadcrumbs"
       `}
-      gridTemplateRows="54px 1fr"
+      gridTemplateRows="54px 1fr 22px"
       gridTemplateColumns="320px 1fr"
       height="calc(100vh - 64px)"
       bgColor="webasyst.backgroundColor"
@@ -182,6 +194,7 @@ export function Editor() {
             <Navbar />
           </GridItem>
           <GridItem
+            className="hide-scrollbar"
             area="sidebar"
             overflowY="auto"
           >
@@ -192,6 +205,23 @@ export function Editor() {
       <GridItem area="canvas">
         <Canvas />
       </GridItem>
+      {editor && (
+        <GridItem
+          area="breadcrumbs"
+          className="hide-scrollbar"
+          overflowY="auto"
+          display="flex"
+          alignItems="center"
+          gap="12px"
+          py="2px"
+          px="12px"
+          bgColor="webasyst.backgroundColor"
+          borderTop="2px solid"
+          borderTopColor="var(--chakra-colors-chakra-border-color)"
+        >
+          <Breadcrumbs />
+        </GridItem>
+      )}
     </Grid>
   );
 }

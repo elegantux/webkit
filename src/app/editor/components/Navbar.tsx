@@ -1,12 +1,41 @@
-import { Button, Flex, useToast } from '@chakra-ui/react';
-import { memo } from 'react';
+import { Button, Flex, IconButton, Tooltip, useToast } from '@chakra-ui/react';
+import { memo, useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { FaAngleLeft, FaCirclePlus, FaFloppyDisk } from 'react-icons/fa6';
+import {
+  FaAngleLeft,
+  FaCirclePlus,
+  FaFloppyDisk,
+  FaMobileButton,
+  FaTabletButton,
+  FaTv,
+  FaVectorSquare,
+} from 'react-icons/fa6';
 import { AxiosError } from 'axios';
 
-import { useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
+import { EDITOR_STORE, useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
 import { editorRoute } from '../../../routes';
 import { useTemplate } from '@lib/state';
+
+export const DEVICE_TYPE = {
+  DESKTOP: 'desktop',
+  TABLET: 'tablet',
+  MOBILE_PORTRAIT: 'mobilePortrait',
+  MOBILE_LANDSCAPE: 'mobileLandscape',
+};
+
+export const DEVICE_TYPE_NAME = {
+  [DEVICE_TYPE.DESKTOP]: 'Desktop',
+  [DEVICE_TYPE.TABLET]: 'Tablet',
+  [DEVICE_TYPE.MOBILE_PORTRAIT]: 'Mobile Portrait',
+  [DEVICE_TYPE.MOBILE_LANDSCAPE]: 'Mobile Landscape',
+};
+
+export const DEVICE_TYPE_ICON = {
+  [DEVICE_TYPE.DESKTOP]: <FaTv size={16} />,
+  [DEVICE_TYPE.TABLET]: <FaTabletButton size={16} />,
+  [DEVICE_TYPE.MOBILE_LANDSCAPE]: <FaMobileButton size={16} />,
+  [DEVICE_TYPE.MOBILE_PORTRAIT]: <FaMobileButton size={16} />,
+};
 
 function extractTypesFromJson(json: any): string[] {
   const types = new Set<string>(); // Use a Set to ensure uniqueness
@@ -104,6 +133,69 @@ const SaveProject = memo(() => {
   );
 });
 
+function ResponsiveButtons() {
+  const editor = useEditorStore(EDITOR_STORE.EDITOR);
+  const commands = editor.Commands;
+
+  const [selectedDevice, setSelectedDevice] = useState<string>(DEVICE_TYPE.DESKTOP);
+  const [swVisibility, setSwVisibility] = useState(false);
+
+  const handleDeviceButtonClick = (device: string) => {
+    editor.setDevice(device);
+    setSelectedDevice(device);
+  };
+
+  const toggleComponentsBorderHandler = () => {
+    const isBordersVisible = commands.isActive('sw-visibility');
+    if (isBordersVisible) {
+      commands.stop('sw-visibility');
+    } else {
+      editor.runCommand('sw-visibility');
+    }
+
+    setSwVisibility(commands.isActive('sw-visibility'));
+  };
+
+  return (
+    <Flex>
+      {Object.values(DEVICE_TYPE).map((device) => (
+        <Tooltip
+          key={device}
+          placement="bottom"
+          borderRadius="4px"
+          label={DEVICE_TYPE_NAME[device]}
+          hasArrow
+        >
+          <IconButton
+            variant="ghost"
+            size="sm"
+            colorScheme={selectedDevice === device ? 'dodger' : 'grey'}
+            aria-label={DEVICE_TYPE_NAME[device]}
+            icon={DEVICE_TYPE_ICON[device]}
+            {...(device === DEVICE_TYPE.MOBILE_LANDSCAPE ? { transform: 'rotate(90deg)' } : {})}
+            onClick={() => handleDeviceButtonClick(device)}
+          />
+        </Tooltip>
+      ))}
+      <Tooltip
+        placement="bottom"
+        borderRadius="4px"
+        label="Toggle components visibility"
+        hasArrow
+      >
+        <IconButton
+          variant="ghost"
+          size="sm"
+          colorScheme={swVisibility ? 'dodger' : 'grey'}
+          aria-label="Toggle components visibility"
+          icon={<FaVectorSquare size={16} />}
+          onClick={() => toggleComponentsBorderHandler()}
+        />
+      </Tooltip>
+    </Flex>
+  );
+}
+
 export function Navbar() {
   const navigate = useNavigate();
   const openBlockListSidebar = useBlockListDisclosure((state) => state.onOpen);
@@ -122,24 +214,26 @@ export function Navbar() {
         <Button
           colorScheme="dodger"
           variant="link"
-          _hover={{ textDecoration: 'none' }}
-          // isLoading
           size="sm"
-          onClick={() => navigate({ to: '/app/dashboard/project-list' })}
           leftIcon={<FaAngleLeft />}
+          _hover={{ textDecoration: 'none' }}
+          onClick={() => navigate({ to: '/app/dashboard/project-list' })}
         >
           Back
         </Button>
       </Flex>
-      <Button
-        colorScheme="dodger"
-        size="sm"
-        onClick={openBlockListSidebar}
-        leftIcon={<FaCirclePlus size={20} />}
-        iconSpacing="6px"
-      >
-        Add Block
-      </Button>
+      <Flex gap="32px">
+        <Button
+          colorScheme="dodger"
+          size="sm"
+          leftIcon={<FaCirclePlus size={20} />}
+          iconSpacing="6px"
+          onClick={openBlockListSidebar}
+        >
+          Add Block
+        </Button>
+        <ResponsiveButtons />
+      </Flex>
       <SaveProject />
     </Flex>
   );

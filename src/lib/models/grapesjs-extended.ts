@@ -6,6 +6,7 @@ export type ExtendedProperty = Property<{
   options?: SelectOptionProps[];
   units?: string[];
   colSpan?: number;
+  visible?: boolean;
 }>;
 
 export type ExtendedBlock = Block & {

@@ -1,12 +1,11 @@
-import { Flex } from '@chakra-ui/react';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo } from 'react';
+import { Flex, Text } from '@chakra-ui/react';
 
 import { Select } from '@ui/atomic/molecules';
 import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
 import { ExtendedProperty } from '@lib/models/grapesjs-extended';
-import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
-import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { PropertyHeader } from '@app/editor/components/style-manager/components/PropertyHeader';
+import { useStyleProperty } from '@app/editor/components/style-manager/lib/utils';
 
 export const SelectProperty = memo(
   ({
@@ -31,14 +30,11 @@ export const SelectProperty = memo(
 );
 
 export const SelectPropertyType = memo(({ property }: { property: ExtendedProperty }) => {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [value, setValue] = useState<string>('');
+  const { value, hasInheritedValue, clearProperty, propertyLabel, propertyOptions } = useStyleProperty(property);
 
-  const propertyLabel = useMemo(() => property.getLabel(), []);
   const hasValue = value.length > 0;
 
-  const selectedValue = property.attributes.options!.find((option) => option.value === value) ?? null;
-  const options = property.attributes.options!;
+  const selectedValue = propertyOptions!.find((option) => option.value === value) ?? null;
 
   const handleInputChange = (option: SelectOptionProps | any) => {
     if (option) {
@@ -48,44 +44,23 @@ export const SelectPropertyType = memo(({ property }: { property: ExtendedProper
     }
   };
 
-  const handleClearButton = () => {
-    property.clear();
-  };
-
-  const onStyleChange = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const propertyValue = lastSelectedComponent?.getStyle(property.getName());
-    if (typeof propertyValue === 'string') {
-      setValue(propertyValue);
-    } else {
-      setValue('');
-    }
-  };
-
-  // Update state when:
-  // 1. selected component is changed
-  // 2. undo/redo fired
-  useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY}`, onStyleChange);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY}`, onStyleChange);
-    };
-  }, [editor]);
-
   return (
     <Flex direction="column">
       <PropertyHeader
         propertyLabel={propertyLabel}
-        hasInheritedValue={false}
+        hasInheritedValue={hasInheritedValue}
         hasValue={hasValue}
-        onClear={handleClearButton}
+        onClear={clearProperty}
       />
-      <SelectProperty
-        value={selectedValue}
-        options={options}
-        onChange={handleInputChange}
-      />
+      {propertyOptions ? (
+        <SelectProperty
+          value={selectedValue}
+          options={propertyOptions}
+          onChange={handleInputChange}
+        />
+      ) : (
+        <Text>Property options are not defined</Text>
+      )}
     </Flex>
   );
 });

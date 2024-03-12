@@ -5,22 +5,20 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Box,
   Card,
   CardBody,
   Flex,
   Grid,
   GridItem,
   Heading,
-  Image,
   Text,
   useColorModeValue,
   useTheme,
 } from '@chakra-ui/react';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
-import { ExtendedBlock } from '@lib/models/grapesjs-extended';
 import { hexOpacity } from '@ui/theme/utils';
+import { getBlockMedia } from '@app/editor/lib/utils';
 
 interface Section {
   category: string;
@@ -47,31 +45,17 @@ const formatBlockListToSections = (blocks: Blocks) => {
   return result;
 };
 
-const getBlockMedia = (block: ExtendedBlock) => {
-  if (block.attributes.image?.length) {
-    return (
-      <Image
-        src={block.attributes.image}
-        alt={block.getLabel()}
-      />
-    );
-  }
-
-  if (block.attributes.icon?.length) {
-    return <Box dangerouslySetInnerHTML={{ __html: block.attributes.icon }} />;
-  }
-
-  return block.getLabel();
-};
-
 function BlockCard({ block }: { block: Block }) {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
   const blockMedia = getBlockMedia(block);
 
   const theme = useTheme();
   const color = useColorModeValue('ebony.500', 'grey.100');
-  const bgColor = useColorModeValue(hexOpacity(theme.colors.grey[100], 0.6), hexOpacity(theme.colors.ebony[500], 0.8));
-  const bgHoverColor = useColorModeValue('grey.200', 'ebony.400');
+  const bgColor = useColorModeValue(theme.colors.grey[100], theme.colors.ebony[500]);
+  const bgHoverColor = useColorModeValue(
+    hexOpacity(theme.colors.grey[200], 0.2),
+    hexOpacity(theme.colors.ebony[400], 0.2)
+  );
 
   return (
     <GridItem
@@ -87,7 +71,11 @@ function BlockCard({ block }: { block: Block }) {
         borderRadius="4px"
         boxShadow="none"
         color={color}
-        bgColor={bgColor}
+        // bgColor={bgColor}
+        border="1px solid"
+        borderColor={bgColor}
+        bgColor="transparent"
+        transition="background-color 0.1s ease-in-out"
         _hover={{ bgColor: bgHoverColor }}
       >
         <CardBody
@@ -164,11 +152,11 @@ export function BlockManager() {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
   const blockList = editor.BlockManager.getAll();
   const sectionList = formatBlockListToSections(blockList);
-  console.log(
-    'blockList',
-    blockList.map((block) => block.getCategoryLabel()),
-    sectionList
-  );
+  // console.log(
+  //   'blockList',
+  //   blockList.map((block) => block.getCategoryLabel()),
+  //   sectionList
+  // );
 
   return (
     <Flex direction="column">

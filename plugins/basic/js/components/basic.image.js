@@ -24,9 +24,18 @@
       model: {
         defaults: {
           name: COMPONENT_NAME,
-          attributes: { [DATA_KEY]: COMPONENT_TYPE, src: '/wa-apps/webkit/img/dummy-image.webp' },
+          attributes: {
+            [DATA_KEY]: COMPONENT_TYPE,
+            src: '/wa-apps/webkit/img/dummy-image.webp',
+            class: COMPONENT_TYPE,
+          },
           tagName: "img",
-          style: { 'width': '200px' },
+          unstylable: ['color', 'cursor', 'font-size', 'font-family', 'text-align', 'text-overflow', 'text-transform', 'line-height', 'letter-spacing', 'font-weight', 'text-decoration', 'font-style', 'white-space'],
+          styles: `
+            .${COMPONENT_TYPE} {
+              width: 200px;
+            }
+          `,
           droppable: false,
           resizable: true,
 

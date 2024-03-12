@@ -2,11 +2,10 @@ import { Box, Button, Flex, Input, Menu, MenuButton, MenuItem, MenuList } from '
 import { ChangeEvent, memo, useEffect, useMemo, useState } from 'react';
 
 import { ExtendedProperty } from '@lib/models/grapesjs-extended';
-import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
-import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { UNITS } from '@app/editor/components/style-manager/lib/constant';
 import { PropertyHeader } from '@app/editor/components/style-manager/components/PropertyHeader';
 import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
+import { useStyleProperty } from '@app/editor/components/style-manager/lib/utils';
 
 // Constants
 const NUMBER_REGEX = /^-?\d+$/;
@@ -189,6 +188,7 @@ export const InputProperty = memo(
           type="text"
           textAlign="left"
           variant="filled"
+          size="sm"
           placeholder={placeholder}
           value={inputValue}
           onChange={handleInputChange}
@@ -198,8 +198,8 @@ export const InputProperty = memo(
         {menuOptions?.length > 0 && (
           <Box
             position="absolute"
-            top="8px"
-            right="6px"
+            top="3px"
+            right="3px"
           >
             <Menu
               placement="auto"
@@ -234,51 +234,20 @@ export const InputProperty = memo(
 );
 
 export const InputPropertyType = memo(({ property }: { property: ExtendedProperty }) => {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [value, setValue] = useState<string>('');
-
-  const propertyLabel = useMemo(() => property.getLabel(), []);
-  const propertyUnits = useMemo(() => property.get('units'), []);
-  const propertyOptions = useMemo(() => property.get('options'), []);
+  const { value, hasInheritedValue, clearProperty, propertyLabel, propertyUnits, propertyOptions } =
+    useStyleProperty(property);
 
   const handleInputChange = (v: string) => {
     property.upValue(v);
-    setValue(v);
   };
-
-  const handleClearButton = () => {
-    property.clear();
-    setValue('');
-  };
-
-  const updatePropertyStyles = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const propertyValue = lastSelectedComponent?.getStyle(property.getName());
-    if (typeof propertyValue === 'string') {
-      setValue(propertyValue);
-    } else {
-      setValue('');
-    }
-  };
-
-  // Update state when:
-  // 1. selected component is changed
-  // 2. undo/redo fired
-  useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY}`, updatePropertyStyles);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY}`, updatePropertyStyles);
-    };
-  }, [editor]);
 
   return (
     <Flex direction="column">
       <PropertyHeader
         propertyLabel={propertyLabel}
-        hasInheritedValue={false}
+        hasInheritedValue={hasInheritedValue}
         hasValue={!!value}
-        onClear={handleClearButton}
+        onClear={clearProperty}
       />
       <InputProperty
         value={value}
@@ -289,96 +258,3 @@ export const InputPropertyType = memo(({ property }: { property: ExtendedPropert
     </Flex>
   );
 });
-/*
-export const InputPropertyType = memo(({ property }: { property: ExtendedProperty }) => {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [value, setValue] = useState<string>('');
-  const [currentOption, setCurrentOption] = useState<SelectOptionProps | null>(null);
-
-  const propertyLabel = useMemo(() => property.getLabel(), []);
-  const propertyUnits = useMemo(() => property.get('units') ?? [], []);
-  const propertyOptions = useMemo(() => property.get('options') ?? [], []);
-  const menuOptions = useMemo(() => {
-    return [...propertyUnits.map((unit) => ({ label: unit, value: unit })), ...propertyOptions];
-  }, [propertyUnits, propertyOptions]);
-
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    property.upValue(event.target.value);
-    setValue(event.target.value);
-  };
-
-  const handleClearButton = () => {
-    property.clear();
-    setValue('');
-  };
-
-  const updatePropertyStyles = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const propertyValue = lastSelectedComponent?.getStyle(property.getName());
-    if (typeof propertyValue === 'string') {
-      setValue(propertyValue);
-    } else {
-      setValue('');
-    }
-  };
-
-  // Update state when:
-  // 1. selected component is changed
-  // 2. undo/redo fired
-  useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY}`, updatePropertyStyles);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY}`, updatePropertyStyles);
-    };
-  }, [editor]);
-
-  return (
-    <Flex direction="column">
-      <PropertyHeader
-        propertyLabel={propertyLabel}
-        hasInheritedValue={false}
-        hasValue={!!value}
-        onClear={handleClearButton}
-      />
-      <Box position="relative">
-        <Input
-          type="text"
-          textAlign="left"
-          variant="filled"
-          value={value}
-          onChange={handleInputChange}
-        />
-        {menuOptions.length && (
-          <Box
-            position="absolute"
-            top="8px"
-            right="6px"
-          >
-            <Menu
-              placement="auto"
-              isLazy
-              lazyBehavior="unmount"
-            >
-              <MenuButton
-                as={Button}
-                variant="unit"
-              >
-                {currentOption?.label}
-              </MenuButton>
-              <MenuList
-                zIndex={1}
-                minW="auto"
-              >
-                {menuOptions.map((option) => (
-                  <MenuItem key={option.value}>{option.label}</MenuItem>
-                ))}
-              </MenuList>
-            </Menu>
-          </Box>
-        )}
-      </Box>
-    </Flex>
-  );
-});
-*/

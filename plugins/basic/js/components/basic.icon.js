@@ -12,7 +12,7 @@
           name: COMPONENT_NAME,
           attributes: {
             [DATA_KEY]: COMPONENT_TYPE,
-            class: 'fa-solid fa-cart-shopping',
+            class: `fa-solid fa-cart-shopping ${COMPONENT_TYPE}`,
           },
           style: { 'font-size': '24px' },
           tagName: 'i',

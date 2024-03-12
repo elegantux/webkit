@@ -12,7 +12,7 @@
         defaults: {
           tagName: 'h2',
           name: COMPONENT_NAME,
-          attributes: { [DATA_KEY]: COMPONENT_TYPE },
+          attributes: { [DATA_KEY]: COMPONENT_TYPE, class: COMPONENT_TYPE },
           style: { 'font-size': '22px' },
           components: 'Lorem Ipsum is simply dummy text.',
           editable: true,

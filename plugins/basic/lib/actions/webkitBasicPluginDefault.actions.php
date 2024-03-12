@@ -37,4 +37,31 @@ class webkitBasicPluginDefaultActions extends webkitJsonActions
     }
   }
 
+  public function breadcrumbsAction()
+  {
+    try {
+
+      $component = new webkitBasicComponentBreadcrumbs();
+
+      try {
+        $this->response = [
+          'view' => $component->prepareView(),
+          'model' => $component->prepareModel(),
+        ];
+      } catch (waException $exception) {
+        $this->response = [
+          'view' => $exception->getMessage(),
+          'model' => $exception->getMessage(),
+        ];
+      }
+
+    } catch (webkitAPIException $exception) {
+
+      $this->setStatus($exception->getCode());
+
+      $this->errors = $exception->getPayload();
+
+    }
+  }
+
 }

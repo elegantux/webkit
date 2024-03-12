@@ -16,6 +16,8 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useTheme,
+  useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FaComputerMouse as ComputerMouseIcon, FaCirclePlus } from 'react-icons/fa6';
@@ -24,14 +26,87 @@ import { Component } from 'grapesjs';
 import { TraitManager } from '@app/editor/components/trait-manager/TraitManager';
 import { BlockManager } from '@app/editor/components/manager/BlockManager';
 import { StyleManager } from '@app/editor/components/style-manager/StyleManager';
-import { EDITOR_STORE, useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
+import {
+  EDITOR_STORE,
+  useBlockListDisclosure,
+  useEditorStore,
+  useRuleManagerDisclosure,
+  useRuleManagerStore,
+} from '@app/editor/lib/store';
 import { SelectorManager } from '@app/editor/components/manager/SelectorManager';
+import { CssRuleManager } from '@app/editor/components/style-manager/CssRuleManager';
+import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
+import { RuleManagerToggleSidebarCommandPayload } from '@lib/models/commands';
+import { hexOpacity } from '@ui/theme/utils';
+
+function RuleManagerDrawer() {
+  const editor = useEditorStore(EDITOR_STORE.EDITOR);
+  const ruleManagerDisclosure = useRuleManagerDisclosure((state) => state);
+  const setRuleManagerState = useRuleManagerStore((state) => state.setState);
+  const setRuleManagerReset = useRuleManagerStore((state) => state.reset);
+  const toast = useToast();
+
+  const handleRuleManagerRunCommand = (_: any, options: RuleManagerToggleSidebarCommandPayload) => {
+    if (!options.cssRule) {
+      toast({
+        title: `[Command: ${EDITOR_COMMANDS.TOGGLE_RULE_MANAGER_SIDEBAR}] The cssRule property is not defined.`,
+        status: 'error',
+      });
+      return;
+    }
+
+    if (ruleManagerDisclosure.isOpen) {
+      setRuleManagerState({ component: options.component, cssRule: options.cssRule });
+      return;
+    }
+
+    setRuleManagerState({ component: options.component, cssRule: options.cssRule });
+    ruleManagerDisclosure.onOpen();
+  };
+
+  const handleDrawerClose = () => {
+    ruleManagerDisclosure.onClose();
+    setRuleManagerReset();
+  };
+
+  useEffect(() => {
+    editor.on(`run:${EDITOR_COMMANDS.TOGGLE_RULE_MANAGER_SIDEBAR}`, handleRuleManagerRunCommand);
+
+    return () => {
+      editor.off(`run:${EDITOR_COMMANDS.TOGGLE_RULE_MANAGER_SIDEBAR}`, handleRuleManagerRunCommand);
+    };
+  }, []);
+
+  return (
+    <Drawer
+      variant="sidebar-with-transparent-overlay"
+      placement="left"
+      onClose={handleDrawerClose}
+      isOpen={ruleManagerDisclosure.isOpen}
+    >
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerHeader
+          px="16px"
+          borderBottomWidth="1px"
+        >
+          Rule Manager
+          <DrawerCloseButton />
+        </DrawerHeader>
+        <DrawerBody p={0}>
+          <CssRuleManager />
+        </DrawerBody>
+      </DrawerContent>
+    </Drawer>
+  );
+}
 
 export function Sidebar() {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [selectedComponent, setSelectedComponent] = useState<Component | undefined>(undefined);
   const disclosure = useBlockListDisclosure((state) => state);
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
+  const theme = useTheme();
 
   const showTabs = !!selectedComponent && selectedComponent?.get('type') !== 'wrapper';
 
@@ -66,8 +141,8 @@ export function Sidebar() {
           borderRight="2px solid"
           borderRightColor="var(--chakra-colors-chakra-border-color)"
           minH="100%"
-          lazyBehavior="unmount"
-          isLazy
+          // lazyBehavior="unmount"
+          // isLazy
         >
           <TabList
             position="sticky"
@@ -82,10 +157,16 @@ export function Sidebar() {
               py="12px"
               flex={1}
               mr={0}
+              fontSize="14px"
               borderRadius={0}
               borderWidth={0}
               borderBottom="2px"
               borderColor="transparent"
+              _selected={{
+                bg: hexOpacity(theme.colors.dodger[600], 0.1),
+                borderColor: theme.colors.dodger[600],
+                color: theme.colors.dodger[600],
+              }}
             >
               Styles
             </Tab>
@@ -94,10 +175,16 @@ export function Sidebar() {
               variant="ghost"
               py="12px"
               flex={1}
+              fontSize="14px"
               borderRadius={0}
               borderWidth={0}
               borderBottom="2px"
               borderColor="transparent"
+              _selected={{
+                bg: hexOpacity(theme.colors.dodger[600], 0.1),
+                borderColor: theme.colors.dodger[600],
+                color: theme.colors.dodger[600],
+              }}
             >
               Settings
             </Tab>
@@ -182,6 +269,7 @@ export function Sidebar() {
           </DrawerBody>
         </DrawerContent>
       </Drawer>
+      <RuleManagerDrawer />
     </>
   );
 }

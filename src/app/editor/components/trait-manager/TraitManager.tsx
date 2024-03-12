@@ -41,6 +41,8 @@ import { ColorPicker } from '@app/editor/components/style-manager/components/Col
 import { IconTrait } from '@app/editor/components/trait-manager/IconTrait';
 import { ImageTrait } from '@app/editor/components/trait-manager/ImageTrait';
 import { CodeEditorTrait } from '@app/editor/components/trait-manager/CodeEditorTrait';
+import { ButtonTrait } from '@app/editor/components/trait-manager/ButtonTrait';
+import { CssRuleManagerButtonTrait } from '@app/editor/components/trait-manager/CssRuleManagerButtonTrait';
 
 function InputTrait({ trait }: { trait: Trait }) {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
@@ -730,6 +732,8 @@ export function TraitManager() {
                 {trait.getType() === TRAIT_TYPES.ICON && <IconTrait trait={trait} />}
                 {trait.getType() === TRAIT_TYPES.IMAGE && <ImageTrait trait={trait} />}
                 {trait.getType() === TRAIT_TYPES.CODE_EDITOR && <CodeEditorTrait trait={trait} />}
+                {trait.getType() === TRAIT_TYPES.BUTTON && <ButtonTrait trait={trait} />}
+                {trait.getType() === TRAIT_TYPES.CSS_RULE_MANAGER_BUTTON && <CssRuleManagerButtonTrait trait={trait} />}
               </GridItem>
             ))}
           </Grid>

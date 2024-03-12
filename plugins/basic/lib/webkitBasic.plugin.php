@@ -10,22 +10,6 @@ class webkitBasicPlugin extends webkitEditorPlugin {
   {
     parent::__construct($info);
 
-    $this->component_types = [
-      webkitBasicComponentContainer::$type,
-      webkitBasicComponentButton::$type,
-      webkitBasicComponentHeading::$type,
-      webkitBasicComponentText::$type,
-      webkitBasicComponentVideo::$type,
-      webkitBasicComponentImage::$type,
-      webkitBasicComponentLink::$type,
-      webkitBasicComponentLinkBox::$type,
-      webkitBasicComponentIcon::$type,
-      webkitBasicComponentSlider::$type,
-      webkitBasicComponentSmarty::$type,
-      webkitBasicComponentHtml::$type,
-      webkitBasicComponentPageInfo::$type,
-    ];
-
     webkitComponentRegistry::register(webkitBasicComponentContainer::$type, 'webkitBasicComponentContainer');
     webkitComponentRegistry::register(webkitBasicComponentButton::$type, 'webkitBasicComponentButton');
     webkitComponentRegistry::register(webkitBasicComponentHeading::$type, 'webkitBasicComponentHeading');
@@ -39,6 +23,9 @@ class webkitBasicPlugin extends webkitEditorPlugin {
     webkitComponentRegistry::register(webkitBasicComponentSmarty::$type, 'webkitBasicComponentSmarty');
     webkitComponentRegistry::register(webkitBasicComponentHtml::$type, 'webkitBasicComponentHtml');
     webkitComponentRegistry::register(webkitBasicComponentPageInfo::$type, 'webkitBasicComponentPageInfo');
+    webkitComponentRegistry::register(webkitBasicComponentBreadcrumbs::$type, 'webkitBasicComponentBreadcrumbs');
+
+    $this->component_types = webkitComponentRegistry::getRegisteredTypes();
   }
 
   /**

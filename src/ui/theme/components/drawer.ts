@@ -50,8 +50,22 @@ const variantSidebar = (prop: StyleFunctionProps) => {
   };
 };
 
+const variantSidebarWithTransparentOverlay = (prop: StyleFunctionProps) => {
+  return {
+    ...variantSidebar(prop),
+    dialogContainer: {
+      pointerEvents: 'all',
+    },
+    overlay: {
+      bg: 'transparent',
+      pointerEvents: 'all',
+    },
+  };
+};
+
 const variants = {
   sidebar: variantSidebar,
+  'sidebar-with-transparent-overlay': variantSidebarWithTransparentOverlay,
 };
 
 export default defineMultiStyleConfig({

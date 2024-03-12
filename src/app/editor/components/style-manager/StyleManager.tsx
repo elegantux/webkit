@@ -15,7 +15,6 @@ import { Sector } from 'grapesjs';
 import { FaPen } from 'react-icons/fa6';
 
 import { EDITOR_STORE, useEditorStore, useStyleManagerSectorsStore } from '@app/editor/lib/store';
-import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { STYLE_TYPES } from '@app/editor/components/style-manager/lib/constant';
 import { ExtendedProperty } from '@lib/models/grapesjs-extended';
 import { InputPropertyType } from '@app/editor/components/style-manager/components/InputPropertyType';
@@ -65,16 +64,20 @@ function StyleSector({ sector }: { sector: Sector }) {
           gap={3}
         >
           {propertyList.map((property) => (
-            <GridItem
-              key={property.id}
-              colSpan={property.attributes.colSpan}
-            >
-              {property.getType() === STYLE_TYPES.INPUT && <InputPropertyType property={property} />}
-              {property.getType() === STYLE_TYPES.NUMBER && <NumberPropertyType property={property} />}
-              {property.getType() === STYLE_TYPES.SELECT && <SelectPropertyType property={property} />}
-              {property.getType() === STYLE_TYPES.RADIO && <RadioPropertyType property={property} />}
-              {property.getType() === STYLE_TYPES.COLOR && <ColorPropertyType property={property} />}
-            </GridItem>
+            <React.Fragment key={property.id}>
+              {property.attributes.visible && (
+                <GridItem
+                  key={property.id}
+                  colSpan={property.attributes.colSpan}
+                >
+                  {property.getType() === STYLE_TYPES.INPUT && <InputPropertyType property={property} />}
+                  {property.getType() === STYLE_TYPES.NUMBER && <NumberPropertyType property={property} />}
+                  {property.getType() === STYLE_TYPES.SELECT && <SelectPropertyType property={property} />}
+                  {property.getType() === STYLE_TYPES.RADIO && <RadioPropertyType property={property} />}
+                  {property.getType() === STYLE_TYPES.COLOR && <ColorPropertyType property={property} />}
+                </GridItem>
+              )}
+            </React.Fragment>
           ))}
         </Grid>
       </AccordionPanel>
@@ -90,13 +93,23 @@ export function StyleManager() {
   // const sectors = styleManager.getSectors({ visible: true });
 
   const onStyleChange = () => {
+    // console.log(
+    //   'onStyleChange',
+    //   styleManager
+    //     .getSectors({ visible: true })
+    //     .map((s) =>
+    //       s
+    //         .getProperties()
+    //         .map((p) => `${p.getName()} - ${p.getValue()}`)
+    //         .join(' | ')
+    //     )
+    //     .join(' ')
+    // );
     setSectorList(styleManager.getSectors({ visible: true }));
-    editor.runCommand(EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY);
   };
 
   useEffect(() => {
-    setSectorList(styleManager.getSectors({ visible: true }));
-    editor.runCommand(EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY);
+    onStyleChange();
   }, []);
 
   useEffect(() => {

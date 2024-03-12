@@ -28,6 +28,40 @@ class webkitSiteDataProvider
     return $page;
   }
 
+  public function getChildPage()
+  {
+    $pages = $this->getPages();
+
+    if (!$pages || count($pages) === 0) {
+      return null;
+    }
+
+    foreach ($pages as $page) {
+      // Initialize an array to store potential child pages of the current page
+      $childPages = [];
+      foreach ($pages as $subPage) {
+        if (isset($subPage['parent_id']) && $subPage['parent_id'] == $page['id']) {
+          // Found a child page for the current page
+          $childPages[] = $subPage;
+        }
+      }
+
+      if (!empty($childPages)) {
+        // If the current page has at least one child page, return the first child page
+        $firstChildPage = $childPages[0]; // Get the first child page
+        $firstChildPage['content'] = wa('site')->getView()->fetch('string:' . $firstChildPage['content']);
+        return $firstChildPage;
+      }
+    }
+
+    // If no parent page with subpages is found, return the first page
+    $firstPage = $pages[0];
+    $firstPage['content'] = wa('site')->getView()->fetch('string:' . $firstPage['content']);
+
+    return $firstPage;
+  }
+
+
   public function getPages()
   {
     $domain_id = siteHelper::getDomainId();
@@ -64,6 +98,28 @@ class webkitSiteDataProvider
     }
 
     return $pages;
+  }
+
+  /**
+   * @param $page
+   * @return array
+   * @throws waException
+   */
+  public function getBreadcrumbs($page)
+  {
+    $page_model = new sitePageModel();
+    $breadcrumbs = array();
+    $root_url = wa()->getAppUrl(null, true);
+    if (isset($page['parent_id'])) {
+      while ($page['parent_id']) {
+        $page = $page_model->getById($page['parent_id']);
+        $breadcrumbs[] = array(
+          'url' => $root_url . $page['full_url'],
+          'name' => $page['name'] ? $page['name'] : $page['title']
+        );
+      }
+    }
+    return $breadcrumbs;
   }
 
 }
