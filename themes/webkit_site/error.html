@@ -1,5 +1,3 @@
-<h1>
-	{if $error_code}{$error_code}. {/if}
-	{if $error_message}{$error_message}{else}[s`Error`]{/if}
-</h1>
-[s`The requested resource is not available.`]
+<!-- [WebKit] Site 404 - Start -->
+{$wa->webkit->template($wa_active_theme_path, 'site_error')}
+<!-- [WebKit] Site 404 - End -->

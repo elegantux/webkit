@@ -3,6 +3,7 @@ export const TEMPLATE_LOCATION_NAME_MAP: Record<string, string> = {
   site_header: 'Header',
   site_footer: 'Footer',
   site_page: 'Info Page',
+  site_error: 'Error Page',
   // Blog
   blog_header: 'Header',
   blog_footer: 'Footer',
