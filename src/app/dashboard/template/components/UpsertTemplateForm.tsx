@@ -48,7 +48,6 @@ export function UpsertTemplateForm({ template, project }: { template?: Template;
   });
 
   const onSubmit = async (formValues: FormValues) => {
-    console.log('formValues', formValues);
     try {
       if (template) {
         await updateTemplate({

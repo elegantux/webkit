@@ -19,7 +19,7 @@ return array(
    */
   'supported_apps' => array('site', 'blog', 'shop'),
   'template_locations' => array(
-    'site' => array('site_header', 'site_footer', 'site_page'),
+    'site' => array('site_header', 'site_footer', 'site_page', 'site_error'),
     'blog' => array('blog_header', 'blog_footer', 'blog_page', 'blog_post', 'blog_archive', 'blog_search', 'blog_empty'),
     'shop' => array('shop_header', 'shop_footer', 'shop_page', 'shop_home', 'shop_category', 'shop_search', 'shop_empty', 'shop_product', 'shop_order', 'shop_order_success', 'shop_order_error')
   ),
