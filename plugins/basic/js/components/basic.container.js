@@ -80,7 +80,6 @@
           attributeList.forEach((item) => {
             resultAttributes[item.key] = item.value;
           });
-          console.log('customAttributes', customAttributes, resultAttributes);
           this.setAttributes(resultAttributes);
         }
       },
