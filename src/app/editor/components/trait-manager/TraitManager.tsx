@@ -43,6 +43,7 @@ import { ImageTrait } from '@app/editor/components/trait-manager/ImageTrait';
 import { CodeEditorTrait } from '@app/editor/components/trait-manager/CodeEditorTrait';
 import { ButtonTrait } from '@app/editor/components/trait-manager/ButtonTrait';
 import { CssRuleManagerButtonTrait } from '@app/editor/components/trait-manager/CssRuleManagerButtonTrait';
+import { KeyValueTrait } from '@app/editor/components/trait-manager/KeyValueTrait';
 
 function InputTrait({ trait }: { trait: Trait }) {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
@@ -734,6 +735,7 @@ export function TraitManager() {
                 {trait.getType() === TRAIT_TYPES.CODE_EDITOR && <CodeEditorTrait trait={trait} />}
                 {trait.getType() === TRAIT_TYPES.BUTTON && <ButtonTrait trait={trait} />}
                 {trait.getType() === TRAIT_TYPES.CSS_RULE_MANAGER_BUTTON && <CssRuleManagerButtonTrait trait={trait} />}
+                {trait.getType() === TRAIT_TYPES.KEY_VALUE && <KeyValueTrait trait={trait} />}
               </GridItem>
             ))}
           </Grid>

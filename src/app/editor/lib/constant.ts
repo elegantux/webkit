@@ -18,4 +18,5 @@ export const TRAIT_TYPES = {
   ICON: 'icon',
   IMAGE: 'image',
   CODE_EDITOR: 'code_editor',
+  KEY_VALUE: 'key_value',
 };
