@@ -16,6 +16,7 @@
       label: 'Tag Name',
       name: 'tagName',
       default: 'p',
+      changeProp: true,
       options: [
         { value: 'h1', label: 'H1'},
         { value: 'h2', label: 'H2'},
