@@ -27,7 +27,7 @@
       model: {
         defaults: {
           name: COMPONENT_NAME,
-          attributes: DEFAULT_ATTRIBUTES,
+          attributes: { ...DEFAULT_ATTRIBUTES },
           tagName: 'section',
           style: {
             'width': '100%',
@@ -75,12 +75,12 @@
         handleCustomAttibuteChange() {
           const customAttributes = this.get(TRAITS.CUSTOM_ATTRIBUTES);
           const attributeList = parseAttributesStringToArray(customAttributes);
-          const resultAttributes = DEFAULT_ATTRIBUTES;
+          const resultAttributes = { ...DEFAULT_ATTRIBUTES };
 
           attributeList.forEach((item) => {
             resultAttributes[item.key] = item.value;
           });
-          
+          console.log('customAttributes', customAttributes, resultAttributes);
           this.setAttributes(resultAttributes);
         }
       },
