@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Container,
   Flex,
   Heading,
   IconButton,
@@ -20,7 +19,7 @@ import { FaEllipsis, FaRegPenToSquare, FaRegSquarePlus, FaRegTrashCan, FaTriangl
 import { AxiosError } from 'axios/index';
 import { useNavigate } from '@tanstack/react-router';
 
-import { PageHeading } from '@app/dashboard/components/PageComponents';
+import { ContentSection, PageHeading } from '@app/dashboard/components/PageComponents';
 import { useProject, useProjectList, useTemplateList, useWebasystApplicationList } from '@lib/state';
 import { projectRoute } from '../../../routes';
 import { TemplateListTable } from '@app/dashboard/template/components/TemplateListTable';
@@ -31,6 +30,10 @@ import { FormSkeleton } from '@ui/atomic/molecules';
 import { UpsertProjectForm } from '@app/dashboard/project/components/UpsertProjectForm';
 import { Project } from '@lib/models/project';
 import { TemplateListEmptyState } from '@app/dashboard/template/components/TemplateListEmptyState';
+import { ThemeSettings } from './components/ThemeSettings';
+import { PageContainer } from '@ui/atomic/templates/PageContainer';
+
+import Ornament82 from '@assets/decorations/ornament-82.svg?react';
 
 function ProjectActionsButton({ project }: { project: Project }) {
   const toast = useToast();
@@ -223,10 +226,12 @@ export function TemplateList() {
               Create Template
             </CreateTemplateButton>
           </Flex>
-          <TemplateListTable
-            templateList={templateList}
-            project={project}
-          />
+          <ContentSection>
+            <TemplateListTable
+              templateList={templateList}
+              project={project}
+            />
+          </ContentSection>
         </>
       )}
     </>
@@ -235,10 +240,7 @@ export function TemplateList() {
 
 export function ProjectPage() {
   return (
-    <Container
-      maxW="960px"
-      padding="3rem 5rem"
-    >
+    <PageContainer>
       <Suspense
         fallback={
           <AppLoadingState
@@ -248,7 +250,20 @@ export function ProjectPage() {
         }
       >
         <TemplateList />
+        <Flex
+          justify="flex-end"
+          width="180px"
+          height="50px"
+          ml="auto"
+          my="32px"
+          opacity="1"
+          color="grey.100"
+          _dark={{ color: 'ebony.700' }}
+        >
+          <Ornament82 />
+        </Flex>
+        <ThemeSettings />
       </Suspense>
-    </Container>
+    </PageContainer>
   );
 }

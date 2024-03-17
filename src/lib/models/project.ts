@@ -3,6 +3,7 @@ export interface Project {
   name: string;
   app_id: string;
   theme_id: string;
+  theme_settings_id: string;
   preview_image_url: string;
   create_datetime: string;
   update_datetime: string;

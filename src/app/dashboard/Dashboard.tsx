@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Container, Flex, Heading, IconButton, Spacer, useToast } from '@chakra-ui/react';
+import { Box, Flex, Heading, IconButton, useToast } from '@chakra-ui/react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import { Swiper as ISwiper } from 'swiper';
 import { Navigation, Scrollbar } from 'swiper/modules';
@@ -9,7 +9,7 @@ import { AxiosError } from 'axios';
 // Import Swiper styles
 import 'swiper/css';
 
-import { PageHeading } from '@app/dashboard/components/PageComponents';
+import { ContentSection, PageHeading } from '@app/dashboard/components/PageComponents';
 import { ProjectCard } from '@app/dashboard/project/components/ProjectCard';
 import { Project } from '@lib/models/project';
 import { api } from '@lib/api';
@@ -19,6 +19,9 @@ import { getInfoToastObject } from '@lib/utils';
 import { Template } from '@lib/models/template';
 import { TemplateListTable } from '@app/dashboard/template/components/TemplateListTable';
 import { RecentTemplateListEmptyState } from '@app/dashboard/template/components/TemplateListEmptyState';
+import { PageContainer } from '@ui/atomic/templates/PageContainer';
+
+import Ornament76 from '@assets/decorations/ornament-76.svg?react';
 
 const FETCH_DELAY = 500;
 
@@ -175,10 +178,12 @@ function RecentTemplateListTable() {
               Recent Templates
             </Heading>
           </Flex>
-          <TemplateListTable
-            templateList={templateList}
-            showActions={false}
-          />
+          <ContentSection>
+            <TemplateListTable
+              templateList={templateList}
+              showActions={false}
+            />
+          </ContentSection>
         </>
       )}
     </>
@@ -187,14 +192,22 @@ function RecentTemplateListTable() {
 
 export function Dashboard() {
   return (
-    <Container
-      maxW="960px"
-      padding="3rem 5rem"
-    >
+    <PageContainer>
       <PageHeading>Dashboard</PageHeading>
       <RecentProjectListSlider />
-      <Spacer height="62px" />
+      <Flex
+        my="32px"
+        opacity="1"
+        color="grey.100"
+        _dark={{ color: 'ebony.700' }}
+        justify="flex-end"
+        width="180px"
+        height="50px"
+        ml="auto"
+      >
+        <Ornament76 />
+      </Flex>
       <RecentTemplateListTable />
-    </Container>
+    </PageContainer>
   );
 }

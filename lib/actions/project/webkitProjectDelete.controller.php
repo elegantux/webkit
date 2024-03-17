@@ -22,7 +22,7 @@ class webkitProjectDeleteController extends webkitJsonController
        * Delete theme folder if exists
        */
       $theme_path = webkitUrl::getAppPublicThemePath($project->app_id, $project->theme_id);
-      if (file_exists($theme_path.'/'.waTheme::PATH)) {
+      if (file_exists($theme_path . '/' . waTheme::PATH)) {
         try {
           $theme = new waTheme($project->theme_id, $project->app_id);
           $theme->delete();
@@ -30,6 +30,11 @@ class webkitProjectDeleteController extends webkitJsonController
           throw new webkitAPIException($exception->getMessage());
         }
       }
+      /**
+       * Detele theme settings
+       */
+      $theme_settings = new webkitThemeSettings($project->theme_settings_id);
+      $theme_settings->delete();
 
       $template_project_model = new webkitTemplateProjectModel();
       $template_model = new webkitTemplateModel();
@@ -37,23 +42,23 @@ class webkitProjectDeleteController extends webkitJsonController
 
       $template_project_list = $template_project_model->getByField('project_id', $project_id, true);
 
-      $template_project_ids = array_map(function ($item) {return $item['id'];}, $template_project_list);
-      $template_ids = array_map(function ($item) {return $item['template_id'];}, $template_project_list);
+      $template_project_ids = array_map(function ($item) {
+        return $item['id'];
+      }, $template_project_list);
+      $template_ids = array_map(function ($item) {
+        return $item['template_id'];
+      }, $template_project_list);
 
       $template_model->deleteByField(['id' => $template_ids]);
       $template_project_model->deleteByField(['id' => $template_project_ids]);
       $project_model->deleteById($project_id);
 
       $this->response = true;
-
     } catch (webkitAPIException $exception) {
 
       $this->setStatus($exception->getCode());
 
       $this->errors = $exception->getPayload();
-
     }
-
   }
-
 }

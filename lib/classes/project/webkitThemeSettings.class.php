@@ -2,34 +2,33 @@
 
 /**
  * @property int $id
- * @property string $name
- * @property string $preview_image_url
- * @property string $app_id
- * @property string $theme_id
- * @property string $theme_settings_id
+ * @property string $style_links
+ * @property string $script_links
+ * @property string $font_links
+ * @property string $custom_head_html
  * @property string $create_datetime
  * @property string $update_datetime
  */
-class webkitProject
+class webkitThemeSettings
 {
 
   use webkitUseState;
 
   /**
-   * @var webkitProjectModel
+   * @var webkitThemeSettingsModel
    */
   protected $model;
 
   /**
-   * Creates a new project object or a template object corresponding to existing project.
+   * Creates a new theme settings object or an object corresponding to existing theme settings.
    *
-   * @param int|array $data Project id or template data array
+   * @param int|array $data Theme Settings id or data array
    * @throws webkitAPIException
    */
   public function __construct($data)
   {
 
-    $this->model = new webkitProjectModel();
+    $this->model = new webkitThemeSettingsModel();
 
     try {
       if ($data instanceof webkitProject) {
@@ -40,7 +39,7 @@ class webkitProject
         $this->data = $this->model->getById($data);
 
         if (is_null($this->getId())) {
-          throw new webkitAPIException(_w('Project not found!'), webkitHttp::NOT_FOUND_CODE);
+          throw new webkitAPIException(_w('Theme Settings not found!'), webkitHttp::NOT_FOUND_CODE);
         }
       } else {
         $this->data = $this->model->getEmptyRow();

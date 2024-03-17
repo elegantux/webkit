@@ -8,6 +8,7 @@ import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models
 import { createFormData } from '@lib/utils';
 import { WebasystApp } from '@lib/models/cross-app';
 import { ImageAsset } from '@lib/models/asset';
+import { ThemeSettings, UpdateThemeSettingsPayload } from './models/theme-settings';
 
 const template = {
   async getTemplate(templateId: Template['id']) {
@@ -226,6 +227,47 @@ const project = {
     };
 
     const { data, status } = await axios.get<Response<Project[]>>(`${HOST}${WA_APP_URL}`, {
+      headers: {},
+      params,
+    });
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
+  async getThemeSettings(projectId: Project['id']) {
+    const params = {
+      module: 'themeSettings',
+      project_id: projectId,
+    };
+
+    const { data, status } = await axios.get<Response<ThemeSettings>>(`${HOST}${WA_APP_URL}`, {
+      headers: {},
+      params,
+    });
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
+  async updateThemeSettings(id: ThemeSettings['id'], payload: UpdateThemeSettingsPayload) {
+    const formData = createFormData();
+
+    const params = {
+      module: 'themeSettingsUpdate',
+      id,
+    };
+
+    Object.keys(payload).forEach((key: string) => {
+      // @ts-ignore
+      formData.append(key, payload[key]);
+    });
+
+    const { data, status } = await axios.post<Response<ThemeSettings>>(`${HOST}${WA_APP_URL}`, formData, {
       headers: {},
       params,
     });

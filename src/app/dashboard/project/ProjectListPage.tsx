@@ -1,18 +1,16 @@
-import { Container, Flex, Grid, GridItem, Heading, Text } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, Heading, Text } from '@chakra-ui/react';
 
 import { useProjectList } from '@lib/state';
 import { ProjectCard } from '@app/dashboard/project/components/ProjectCard';
 import { PageHeading } from '@app/dashboard/components/PageComponents';
 import { CreateProjectButton } from '@app/dashboard/project/components/CreateProjectButton';
+import { PageContainer } from '@ui/atomic/templates/PageContainer';
 
 export function ProjectListPage() {
   const { projectList, isLoading } = useProjectList();
 
   return (
-    <Container
-      maxW="960px"
-      padding="3rem 5rem"
-    >
+    <PageContainer>
       <PageHeading>Project List</PageHeading>
       {isLoading && 'Loading...'}
       {!isLoading && projectList.length === 0 && (
@@ -46,6 +44,6 @@ export function ProjectListPage() {
           </GridItem>
         ))}
       </Grid>
-    </Container>
+    </PageContainer>
   );
 }

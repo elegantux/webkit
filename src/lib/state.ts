@@ -15,6 +15,7 @@ import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models
 import { getNextPageParam } from '@lib/utils/state-utils';
 import { WebasystApp } from '@lib/models/cross-app';
 import { ImageAsset } from '@lib/models/asset';
+import { ThemeSettings, UpdateThemeSettingsPayload } from './models/theme-settings';
 
 // Constants
 export const STATE_TYPES = {
@@ -23,6 +24,7 @@ export const STATE_TYPES = {
   TEMPLATE_PROJECT: 'template_project',
   PROJECT: 'project',
   PROJECT_LIST: 'project_list',
+  THEME_SETTINGS: 'theme_settings',
   WEBASYST_APP_LIST: 'webasyst_app_list',
   IMAGE_ASSET_LIST: 'image_asset_list',
 };
@@ -272,6 +274,31 @@ export const useProjectListValidity = () => {
   return {
     invalidProjects,
   };
+};
+
+export const useThemeSettings = (projectId: Project['id']) => {
+  const queryClient = useQueryClient();
+  const queryKey = [STATE_TYPES.THEME_SETTINGS, projectId];
+
+  const getThemeSettings = () => api.project.getThemeSettings(projectId);
+  const { data } = useSuspenseQuery<Response<ThemeSettings>>({
+    queryKey,
+    queryFn: getThemeSettings,
+    notifyOnChangeProps: ['data', 'error'],
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+  });
+
+  const updateThemeSettings = ({ id, payload }: { id: ThemeSettings['id']; payload: UpdateThemeSettingsPayload }) =>
+    api.project.updateThemeSettings(id, payload);
+  const { mutateAsync: mutateUpdateThemeSettings } = useMutation({
+    mutationFn: updateThemeSettings,
+    onSettled: async () => {
+      return queryClient.invalidateQueries({ queryKey });
+    },
+  });
+
+  return { themeSettings: data.data, updateThemeSettings: mutateUpdateThemeSettings };
 };
 
 export const useImageAssetList = () => {

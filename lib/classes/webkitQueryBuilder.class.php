@@ -14,14 +14,18 @@ class webkitQueryBuilder
   private $return_type = 'object';
   private $_charsets = array('latin1', 'latin2', 'utf8', 'utf8mb4', 'ucs2', 'ascii', 'greek', 'cp866', 'cp852', 'latin7', 'utf16', 'swe7', 'utf32', 'binary',);
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->model = new waModel();
   }
 
   /**
+   * Deprecated!
+   * @deprecated
    * @return $this
    */
-  public function from() {
+  public function fromOld()
+  {
     $from = func_get_args();
     if (count($from) > 1) {
       $x = 0;
@@ -41,12 +45,26 @@ class webkitQueryBuilder
   }
 
   /**
+   * @return $this
+   */
+  public function from()
+  {
+    $from = func_get_args();
+
+    $values = implode(', ', $from);
+
+    $this->_from = "FROM {$values}";
+    return $this;
+  }
+
+  /**
    * @param string $sql
    * @param string $fetch_type
    * @return $this
    * @throws waDbException
    */
-  public function raw($sql, $fetch_type = 'object') {
+  public function raw($sql, $fetch_type = 'object')
+  {
     $this->_query = $this->model->query($sql);
     $this->_results = $this->_query->fetchAll();
     $this->_count = $this->_query->count();
@@ -60,7 +78,8 @@ class webkitQueryBuilder
    * @param string $type
    * @return $this
    */
-  public function join($table, $condition, $type = 'INNER') {
+  public function join($table, $condition, $type = 'INNER')
+  {
     if ($table != '' && !is_null($table)) {
       if ($condition != '' && !is_null($condition)) {
         $this->_join .= " {$type} JOIN {$table} ON {$condition}";
@@ -106,7 +125,8 @@ class webkitQueryBuilder
    * @param array $args
    * @return $this
    */
-  public function and() {
+  public function and()
+  {
     $and = func_get_args();;
     $field = $and[0];
     $operator = $and[1];
@@ -122,7 +142,8 @@ class webkitQueryBuilder
    * @param array $args
    * @return $this
    */
-  public function or() {
+  public function or()
+  {
     $or = func_get_args();;
     $field = $or[0];
     $operator = $or[1];
@@ -140,7 +161,8 @@ class webkitQueryBuilder
    * @param $or_statement
    * @return $this
    */
-  public function like($column, $value, $or_statement = FALSE) {
+  public function like($column, $value, $or_statement = FALSE)
+  {
     if ($this->_where == '') {
       $this->_like = " WHERE {$column} LIKE ?";
     } elseif ($or_statement === FALSE) {
@@ -159,7 +181,8 @@ class webkitQueryBuilder
    * @param $or_statement
    * @return $this
    */
-  public function in($column, $in_array, $or_statement = FALSE) {
+  public function in($column, $in_array, $or_statement = FALSE)
+  {
     $field = $column;
     $in = $in_array;
     if ($this->_where == '') {
@@ -177,7 +200,8 @@ class webkitQueryBuilder
    * @param $or_statement
    * @return $this
    */
-  public function null($column, $or_statement = FALSE) {
+  public function null($column, $or_statement = FALSE)
+  {
     if ($this->_where == '') {
       $this->_null = " WHERE {$column} IS NULL";
     } elseif ($or_statement === FALSE) {
@@ -194,7 +218,8 @@ class webkitQueryBuilder
    * @param $value2
    * @return $this
    */
-  public function between($column, $value1, $value2) {
+  public function between($column, $value1, $value2)
+  {
     if ($this->_where == '') {
       $this->_between = " WHERE {$column} BETWEEN ? AND ?";
     } else {
@@ -211,7 +236,8 @@ class webkitQueryBuilder
    * @param $value
    * @return $this
    */
-  public function having($column, $operator, $value) {
+  public function having($column, $operator, $value)
+  {
     if (in_array($operator, $this->_operators)) {
       $this->_having .= " HAVING {$column} {$operator} ?";
       $this->_wherevalues[] = $value;
@@ -224,7 +250,8 @@ class webkitQueryBuilder
    * @param $sort
    * @return $this
    */
-  public function order($column, $sort = 'ASC') {
+  public function order($column, $sort = 'ASC')
+  {
     if (isset($column)) {
       if ($column === 'random') {
         $this->_order = " ORDER BY RAND()";
@@ -236,9 +263,12 @@ class webkitQueryBuilder
   }
 
   /**
+   * Deprecated!
+   * @deprecated
    * @return $this
    */
-  public function group() {
+  public function groupOld()
+  {
     $group = func_get_args();
     if (count($group) > 1) {
       $x = 0;
@@ -258,11 +288,25 @@ class webkitQueryBuilder
   }
 
   /**
+   * @return $this
+   */
+  public function group()
+  {
+    $group = func_get_args();
+
+    $values = implode(', ', $group);
+
+    $this->_group = "GROUP BY {$values}";
+    return $this;
+  }
+
+  /**
    * @param $limit
    * @param $offset
    * @return $this
    */
-  public function limit($limit, $offset = 0) {
+  public function limit($limit, $offset = 0)
+  {
     if (isset($limit)) {
       $this->_limit = " LIMIT {$offset}, {$limit}";
     }
@@ -272,7 +316,8 @@ class webkitQueryBuilder
   /**
    * @return string
    */
-  public function sql() {
+  public function sql()
+  {
     $sql = $this->_select . $this->_from . $this->_join . $this->_where . $this->_in . $this->_not_in . $this->_like . $this->_not_like . $this->_regex . $this->_not_regex . $this->_having . $this->_between . $this->_not_between . $this->_null . $this->_not_null . $this->_if_null . $this->_and . $this->_or . $this->_order . $this->_group . $this->_limit;
     return $sql;
   }
@@ -283,14 +328,16 @@ class webkitQueryBuilder
    * @return false|webkitQueryBuilder
    * @throws waDbException
    */
-  public function get($table, $where) {
+  public function get($table, $where)
+  {
     return $this->select('*')->from($table)->where($where)->fetch();
   }
 
   /**
    * @throws waDbException
    */
-  public function query($sql, $params = array(), $inser_update = FALSE) {
+  public function query($sql, $params = array(), $inser_update = FALSE)
+  {
     $this->_query = $this->model->query($sql, $params);
     return $this;
   }
@@ -299,7 +346,8 @@ class webkitQueryBuilder
    * @return $this|false
    * @throws waDbException
    */
-  public function fetch() {
+  public function fetch()
+  {
     $_sql = $this->_select . $this->_from . $this->_join . $this->_where . $this->_in . $this->_not_in . $this->_like . $this->_not_like . $this->_regex . $this->_not_regex . $this->_having . $this->_between . $this->_not_between . $this->_null . $this->_not_null . $this->_if_null . $this->_and . $this->_or . $this->_order . $this->_group . $this->_limit;
     if ($this->query($_sql, $this->_wherevalues)) {
       $this->_results = $this->_query->fetchAll();
@@ -311,7 +359,8 @@ class webkitQueryBuilder
   /**
    * @return $this
    */
-  public function where() {
+  public function where()
+  {
     $where = func_get_args();
     foreach ($where as $key => $val) {
       $field = $where[0];
@@ -333,9 +382,12 @@ class webkitQueryBuilder
   }
 
   /**
+   * Deprecated!
+   * @deprecated
    * @return $this
    */
-  public function select() {
+  public function selectOld()
+  {
     $select_action = func_get_args();
     if (count($select_action) > 1) {
       $x = 0;
@@ -356,11 +408,25 @@ class webkitQueryBuilder
   }
 
   /**
+   * @return $this
+   */
+  public function select()
+  {
+    $select_action = func_get_args();
+
+    $val = implode(', ', $select_action);
+
+    $this->_select = "SELECT {$val} ";
+    return $this;
+  }
+
+  /**
    * @param $table
    * @return false|webkitQueryBuilder
    * @throws waDbException
    */
-  public function get_all($table) {
+  public function get_all($table)
+  {
     return $this->select('*')->from($table)->fetch();
   }
 
@@ -369,21 +435,24 @@ class webkitQueryBuilder
    * @return false|webkitQueryBuilder
    * @throws waDbException
    */
-  public function count_all($table) {
+  public function count_all($table)
+  {
     return $this->select('COUNT(*) as ' . $table . '_count')->from($table)->fetch();
   }
 
   /**
    * @throws waDbException
    */
-  public function count_by($table, $where = array()) {
+  public function count_by($table, $where = array())
+  {
     return $this->select('COUNT(*) as ' . $table . '_count')->from($table)->where($where)->fetch();
   }
 
   /**
    * @return $this
    */
-  public function delete() {
+  public function delete()
+  {
     $this->_delete = "DELETE ";
     return $this;
   }
@@ -391,7 +460,8 @@ class webkitQueryBuilder
   /**
    * @return $this
    */
-  public function union() {
+  public function union()
+  {
     $queries = func_get_args();
     $x = 1;
     foreach ($queries as $key => $query) {
@@ -409,7 +479,8 @@ class webkitQueryBuilder
    * @param $fields
    * @return bool
    */
-  public function insert($table, $fields = array()) {
+  public function insert($table, $fields = array())
+  {
     if (count($fields)) {
       $keys = array_keys($fields);
       $values = "";
@@ -436,7 +507,8 @@ class webkitQueryBuilder
    * @param $fields
    * @return bool
    */
-  public function update($table, $primary_key, $id, $fields = array()) {
+  public function update($table, $primary_key, $id, $fields = array())
+  {
     $set = "";
     $x = 1;
     foreach ($fields as $name => $value) {
@@ -456,21 +528,24 @@ class webkitQueryBuilder
   /**
    * @return int
    */
-  public function count() {
+  public function count()
+  {
     return $this->_count;
   }
 
   /**
    * @return mixed
    */
-  public function first() {
+  public function first()
+  {
     return $this->results()[0];
   }
 
   /**
    * @return mixed
    */
-  public function results() {
+  public function results()
+  {
     return $this->_results;
   }
 }
