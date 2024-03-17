@@ -116,15 +116,15 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     canvas: {
       styles: pluginsDependencies.styles,
       scripts: pluginsDependencies.scripts,
-      frameStyle: `
-        body { background-color: #fff }
-        * ::-webkit-scrollbar-track { background: #eee; }
-        * ::-webkit-scrollbar-thumb { background: #ccc; }
-        * ::-webkit-scrollbar { width: 8px }
-        .gjs-dashed *[data-gjs-highlightable] { outline-color: #8899aa; }
-        body.gjs-dashed { outline: none; }
-      `,
     },
+    canvasCss: `
+      body { background-color: #fff }
+      * ::-webkit-scrollbar-track { background: #eee; }
+      * ::-webkit-scrollbar-thumb { background: #ccc; }
+      * ::-webkit-scrollbar { width: 8px }
+      .gjs-dashed *[data-gjs-highlightable] { outline-color: #8899aa; outline-style: dotted; outline-width: 1px; }
+      body.gjs-dashed { outline: none; }
+    `,
     // pluginsOpts: pluginOptions,
     pluginsOpts: {
       [loadPlugins]: {

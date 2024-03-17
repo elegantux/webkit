@@ -477,7 +477,7 @@ function ReviewStep({
                 <Td>Status</Td>
                 <Td>
                   <Tag colorScheme={stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.status ? 'malachite' : 'grey'}>
-                    {stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.status ? 'On' : 'Off'}
+                    {stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.status ? 'Public' : 'Draft'}
                   </Tag>
                 </Td>
               </Tr>

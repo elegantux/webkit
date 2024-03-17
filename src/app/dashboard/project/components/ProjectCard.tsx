@@ -24,19 +24,20 @@ export function ProjectCard({ project }: { project: Project }) {
       height="100%"
       shadow="xs"
       transition="background 0.1s ease-in-out"
-      bg="grey.50"
+      bg="white"
       _dark={{
         bg: 'ebony.500',
         _hover: {
           bg: 'ebony.600',
           color: 'white',
-          borderColor: 'ebony.400',
+          borderColor: 'dodger.800',
         },
       }}
       border="1px solid transparent"
+      borderRadius="16px"
       _hover={{
         color: 'black',
-        borderColor: 'grey.100',
+        borderColor: 'dodger.200',
       }}
     >
       <CardBody

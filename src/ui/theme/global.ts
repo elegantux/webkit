@@ -14,10 +14,10 @@ export const global = () => ({
     '--gjs-canvas-top': '0px',
   },
   '[data-theme][data-theme=dark]': {
-    '--chakra-colors-chakra-body-bg': colors.webasyst.backgroundColorBlank,
+    '--chakra-colors-chakra-body-bg': colors.webasyst.backgroundColor,
   },
   '[data-theme][data-theme=light]': {
-    '--chakra-colors-chakra-body-bg': colors.webasyst.backgroundColorBlank,
+    '--chakra-colors-chakra-body-bg': colors.webasyst.backgroundColor,
   },
   '.gjs-cv-canvas-bg': { bgColor: 'transparent' },
   '.gjs-editor.gjs-one-bg': { bgColor: 'transparent' },

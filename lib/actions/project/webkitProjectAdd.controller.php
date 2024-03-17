@@ -26,10 +26,13 @@ class webkitProjectAddController extends webkitJsonController
       $default_theme_path = webkitUrl::getWebkitDefaultThemePath($app_id);
       $target_path = webkitUrl::getAppPublicThemePath($app_id, $theme_id);
 
-      if (file_exists($target_path.'/'.waTheme::PATH)) {
+      if (file_exists($target_path . '/' . waTheme::PATH)) {
         throw new webkitAPIException(sprintf(_ws("Theme %s already exists"), $theme_id));
       }
 
+      /**
+       * Create Theme folter
+       */
       try {
         waFiles::copy($default_theme_path, $target_path);
 
@@ -41,24 +44,27 @@ class webkitProjectAddController extends webkitJsonController
         throw new webkitAPIException($exception->getMessage());
       }
 
+      /**
+       * Create blank theme settings
+       */
+      $theme_settings = new webkitThemeSettings(null);
+      $theme_settings->save();
+
       $project = new webkitProject(null);
 
       $project->save([
         'name' => $name,
         'app_id' => $app_id,
-        'theme_id' => $theme_id
+        'theme_id' => $theme_id,
+        'theme_settings_id' => $theme_settings->id,
       ]);
 
       $this->response = $project->getData();
-
     } catch (webkitAPIException $exception) {
 
       $this->setStatus($exception->getCode());
 
       $this->errors = $exception->getPayload();
-
     }
-
   }
-
 }

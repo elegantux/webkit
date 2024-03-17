@@ -172,7 +172,7 @@ export function TemplateListTable({
   showActions = true,
 }: {
   templateList: Template[];
-  project: Project;
+  project?: Project;
   showActions?: boolean;
 }) {
   const handleTableRowClick = (template: Template) => {
@@ -181,7 +181,7 @@ export function TemplateListTable({
 
   return (
     <TableContainer
-      border="1px solid"
+      // border="1px solid"
       borderColor="grey.200"
       _dark={{ borderColor: 'grey.700' }}
       borderRadius="lg"
@@ -201,15 +201,16 @@ export function TemplateListTable({
               key={template.wtp_id}
               cursor="pointer"
               onClick={() => handleTableRowClick(template)}
+              _last={{ '& td': { border: 'none' } }}
             >
               <Td>{template.name}</Td>
               <Td>{TEMPLATE_LOCATION_NAME_MAP[template.wtp_template_location]}</Td>
               <Td>
                 <Tag colorScheme={template.wtp_status === '1' ? 'malachite' : 'grey'}>
-                  {template.wtp_status === '1' ? 'On' : 'Off'}
+                  {template.wtp_status === '1' ? 'Published' : 'Draft'}
                 </Tag>
               </Td>
-              {showActions && (
+              {project && showActions && (
                 <MoreActionsColumn
                   template={template}
                   project={project}
