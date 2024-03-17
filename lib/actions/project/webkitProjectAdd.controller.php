@@ -30,6 +30,9 @@ class webkitProjectAddController extends webkitJsonController
         throw new webkitAPIException(sprintf(_ws("Theme %s already exists"), $theme_id));
       }
 
+      /**
+       * Create Theme folter
+       */
       try {
         waFiles::copy($default_theme_path, $target_path);
 
@@ -41,6 +44,9 @@ class webkitProjectAddController extends webkitJsonController
         throw new webkitAPIException($exception->getMessage());
       }
 
+      /**
+       * Create blank theme settings
+       */
       $theme_settings = new webkitThemeSettings(null);
       $theme_settings->save();
 

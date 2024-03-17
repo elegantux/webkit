@@ -50,7 +50,7 @@ class webkitThemeSettings
   }
 
   /**
-   * @return webkitProjectModel
+   * @return webkitThemeSettingsModel
    */
   public function getModel()
   {
