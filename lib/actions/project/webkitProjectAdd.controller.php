@@ -48,7 +48,7 @@ class webkitProjectAddController extends webkitJsonController
        * Create blank theme settings
        */
       $theme_settings = new webkitThemeSettings(null);
-      $theme_settings->save();
+      $theme_settings->save(webkitThemeSettings::getDefaultThemeSettings());
 
       $project = new webkitProject(null);
 

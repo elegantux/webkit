@@ -8,6 +8,11 @@ trait webkitUrl
     return wa()->getAppPath($path, webkitConst::APP_ID);
   }
 
+  public static function getAppUrl($path = '')
+  {
+    return wa()->getAppUrl(webkitConst::APP_ID) . $path;
+  }
+
   public static function getAppPublicThemePath($app_id, $theme_id)
   {
     return wa($app_id)->getDataPath("themes/{$theme_id}", true, $app_id, false);
@@ -16,11 +21,6 @@ trait webkitUrl
   public static function getWebkitDefaultThemePath($app_id)
   {
     return webkitUrl::getAppPath('/themes/' . webkitConst::THEME_ID_PREFIX . $app_id);
-  }
-
-  public static function getAppUrl($path = '')
-  {
-    return wa()->getAppUrl(webkitConst::APP_ID) . $path;
   }
 
   public static function getBackendApiUrl($path = '')

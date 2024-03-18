@@ -24,7 +24,11 @@ class webkitEditorDependenciesController extends webkitJsonController
 
       $template_id = intval(waRequest::get('template_id'));
 
-      $template = new webkitTemplate($template_id);
+      $template_project_service = new webkitTemplateProjectService(
+        new webkitTemplate($template_id),
+        new webkitTemplateProject(null)
+      );
+      $template = $template_project_service->collection->getByTemplateId($template_id);
 
       $event_params = ['template' => $template];
 
@@ -34,6 +38,37 @@ class webkitEditorDependenciesController extends webkitJsonController
        * @return array List of ['name-plugin' => [dependencies]]
        */
       $response = wa(webkitConst::APP_ID)->event(webkitConst::EDITOR_CANVAS_HEAD, $event_params);
+
+      /**
+       * Collect Theme Settings style, script and font links
+       */
+      $theme_settings_head_style_links = [];
+      $theme_settings_head_script_links = [];
+      $theme_settings_head_font_links = [];
+      if (!empty($template['wtp_project_id'])) {
+        $project = new webkitProject($template['wtp_project_id']);
+        $theme_settings = new webkitThemeSettings($project->theme_settings_id);
+        $wa_theme_url = wa($project->app_id)->getDataUrl('themes/' . $project->theme_id, true, null, false);
+
+        $view = wa($project->app_id)->getView();
+
+        if ($theme_settings->style_links) {
+          foreach (json_decode($theme_settings->style_links) as $style_link) {
+            $theme_settings_head_style_links[] = $view->fetch('string:' . $style_link->link, ["wa_theme_url" => $wa_theme_url]);
+          }
+        }
+        if ($theme_settings->script_links) {
+          foreach (json_decode($theme_settings->script_links) as $script_link) {
+            $theme_settings_head_script_links[] = $view->fetch('string:' . $script_link->link, ["wa_theme_url" => $wa_theme_url]);
+          }
+        }
+        if ($theme_settings->font_links) {
+          foreach (json_decode($theme_settings->font_links) as $font_link) {
+            $theme_settings_head_font_links[] = $view->fetch('string:' . $font_link->link, ["wa_theme_url" => $wa_theme_url]);
+          }
+        }
+      }
+
 
       $plugin_style_dependencies = [];
       $plugin_script_dependencies = [];
@@ -67,8 +102,8 @@ class webkitEditorDependenciesController extends webkitJsonController
       */
 
       $this->response = [
-        'scripts' => $plugin_script_dependencies,
-        'styles' => $plugin_style_dependencies,
+        'scripts' => array_unique(array_merge($theme_settings_head_script_links, $plugin_script_dependencies)),
+        'styles' => array_unique(array_merge($theme_settings_head_font_links, $theme_settings_head_style_links, $plugin_style_dependencies)),
       ];
 
     } catch (webkitAPIException $exception) {

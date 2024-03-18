@@ -215,6 +215,8 @@ export const SELECT_DARK_STYLES: StylesConfig = {
   }),
   menu: (base) => ({
     ...base,
+    width: 'max-content',
+    minWidth: '100%',
     borderRadius: '0.375rem',
     borderWidth: '2px',
     borderColor: hexOpacity(colors.grey[50], 0.3),

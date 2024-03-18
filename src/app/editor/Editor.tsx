@@ -5,7 +5,7 @@ import 'grapesjs/dist/css/grapes.min.css';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { PluginDependencies } from '@lib/models/plugin';
-import { useTemplate, useTemplateProject } from '@lib/state';
+import { useTemplate, useThemeSettings } from '@lib/state';
 import { usePluginsDependencies } from '@app/editor/lib/state';
 import { Template } from '@lib/models/template';
 import { Navbar } from '@app/editor/components/Navbar';
@@ -20,7 +20,6 @@ const loadPlugins = async (
   editor: EditorInterface,
   params: { pluginList: Function[]; pluginListOptions: Array<Record<any, any>>; onFinished: Function }
 ) => {
-  console.log('loadPlugins', editor, params);
   const { pluginList, pluginListOptions, onFinished } = params;
 
   for (let i = 0; i < pluginList.length; i++) {
@@ -36,7 +35,6 @@ const loadPlugins = async (
       console.error(`Error in function under index ${i}:`, error);
     }
   }
-  console.log('>>>>>>>>>> onFinished');
   onFinished(editor);
   return true;
 };
@@ -169,6 +167,13 @@ export function Editor() {
   const { templateId } = editorRoute.useParams();
   const { template } = useTemplate(Number(templateId));
   const { pluginsDependencies } = usePluginsDependencies(Number(templateId));
+
+  /**
+   * Prefetching Theme Settings before rendering the Style Manager
+   * so that we can change fields before subscribing to GJS events.
+   * E.g. editor.on('style:custom', updatePropertyStyles);
+   */
+  useThemeSettings(template.wtp_project_id);
 
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
 

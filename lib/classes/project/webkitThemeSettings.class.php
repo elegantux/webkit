@@ -56,4 +56,35 @@ class webkitThemeSettings
   {
     return $this->model;
   }
+
+  /**
+   * @return array
+   */
+  public static function getDefaultThemeSettings()
+  {
+    return [
+      "style_links" => json_encode(array(
+        [
+          "link" => '{$wa_theme_url}/css/bootstrap.min.css',
+          "location" => "head",
+          "attributes" => "",
+        ]
+      )),
+      "script_links" => json_encode(array(
+        [
+          "link" => '{$wa_theme_url}/js/bootstrap.min.js',
+          "location" => "head",
+          "attributes" => "",
+        ]
+      )),
+      "font_links" => json_encode(array(
+        [
+          "name" => "Montserrat",
+          "link" => '{$wa_theme_url}/css/fonts/montserrat/font-montserrat.css',
+          "location" => "head",
+          "attributes" => "",
+        ],
+      )),
+    ];
+  }
 }

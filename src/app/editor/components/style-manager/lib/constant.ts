@@ -219,6 +219,46 @@ export const typographySector = {
       property: 'font-family',
       default: '',
       // options: fontFamilyNames.map(font => ({ label: font, value: font }))
+      options: [
+        // sans-serif
+        {
+          label: 'Arial',
+          value: 'Arial, sans-serif',
+        },
+        {
+          label: 'Arial Black',
+          value: '"Arial Black", "Arial Bold", Gadget, sans-serif',
+        },
+        {
+          label: 'Arial Narrow',
+          value: '"Arial Narrow", Arial, sans-serif',
+        },
+        {
+          label: 'Tahoma',
+          value: 'Tahoma, Verdana, Segoe, sans-serif',
+        },
+        {
+          label: 'Trebuchet MS',
+          value: '"Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif',
+        },
+        {
+          label: 'Verdana',
+          value: 'Verdana, Geneva, sans-serif',
+        },
+        // serif
+        {
+          label: 'Georgia',
+          value: 'Georgia, serif',
+        },
+        {
+          label: 'Palatino',
+          value: 'Palatino, "Palatino Linotype", "Palatino LT STD", serif',
+        },
+        {
+          label: 'Times New Roman',
+          value: 'TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif',
+        },
+      ],
     },
     {
       // Default options
