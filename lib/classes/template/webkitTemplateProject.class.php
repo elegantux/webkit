@@ -58,4 +58,12 @@ class webkitTemplateProject
     $this->model->deleteByField('template_id', $template_id);
   }
 
+  /**
+   * @return webkitTemplateProjectModel
+   */
+  public function getModel()
+  {
+    return $this->model;
+  }
+
 }

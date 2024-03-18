@@ -15,7 +15,24 @@ trait webkitFrontend
 
   public function __construct($arg)
   {
-    // wa_dumpc('$arg', $arg);
+  }
+
+  /**
+   * @param $app_id
+   * @param $theme_id
+   * @return webkitThemeSettings
+   * @throws waException
+   * @throws webkitAPIException
+   */
+  private function getThemeSettings($app_id, $theme_id)
+  {
+    $project_model = new webkitProjectModel();
+    $project = $project_model->getByField([
+      'app_id' => $app_id,
+      'theme_id' => $theme_id,
+    ]);
+
+    return new webkitThemeSettings($project['theme_settings_id']);
   }
 
   public function frontendHead($wa_active_theme_url)
@@ -26,6 +43,40 @@ trait webkitFrontend
 
     $templates = (new webkitProjectModel())->getTemplatesByAppAndThemeIds($app_id, $theme_id);
 
+    $theme_settings = $this->getThemeSettings($app_id, $theme_id);
+
+    $view = $this->getView($wa_active_theme_url);
+
+    /**
+     * Collect Theme Settings style, script and font links
+     */
+    $theme_settings_head_style_links = [];
+    $theme_settings_head_script_links = [];
+    $theme_settings_head_font_links = [];
+    if ($theme_settings->style_links) {
+      foreach (json_decode($theme_settings->style_links) as $style_link) {
+        $theme_settings_head_style_links[] = $html_parser->tagToHtml('link', [
+          "href" => $view->fetch('string:' . $style_link->link),
+          "rel" => "stylesheet",
+        ]);
+      }
+    }
+    if ($theme_settings->script_links) {
+      foreach (json_decode($theme_settings->script_links) as $script_link) {
+        $theme_settings_head_script_links[] = $html_parser->tagToHtml('script', [
+          "src" => $view->fetch('string:' . $script_link->link),
+        ]);
+      }
+    }
+    if ($theme_settings->font_links) {
+      foreach (json_decode($theme_settings->font_links) as $font_link) {
+        $theme_settings_head_font_links[] = $html_parser->tagToHtml('link', [
+          "href" => $view->fetch('string:' . $font_link->link),
+          "rel" => "stylesheet",
+        ]);
+      }
+    }
+
     /**
      * Collect ids of child templates and plugins used in them
      * +
@@ -35,8 +86,7 @@ trait webkitFrontend
     $component_types = [];
     $parents_head_inline_scripts = '';
     $parents_head_inline_styles = '';
-    foreach ($templates as $template)
-    {
+    foreach ($templates as $template) {
       $front_scripts = $template['front_scripts'];
       $front_styles = $template['front_styles'];
 
@@ -69,8 +119,7 @@ trait webkitFrontend
      */
     $child_head_inline_scripts = '';
     $child_head_inline_styles = '';
-    foreach ($child_template_list as $template)
-    {
+    foreach ($child_template_list as $template) {
       $front_scripts = $template['front_scripts'];
       $front_styles = $template['front_styles'];
 
@@ -107,8 +156,7 @@ trait webkitFrontend
      */
     $head_style_links = [];
     $head_script_links = [];
-    foreach ($dependencies as $plugin_name => $dependency)
-    {
+    foreach ($dependencies as $plugin_name => $dependency) {
       if (count($dependency) > 0) {
         if (count($dependency['styles']) > 0) {
           foreach ($dependency['styles'] as $dep) {
@@ -127,15 +175,22 @@ trait webkitFrontend
     $head_script_links = array_unique($head_script_links);
 
     $result_head = '<!-- [WebKit] Head - Start -->';
+    $result_theme_settings_styles = join('', $theme_settings_head_style_links);
+    $result_theme_settings_scripts = join('', $theme_settings_head_script_links);
+    $result_theme_settings_fonts = join('', $theme_settings_head_font_links);
     $result_head_styles = join('', $head_style_links) . $child_head_inline_styles . $parents_head_inline_styles;
     $result_head_scripts = join('', $head_script_links) . $child_head_inline_scripts . $parents_head_inline_scripts;
+    $result_head .= $result_theme_settings_fonts;
+    $result_head .= $result_theme_settings_styles;
+    $result_head .= $result_theme_settings_scripts;
     $result_head .= $result_head_styles;
     $result_head .= $result_head_scripts;
     $result_head .= '<!-- [WebKit] Head - End -->';
     return $result_head;
   }
 
-  public function frontendFooter($wa_active_theme_url) {
+  public function frontendFooter($wa_active_theme_url)
+  {
     $html_parser = new webkitHtmlParser();
 
     [$app_id, $theme_id] = $this->parseThemeAndAppIds($wa_active_theme_url);
@@ -146,8 +201,7 @@ trait webkitFrontend
      * Collect inline scripts from templates
      */
     $parents_head_inline_scripts = '';
-    foreach ($templates as $template)
-    {
+    foreach ($templates as $template) {
       $front_scripts = $template['front_scripts'];
 
       if (strlen($front_scripts)) {
@@ -175,7 +229,7 @@ trait webkitFrontend
 
     $view = $this->getView($wa_active_theme_url);
 
-    return $view->fetch('string:'.$front_content);
+    return $view->fetch('string:' . $front_content);
   }
 
   /**
@@ -189,7 +243,7 @@ trait webkitFrontend
   public function assign($wa_active_theme_url, $template, $params = null)
   {
     $view = $this->getView($wa_active_theme_url);
-    return $view->fetch("string:".$template, $params);
+    return $view->fetch("string:" . $template, $params);
   }
 
   /**
@@ -220,5 +274,4 @@ trait webkitFrontend
 
     return $this->view;
   }
-
 }

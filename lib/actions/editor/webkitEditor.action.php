@@ -17,6 +17,11 @@ class webkitEditorAction extends waViewAction
 
     $event_params = ['template' => $template];
 
+    /**
+     * @event editor_page_head
+     * @param array $event_params
+     * @return array List of ['name-plugin' => [dependencies]]
+     */
     $response = wa(webkitConst::APP_ID)->event(webkitConst::EDITOR_PAGE_HEAD, $event_params);
 
     $plugin_scripts = [];
@@ -38,5 +43,4 @@ class webkitEditorAction extends waViewAction
     $this->view->assign('plugin_scripts', $head_plugin_script);
     $this->view->assign($this->getBackendUrls());
   }
-
 }

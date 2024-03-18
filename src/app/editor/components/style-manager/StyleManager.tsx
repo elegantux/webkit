@@ -22,6 +22,7 @@ import { SelectPropertyType } from '@app/editor/components/style-manager/compone
 import { RadioPropertyType } from '@app/editor/components/style-manager/components/RadioPropertyType';
 import { ColorPropertyType } from '@app/editor/components/style-manager/components/ColorPropertyType';
 import { NumberPropertyType } from '@app/editor/components/style-manager/components/NumberPropertyType';
+import { FontFamilyProperty } from '@app/editor/components/style-manager/components/FontFamilyProperty';
 
 function StyleSector({ sector }: { sector: Sector }) {
   const sectorName = sector.getName();
@@ -63,22 +64,38 @@ function StyleSector({ sector }: { sector: Sector }) {
           templateColumns="repeat(2, 1fr)"
           gap={3}
         >
-          {propertyList.map((property) => (
-            <React.Fragment key={property.id}>
-              {property.attributes.visible && (
+          {propertyList.map((property) => {
+            const propertyType = property.getType();
+            const propertyName = property.getName();
+
+            if (property.attributes.visible && propertyName === 'font-family') {
+              return (
                 <GridItem
                   key={property.id}
                   colSpan={property.attributes.colSpan}
                 >
-                  {property.getType() === STYLE_TYPES.INPUT && <InputPropertyType property={property} />}
-                  {property.getType() === STYLE_TYPES.NUMBER && <NumberPropertyType property={property} />}
-                  {property.getType() === STYLE_TYPES.SELECT && <SelectPropertyType property={property} />}
-                  {property.getType() === STYLE_TYPES.RADIO && <RadioPropertyType property={property} />}
-                  {property.getType() === STYLE_TYPES.COLOR && <ColorPropertyType property={property} />}
+                  <FontFamilyProperty property={property} />
                 </GridItem>
-              )}
-            </React.Fragment>
-          ))}
+              );
+            }
+
+            return (
+              <React.Fragment key={property.id}>
+                {property.attributes.visible && (
+                  <GridItem
+                    key={property.id}
+                    colSpan={property.attributes.colSpan}
+                  >
+                    {propertyType === STYLE_TYPES.INPUT && <InputPropertyType property={property} />}
+                    {propertyType === STYLE_TYPES.NUMBER && <NumberPropertyType property={property} />}
+                    {propertyType === STYLE_TYPES.SELECT && <SelectPropertyType property={property} />}
+                    {propertyType === STYLE_TYPES.RADIO && <RadioPropertyType property={property} />}
+                    {propertyType === STYLE_TYPES.COLOR && <ColorPropertyType property={property} />}
+                  </GridItem>
+                )}
+              </React.Fragment>
+            );
+          })}
         </Grid>
       </AccordionPanel>
     </AccordionItem>
