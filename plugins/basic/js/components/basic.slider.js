@@ -226,7 +226,7 @@
           ],
           script: function (props) {
             if (typeof Swiper === 'undefined') {
-              console.error('[WebKit]->[Slider Component]: Cannot find Swiper sources!');
+              console.error(`[WebKit]->[${COMPONENT_NAME}]: Cannot find Swiper sources!`);
               return;
             }
 

@@ -7,7 +7,7 @@
 
     const component = {
       extend: 'text',
-      isComponent: (el) => el?.dataset?.[DATA_KEY] === COMPONENT_TYPE,
+      isComponent: (el) => el?.dataset?.[DATA_KEY] === COMPONENT_TYPE || el?.tagName?.toLowerCase() === 'p',
       model: {
         defaults: {
           name: COMPONENT_NAME,

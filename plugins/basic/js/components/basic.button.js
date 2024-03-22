@@ -41,7 +41,9 @@
     ];
 
     const component = {
-      isComponent: (el) => el?.dataset?.[DATA_KEY] === COMPONENT_TYPE,
+      extend: 'text',
+      extendView: 'text',
+      isComponent: (el) => el?.dataset?.[DATA_KEY] === COMPONENT_TYPE || el?.tagName?.toLowerCase() === 'button',
       model: {
         defaults: {
           name: COMPONENT_NAME,
@@ -73,11 +75,7 @@
               cursor: pointer;
             }
           `,
-          components: {
-            type: 'basic_text',
-            components: 'Click Me',
-            editable: true,
-          },
+          components: 'Click Me',
 
           // Traits
           traits: [

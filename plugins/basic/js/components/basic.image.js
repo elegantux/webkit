@@ -5,6 +5,10 @@
     const DATA_KEY = "data-wk-type";
     const CATEGORY = "Basic";
 
+    const TRAITS = {
+      OBJECT_FIT: `trait_${COMPONENT_TYPE}__object_fit`
+    };
+
     // Remove build-in image component functionality
     editor.DomComponents.removeType('image');
     editor.on('canvas:drop', (dataTransfer, components) => {
@@ -40,6 +44,7 @@
           resizable: true,
 
           // Traits
+          [TRAITS.OBJECT_FIT]: '',
           traits: [
             {
               type: 'image',
@@ -47,7 +52,28 @@
               name: 'src',
               default: '/wa-apps/webkit/img/dummy-image.webp',
             },
+            {
+              type: 'select',
+              label: 'Object Fit',
+              name: TRAITS.OBJECT_FIT,
+              options: [
+                { label: 'Contain', value: 'contain' },
+                { label: 'Cover', value: 'cover' },
+                { label: 'Fill', value: 'fill' },
+                { label: 'Scale Down', value: 'scale-down' },
+                { label: 'None', value: 'none' },
+              ],
+            },
           ],
+        },
+        init() {
+          this.on(`change:${TRAITS.OBJECT_FIT}`, this.updateObjectFit);
+        },
+        updateObjectFit() {
+          const objectFit = this.get(TRAITS.OBJECT_FIT);
+          const styles = this.getStyle();
+
+          this.setStyle({ ...styles, "object-fit": objectFit });
         },
       },
     };

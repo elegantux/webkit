@@ -1,0 +1,16 @@
+{
+  "title": "Post Thumb V1",
+  "description": "",
+  "categories": ["Blot Post"],
+  "tags": ["post", "blog"],
+  "style_links": [{
+    "link": "",
+    "location": "",
+    "attributes": ""
+  }],
+  "script_links": [{
+    "link": "",
+    "location": "",
+    "attributes": ""
+  }]
+}

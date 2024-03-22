@@ -94,6 +94,12 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     showOffsets: true,
     showOffsetsSelected: true,
     storageManager: false,
+
+    /**
+     * (experimental) v0.21.8
+     */
+    clearStyles: true,
+
     styleManager: styleManagerConfig,
     blockManager: { custom: true },
     traitManager: { custom: true },

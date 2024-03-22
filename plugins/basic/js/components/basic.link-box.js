@@ -6,7 +6,7 @@
     const CATEGORY = "Basic";
 
     const component = {
-      extend: 'link',
+      extend: 'basic_link',
       isComponent: (el) => el?.dataset?.[DATA_KEY] === COMPONENT_TYPE,
       model: {
         defaults: {
@@ -19,8 +19,6 @@
           },
           style: {
             'display': 'block',
-            'min-height': '200px',
-            'min-width': '200px',
             'text-decoration': 'none',
           },
           droppable: true,
