@@ -5,9 +5,28 @@
     const DATA_KEY = "data-wk-type";
     const CATEGORY = "Basic";
 
+    // // Remove build-in link component functionality
+    // editor.DomComponents.removeType('link');
+    // editor.on('canvas:drop', (dataTransfer, components) => {
+    // editor.on('component:mount', (component) => {
+    //   console.log('canvas:drop', component.get('type'));
+    //   if (component.get('type') === 'link') {
+    //     // component.
+    //   }
+    //   // if (Array.isArray(components)) {
+    //   //   components.map((component) => {
+    //   //     if (component.get('type') === 'link') {
+    //   //       component.remove();
+    //   //     }
+    //   //   });
+    //   // } else if (components && components.get('type') === 'image') {
+    //   //   components?.remove();
+    //   // }
+    // });
+
     const component = {
-      extend: 'link',
-      isComponent: (el) => el?.dataset?.[DATA_KEY] === COMPONENT_TYPE,
+      extend: 'basic_text',
+      isComponent: (el) => el?.dataset?.[DATA_KEY] === COMPONENT_TYPE || el?.tagName?.toLowerCase() === 'a',
       model: {
         defaults: {
           name: COMPONENT_NAME,

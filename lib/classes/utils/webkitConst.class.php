@@ -19,5 +19,6 @@ class webkitConst
   const FRONTEND_FOOTER_EVENT = 'frontend_footer';
   const EDITOR_CANVAS_HEAD = 'editor_canvas_head';
   const EDITOR_PAGE_HEAD = 'editor_page_head';
+  const EDITOR_TEMPLATE_SNIPPETS = 'editor_template_snippets';
 
 }

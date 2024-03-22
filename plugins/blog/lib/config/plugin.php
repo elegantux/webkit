@@ -12,5 +12,6 @@ return array(
     'frontend_footer' => 'frontendFooter',
     'editor_page_head' => 'pluginAssets',
     'editor_canvas_head' => 'pluginDependencies',
+    'editor_template_snippets' => 'editorTemplateSnippets',
   ),
 );

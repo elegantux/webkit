@@ -1,0 +1,16 @@
+{
+  "title": "Header V1",
+  "description": "This is a Header V1 example description",
+  "categories": ["Header"],
+  "tags": ["header"],
+  "style_links": [{
+    "link": "",
+    "location": "",
+    "attributes": ""
+  }],
+  "script_links": [{
+    "link": "",
+    "location": "",
+    "attributes": ""
+  }]
+}

@@ -200,7 +200,35 @@ export function SelectorManager() {
               },
             }}
           >
-            {componentIcon ?? '🤷'}
+            {componentIcon ?? (
+              <svg
+                width="100%"
+                height="42px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16 18L21 12L16 6"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M8 6L3 12L8 18"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <line
+                  x1="8.53015"
+                  y1="20.829"
+                  x2="14.6865"
+                  y2="3.91452"
+                  stroke="currentColor"
+                />
+              </svg>
+            )}
           </Box>
           <Text
             fontSize="sm"
