@@ -28,14 +28,14 @@ class webkitEditorSnippetListController extends webkitJsonController
 
       $result = [];
 
-      foreach ($response as $name => $plugin) {
-        $plugin_name = explode('-', $name)[0];
+      foreach ($response as $subscriber => $snippet_list) {
+        $plugin_name = explode('-', $subscriber)[0];
 
         if (empty($result[$plugin_name])) {
           $result[$plugin_name] = wa(webkitConst::APP_ID)->getPlugin($plugin_name)->getInfo();
         }
 
-        $result[$plugin_name]["snippet_list"] = $plugin;
+        $result[$plugin_name]["snippet_list"] = $snippet_list;
       }
 
       $this->response = array_values($result);

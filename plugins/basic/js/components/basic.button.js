@@ -75,12 +75,6 @@
               cursor: pointer;
             }
           `,
-          // editable: true,
-          // components: {
-          //   type: 'basic_text',
-          //   components: 'Click Me',
-          //   editable: true,
-          // },
           components: 'Click Me',
 
           // Traits

@@ -10,7 +10,7 @@
       INFO_KEY: `trait_${COMPONENT_TYPE}__info_key`,
       DATE_FORMAT: `trait_${COMPONENT_TYPE}__date_format`,
     };
-// data-gjs-trait_site_page_info__info_key="name"
+
     const tagNameTrait = {
       type: 'select',
       label: 'Tag Name',
