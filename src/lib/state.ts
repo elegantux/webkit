@@ -21,6 +21,7 @@ import { ThemeSettings, UpdateThemeSettingsPayload } from './models/theme-settin
 export const STATE_TYPES = {
   TEMPLATE: 'template',
   TEMPLATE_LIST: 'template_list',
+  RECENT_TEMPLATE_LIST: 'recent_template_list',
   TEMPLATE_PROJECT: 'template_project',
   PROJECT: 'project',
   PROJECT_LIST: 'project_list',
@@ -154,6 +155,24 @@ export const useTemplateList = (projectId: Project['id'], filters: SearchParams 
     hasNextPage,
     isFetching,
     isFetchingNextPage,
+  };
+};
+
+export const useRecentTemplateList = () => {
+  const queryKey = [STATE_TYPES.RECENT_TEMPLATE_LIST];
+
+  const getRecentTemplateList = () => api.template.getRecentTemplateList();
+  const { data, isLoading } = useQuery<Response<Template[]>>({
+    queryKey,
+    queryFn: getRecentTemplateList,
+    notifyOnChangeProps: ['data', 'error'],
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+  });
+
+  return {
+    templateList: data?.data ?? [],
+    isLoading,
   };
 };
 

@@ -11,6 +11,12 @@ import {
   InputGroup,
   InputLeftAddon,
   InputRightElement,
+  Menu,
+  MenuButton,
+  MenuGroup,
+  MenuItem,
+  MenuList,
+  Portal,
   Spacer,
   Spinner,
   Tab,
@@ -28,9 +34,11 @@ import { ChangeEvent, Suspense, memo, useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import {
   FaAngleLeft,
+  FaChevronDown,
   FaCirclePlus,
   FaDownload,
   FaFloppyDisk,
+  FaLock,
   FaMagnifyingGlass,
   FaMobileButton,
   FaTabletButton,
@@ -42,11 +50,12 @@ import { AxiosError } from 'axios';
 
 import { EDITOR_STORE, useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
 import { editorRoute } from '../../../routes';
-import { useTemplate } from '@lib/state';
+import { useRecentTemplateList, useTemplate } from '@lib/state';
 import { useTemplateSnippetList } from '@app/editor/lib/state';
 import { Modal, ModalProvider, useModal, useModalContext } from '@ui/atomic/organisms/modal';
 import { TemplateSnippet, TemplateSnippetListResponse } from '@lib/models/snippet';
-import { appPath } from '@lib/utils.tsx';
+import { appPath, appUrl } from '@lib/utils.tsx';
+import { Template } from '@lib/models/template';
 
 import WebkitIcon from '@assets/icons/webkit.svg?react';
 
@@ -102,9 +111,9 @@ function TemplateSnippetCard({ snippet }: { snippet: TemplateSnippet }) {
 
   const handleInsertTemplateSnippet = () => {
     const selectedComponent = editor.getSelected();
-    // console.log('selectedComponent', selectedComponent);
+    console.log('selectedComponent', selectedComponent);
 
-    if (selectedComponent) {
+    if (selectedComponent && selectedComponent.get('type') === 'basic_container') {
       selectedComponent.append(snippet.front_content);
     } else {
       editor.addComponents(snippet.front_content);
@@ -283,9 +292,11 @@ function TemplatesModalContent() {
           _disabled={{ color: 'inherit' }}
           isDisabled
         >
+          <FaLock size={14} />
           <Text
             fontSize="16px"
             fontWeight="bold"
+            ml="14px"
           >
             My Snippets
           </Text>
@@ -343,6 +354,44 @@ function TemplatesModalContent() {
         ))}
       </TabPanels>
     </Tabs>
+  );
+}
+
+function TemplateNavigation() {
+  const { templateId } = editorRoute.useParams();
+  const { template } = useTemplate(Number(templateId));
+  const { templateList } = useRecentTemplateList();
+
+  const handleTemplateClick = (temp: Template) => {
+    window.location.href = appUrl(`/app/editor/${temp.id}`);
+  };
+
+  return (
+    <Menu>
+      <MenuButton
+        as={Button}
+        variant="ghost"
+        size="sm"
+        colorScheme="grey"
+        rightIcon={<FaChevronDown size={12} />}
+      >
+        {template.name}
+      </MenuButton>
+      <Portal>
+        <MenuList>
+          <MenuGroup title="Recently edited templates">
+            {templateList.map((item) => (
+              <MenuItem
+                key={item.id}
+                onClick={() => handleTemplateClick(item)}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
+          </MenuGroup>
+        </MenuList>
+      </Portal>
+    </Menu>
   );
 }
 
@@ -520,7 +569,8 @@ export function Navbar() {
           Add Block
         </Button>
       </Flex>
-      <Flex gap="24px">
+      <Flex gap="14px">
+        <TemplateNavigation />
         <Button
           colorScheme="grey"
           variant="ghost"
