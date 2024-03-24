@@ -2,6 +2,7 @@
 
 class webkitTemplateSnippetDTO {
   public $categories;
+  public $type; // element, component, page
   public $tags;
   public $title;
   public $description;
@@ -11,6 +12,7 @@ class webkitTemplateSnippetDTO {
   public $front_scripts;
   public $style_links;
   public $script_links;
+  public $font_links;
 
   /**
    * @throws Exception
@@ -20,6 +22,7 @@ class webkitTemplateSnippetDTO {
     $this->validate($data, array_keys($this->getData()));
 
     $this->categories = $data["categories"];
+    $this->type = $data["type"];
     $this->tags = $data["tags"];
     $this->title = $data["title"];
     $this->description = $data["description"] ?? null;
@@ -29,12 +32,14 @@ class webkitTemplateSnippetDTO {
     $this->front_scripts = $data["front_scripts"] ?? null;
     $this->style_links = $data["style_links"] ?? null;
     $this->script_links = $data["script_links"] ?? null;
+    $this->font_links = $data["font_links"] ?? null;
   }
 
   public function getData()
   {
     return [
       "categories" => $this->categories,
+      "type" => $this->type,
       "tags" => $this->tags,
       "title" => $this->title,
       "description" => $this->description,
@@ -44,6 +49,7 @@ class webkitTemplateSnippetDTO {
       "front_scripts" => $this->front_scripts,
       "style_links" => $this->style_links,
       "script_links" => $this->script_links,
+      "font_links" => $this->font_links,
     ];
   }
 

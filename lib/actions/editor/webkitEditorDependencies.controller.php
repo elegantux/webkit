@@ -48,23 +48,24 @@ class webkitEditorDependenciesController extends webkitJsonController
       if (!empty($template['wtp_project_id'])) {
         $project = new webkitProject($template['wtp_project_id']);
         $theme_settings = new webkitThemeSettings($project->theme_settings_id);
-        $wa_theme_url = wa($project->app_id)->getDataUrl('themes/' . $project->theme_id, true, null, false);
 
         $view = wa($project->app_id)->getView();
 
+        $view_smarties = webkitThemeSettings::getViewSmarties($project->app_id, $project->theme_id);
+
         if ($theme_settings->style_links) {
           foreach (json_decode($theme_settings->style_links) as $style_link) {
-            $theme_settings_head_style_links[] = $view->fetch('string:' . $style_link->link, ["wa_theme_url" => $wa_theme_url]);
+            $theme_settings_head_style_links[] = $view->fetch('string:' . $style_link->link, $view_smarties);
           }
         }
         if ($theme_settings->script_links) {
           foreach (json_decode($theme_settings->script_links) as $script_link) {
-            $theme_settings_head_script_links[] = $view->fetch('string:' . $script_link->link, ["wa_theme_url" => $wa_theme_url]);
+            $theme_settings_head_script_links[] = $view->fetch('string:' . $script_link->link, $view_smarties);
           }
         }
         if ($theme_settings->font_links) {
           foreach (json_decode($theme_settings->font_links) as $font_link) {
-            $theme_settings_head_font_links[] = $view->fetch('string:' . $font_link->link, ["wa_theme_url" => $wa_theme_url]);
+            $theme_settings_head_font_links[] = $view->fetch('string:' . $font_link->link, $view_smarties);
           }
         }
       }

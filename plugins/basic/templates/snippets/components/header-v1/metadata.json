@@ -2,6 +2,7 @@
   "title": "Header V1",
   "description": "This is a Header V1 example description",
   "categories": ["Header"],
+  "type": "component",
   "tags": ["header"],
   "style_links": [{
     "link": "",

@@ -6,12 +6,14 @@ export function CodeEditor({
   onChange,
   codeEditor,
   setCodeEditor,
+  readOnly,
   ...props
 }: ChakraProps & {
   value: string;
   onChange: (value: string) => void;
   codeEditor: Record<any, any> | null;
   setCodeEditor: Dispatch<Record<any, any> | null>;
+  readOnly?: boolean;
 }) {
   const editorRef = useRef<HTMLDivElement | null>(null);
   const mode = useColorMode();
@@ -47,6 +49,10 @@ export function CodeEditor({
 
     editorInstance.session.setValue(value);
     editorInstance.session.on('change', handleEditorChange);
+
+    if (readOnly) {
+      editorInstance.setReadOnly(true);
+    }
 
     setCodeEditor(editorInstance);
   };

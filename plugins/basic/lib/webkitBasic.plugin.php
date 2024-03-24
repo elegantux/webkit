@@ -81,6 +81,7 @@ class webkitBasicPlugin extends webkitEditorPlugin {
 
         $snippet_dto = new webkitTemplateSnippetDTO([
           "categories" => $metadata["categories"],
+          "type" => $metadata["type"],
           "tags" => $metadata["tags"],
           "title" => $metadata["title"],
           "description" => $metadata["description"],
@@ -90,6 +91,7 @@ class webkitBasicPlugin extends webkitEditorPlugin {
           "front_scripts" => file_get_contents($snippets_folder_path . $snippet['scripts']),
           "style_links" => $metadata["style_links"],
           "script_links" => $metadata["script_links"],
+          "font_links" => $metadata["font_links"],
         ]);
 
         $snippet_list[] = $snippet_dto->getData();
