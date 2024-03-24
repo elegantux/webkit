@@ -87,4 +87,15 @@ class webkitThemeSettings
       )),
     ];
   }
+
+  public static function getViewSmarties($app_id, $theme_id)
+  {
+    $wa_theme_url = wa($app_id)->getDataUrl('themes/' . $theme_id, true, null, false);
+    $wa_webkit_app_url = webkitUrl::getAppStaticUrl();
+
+    return [
+      "wa_theme_url" => $wa_theme_url,
+      "wa_webkit_app_url" => $wa_webkit_app_url,
+    ];
+  }
 }

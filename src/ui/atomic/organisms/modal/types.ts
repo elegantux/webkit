@@ -30,5 +30,6 @@ export interface IModal extends UseDisclosureProps {
   onPrimaryButtonClick?: () => any;
   onSecondaryButtonClick?: () => any;
   onTertiaryButtonClick?: () => any;
+  isCentered?: boolean;
   [x: string]: any; // this for UseDisclosureProps
 }

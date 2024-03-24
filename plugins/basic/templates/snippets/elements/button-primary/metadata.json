@@ -1,0 +1,7 @@
+{
+  "title": "Primary Button",
+  "description": "This is a primary button example description",
+  "categories": ["Button"],
+  "type": "element",
+  "tags": ["button", "action"]
+}

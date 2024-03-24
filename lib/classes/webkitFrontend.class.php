@@ -53,10 +53,11 @@ trait webkitFrontend
     $theme_settings_head_style_links = [];
     $theme_settings_head_script_links = [];
     $theme_settings_head_font_links = [];
+    $view_smarties = $theme_settings::getViewSmarties($app_id, $theme_id);
     if ($theme_settings->style_links) {
       foreach (json_decode($theme_settings->style_links) as $style_link) {
         $theme_settings_head_style_links[] = $html_parser->tagToHtml('link', [
-          "href" => $view->fetch('string:' . $style_link->link),
+          "href" => $view->fetch('string:' . $style_link->link, $view_smarties),
           "rel" => "stylesheet",
         ]);
       }
@@ -64,14 +65,14 @@ trait webkitFrontend
     if ($theme_settings->script_links) {
       foreach (json_decode($theme_settings->script_links) as $script_link) {
         $theme_settings_head_script_links[] = $html_parser->tagToHtml('script', [
-          "src" => $view->fetch('string:' . $script_link->link),
+          "src" => $view->fetch('string:' . $script_link->link, $view_smarties),
         ]);
       }
     }
     if ($theme_settings->font_links) {
       foreach (json_decode($theme_settings->font_links) as $font_link) {
         $theme_settings_head_font_links[] = $html_parser->tagToHtml('link', [
-          "href" => $view->fetch('string:' . $font_link->link),
+          "href" => $view->fetch('string:' . $font_link->link, $view_smarties),
           "rel" => "stylesheet",
         ]);
       }
