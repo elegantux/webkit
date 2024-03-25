@@ -13,7 +13,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { FaCirclePlus, FaFeatherPointed, FaFloppyDisk, FaTrash } from 'react-icons/fa6';
+import { FaBrush, FaCirclePlus, FaFloppyDisk, FaTrash } from 'react-icons/fa6';
 import { FormProvider, useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -314,7 +314,7 @@ export function ThemeSettings() {
           gap="12px"
           size="md"
         >
-          <FaFeatherPointed />
+          <FaBrush />
           Theme Settings
         </Heading>
         <Button
@@ -340,15 +340,12 @@ export function ThemeSettings() {
         <Code
           fontSize="12px"
           // eslint-disable-next-line react/no-children-prop
-          children="{$wa_theme_url}"
+          children="{$wa_theme_url}, {$wa_webkit_app_url}"
         />
       </Alert>
       <ContentSection>
         <StyleScriptLinks />
       </ContentSection>
-      {/* <ContentSection mt="24px">
-        <FontLinks />
-      </ContentSection> */}
     </FormProvider>
   );
 }

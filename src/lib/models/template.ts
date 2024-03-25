@@ -1,8 +1,17 @@
+import { SearchParams } from '@lib/models/response.ts';
+
+export enum TEMPLATE_PROJECT_TEMPLATE_TYPES {
+  DEFAULT = 'default',
+  LOOP = 'loop',
+  INFO_PAGE = 'info_page',
+}
+
 export interface TemplateProject {
   wtp_id: string;
   wtp_project_id: string;
+  wtp_page_id: string;
   wtp_status: string; // 0 | 1
-  wtp_template_type: string;
+  wtp_template_type: TEMPLATE_PROJECT_TEMPLATE_TYPES;
   wtp_template_location: string;
 }
 
@@ -37,4 +46,8 @@ export type UpdateTemplatePayload = {
   component_types?: Template['component_types'];
   wtp_id?: Template['wtp_id'];
   wtp_status?: Template['wtp_status'];
+};
+
+export type TemplateRequestParams = SearchParams & {
+  template_type?: TEMPLATE_PROJECT_TEMPLATE_TYPES;
 };

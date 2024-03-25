@@ -3,7 +3,13 @@ import axios from 'axios';
 import { PaginatedResponse, Response, SearchParams } from '@lib/models/response';
 import ApiError from '@lib/classes/ApiError';
 import { HOST, WA_APP_URL } from '@lib/constants';
-import { CreateTemplatePayload, Template, TemplateProject, UpdateTemplatePayload } from '@lib/models/template';
+import {
+  CreateTemplatePayload,
+  Template,
+  TemplateProject,
+  TemplateRequestParams,
+  UpdateTemplatePayload,
+} from '@lib/models/template';
 import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models/project';
 import { createFormData } from '@lib/utils';
 import { WebasystApp } from '@lib/models/cross-app';
@@ -25,7 +31,7 @@ const template = {
 
     return data;
   },
-  async getTemplateList(projectId: Project['id'], searchParams?: SearchParams) {
+  async getTemplateList(projectId: Project['id'], searchParams?: TemplateRequestParams) {
     const params = {
       module: 'templateList',
       project_id: projectId,

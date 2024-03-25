@@ -8,7 +8,13 @@ import {
 } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-import { CreateTemplatePayload, Template, TemplateProject, UpdateTemplatePayload } from '@lib/models/template';
+import {
+  CreateTemplatePayload,
+  Template,
+  TemplateProject,
+  TemplateRequestParams,
+  UpdateTemplatePayload,
+} from '@lib/models/template';
 import { PaginatedResponse, Response, SearchParams } from '@lib/models/response';
 import { api } from '@lib/api';
 import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models/project';
@@ -89,7 +95,7 @@ export const useTemplateProject = (wtpId: TemplateProject['wtp_id']) => {
   };
 };
 
-export const useTemplateList = (projectId: Project['id'], filters: SearchParams = {}) => {
+export const useTemplateList = (projectId: Project['id'], filters: TemplateRequestParams = {}) => {
   const queryClient = useQueryClient();
   const queryKey = [STATE_TYPES.TEMPLATE_LIST, projectId, filters];
 

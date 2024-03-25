@@ -13,7 +13,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { Suspense, memo, useState } from 'react';
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate, useRouter } from '@tanstack/react-router';
 import {
   FaAngleLeft,
   FaChevronDown,
@@ -256,7 +256,16 @@ function ResponsiveButtons() {
 export function Navbar() {
   const templatesModal = useModal();
   const navigate = useNavigate();
+  const router = useRouter();
   const openBlockListSidebar = useBlockListDisclosure((state) => state.onOpen);
+
+  const handleBackButtonClick = () => {
+    try {
+      router.history.back();
+    } catch (_e) {
+      navigate({ to: '/app/dashboard/project-list' });
+    }
+  };
 
   return (
     <Flex
@@ -276,7 +285,7 @@ export function Navbar() {
           size="sm"
           leftIcon={<FaAngleLeft />}
           _hover={{ textDecoration: 'none' }}
-          onClick={() => navigate({ to: '/app/dashboard/project-list' })}
+          onClick={handleBackButtonClick}
         >
           Back
         </Button>

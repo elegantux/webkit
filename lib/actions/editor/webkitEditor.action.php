@@ -41,6 +41,10 @@ class webkitEditorAction extends waViewAction
     $head_plugin_script = $html->arrayToHtmlScript($plugin_scripts);
 
     $this->view->assign('plugin_scripts', $head_plugin_script);
-    $this->view->assign($this->getBackendUrls());
+
+    $view_vars = array_merge($this->getBackendUrls(), [
+      'lang' => substr(wa()->getLocale(), 0, 2),
+    ]);
+    $this->view->assign($view_vars);
   }
 }

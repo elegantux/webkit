@@ -47,6 +47,18 @@ class webkitTemplateUpdateController extends webkitJsonController
 
       $template_project_service->updateTemplateAndTemplateProject($post, ['status' => $wtp_status]);
 
+      /**
+       * Update the contents of the info page if the template is of type info_page.
+       */
+      $page_id = $template_project_service->template_project_manager->page_id;
+      if (isset($page_id) && $template_project_service->template_project_manager->template_type === webkitTemplateProjectModel::$TEMPLATE_TYPE_INFO_PAGE) {
+        $project = new webkitProject($template_project_service->template_project_manager->project_id);
+        $page_model = $this->getPageModel($project->app_id);
+        $page_model->update($template_project_service->template_project_manager->page_id, [
+          'content' => $post['front_content']
+        ]);
+      }
+
       $this->response = $template_project_service->collection->getByTemplateProjectId($wtp_id);
 
     } catch (webkitAPIException $exception) {
@@ -57,6 +69,16 @@ class webkitTemplateUpdateController extends webkitJsonController
 
     }
 
+  }
+
+  /**
+   * @return waPageModel
+   */
+  protected function getPageModel($app_id)
+  {
+    wa($app_id);
+    $model = $app_id . 'PageModel';
+    return new $model();
   }
 
 }

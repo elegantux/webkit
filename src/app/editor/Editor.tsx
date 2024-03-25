@@ -88,6 +88,7 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
 
   const editor = init({
     container: '#editor-container',
+    // protectedCss: '',
     width: '100%',
     height: '100%',
     autorender: false,
