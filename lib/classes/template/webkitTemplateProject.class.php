@@ -4,6 +4,7 @@
  * @property int $id
  * @property int $template_id
  * @property int $project_id
+ * @property int $page_id
  * @property int $status
  * @property string $scope
  * @property string $template_type

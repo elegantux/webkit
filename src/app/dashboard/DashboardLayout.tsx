@@ -1,7 +1,9 @@
+import { Suspense } from 'react';
 import { Box, Grid, GridItem } from '@chakra-ui/react';
 import { Outlet } from '@tanstack/react-router';
 
 import { DashboardSidebar } from '@app/dashboard/DashboardSidebar';
+import { AppLoadingState } from '@ui/atomic/templates/AppLoadingState';
 
 import Ornament35 from '@assets/decorations/ornament-35.svg?react';
 import Ornament73 from '@assets/decorations/ornament-73.svg?react';
@@ -48,7 +50,16 @@ export function DashboardLayout() {
         >
           <Ornament73 />
         </Box>
-        <Outlet />
+        <Suspense
+          fallback={
+            <AppLoadingState
+              height="auto"
+              mt="200px"
+            />
+          }
+        >
+          <Outlet />
+        </Suspense>
       </GridItem>
     </Grid>
   );

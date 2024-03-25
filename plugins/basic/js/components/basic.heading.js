@@ -24,6 +24,7 @@
               label: 'Tag Name',
               name: 'tagName',
               default: 'h2',
+              changeProp: true,
               options: [
                 { value: 'h1', label: 'H1'},
                 { value: 'h2', label: 'H2'},

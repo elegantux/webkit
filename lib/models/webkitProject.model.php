@@ -101,7 +101,12 @@ class webkitProjectModel extends waModel
           AND wtp.status = 1
         ', array('app_id' => $app_id, 'theme_id' => $theme_id, 'template_location' => $template_location))
         ->fetch();
-      return $response['front_content'];
+
+      if (isset($response['front_content'])) {
+        return $response['front_content'];
+      }
+
+      return null;
     } catch (waDbException $exception) {
       throw new webkitAPIException($exception->getMessage(), $exception->getCode());
     }

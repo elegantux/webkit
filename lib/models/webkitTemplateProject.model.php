@@ -6,6 +6,10 @@ class webkitTemplateProjectModel extends waModel
   protected $app_id = 'webkit';
   protected $table = 'webkit_template_project';
 
+  public static $TEMPLATE_TYPE_DEFAULT = 'default';
+  public static $TEMPLATE_TYPE_LOOP = 'loop';
+  public static $TEMPLATE_TYPE_INFO_PAGE = 'info_page';
+
   /**
    * @return array
    * @throws webkitAPIException

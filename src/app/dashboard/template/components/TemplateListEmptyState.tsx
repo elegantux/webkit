@@ -2,7 +2,7 @@ import { ChakraProps, Flex, Heading, Text } from '@chakra-ui/react';
 
 import { CreateTemplateButton } from '@app/dashboard/template/components/CreateTemplateButton';
 
-export function TemplateListEmptyState(props: ChakraProps) {
+export function TemplateListEmptyState({ showCTA = true, ...props }: ChakraProps & { showCTA?: boolean }) {
   return (
     <Flex
       justify="center"
@@ -15,13 +15,17 @@ export function TemplateListEmptyState(props: ChakraProps) {
       >
         You don&apos;t have any templates yet.
       </Heading>
-      <Text>Start from creating a template.</Text>
-      <CreateTemplateButton
-        width="max-content"
-        mt="12px"
-      >
-        Create Template
-      </CreateTemplateButton>
+      {showCTA && (
+        <>
+          <Text>Start from creating a template.</Text>
+          <CreateTemplateButton
+            width="max-content"
+            mt="12px"
+          >
+            Create Template
+          </CreateTemplateButton>
+        </>
+      )}
     </Flex>
   );
 }

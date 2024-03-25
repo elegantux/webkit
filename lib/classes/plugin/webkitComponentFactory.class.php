@@ -30,10 +30,12 @@ class webkitComponentFactory
     foreach ($components as $name => $component) {
       $sources = $component->componentSources($params);
 
-      foreach ($sources['scripts'] as $script) {
-        $result['scripts'][] = $script;
+      if (!empty($sources['scripts'])) {
+        foreach ($sources['scripts'] as $script) {
+          $result['scripts'][] = $script;
+        }
       }
-      if ($sources['styles']) {
+      if (!empty($sources['styles'])) {
         foreach ($sources['styles'] as $style) {
           $result['styles'][] = $style;
         }
@@ -58,10 +60,12 @@ class webkitComponentFactory
     foreach ($components as $name => $component) {
       $sources = $component->dependencySources($params);
 
-      foreach ($sources['scripts'] as $script) {
-        $result['scripts'][] = $script;
+      if (!empty($sources['scripts'])) {
+        foreach ($sources['scripts'] as $script) {
+          $result['scripts'][] = $script;
+        }
       }
-      if ($sources['styles']) {
+      if (!empty($sources['styles'])) {
         foreach ($sources['styles'] as $style) {
           $result['styles'][] = $style;
         }

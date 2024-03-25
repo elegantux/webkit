@@ -36,6 +36,7 @@ return array(
     'id'                => array('int', 11, 'null' => 0, 'autoincrement' => 1),
     'template_id'       => array('int', 11, 'unsigned' => 1, 'null' => 0),
     'project_id'        => array('int', 11, 'unsigned' => 1, 'null' => 0),
+    'page_id'           => array('int', 11, 'null' => 1),
     'status'            => array('int', 11, 'unsigned' => 1, 'null' => 0),
     'template_type'     => array('varchar', 255, 'null' => 0),
     'template_location' => array('varchar', 255, 'null' => 0),

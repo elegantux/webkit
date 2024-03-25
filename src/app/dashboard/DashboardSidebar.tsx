@@ -1,5 +1,6 @@
 import { Box, ChakraProps, Flex, Link, useColorModeValue } from '@chakra-ui/react';
-import { FaHouse, FaList, FaScrewdriverWrench } from 'react-icons/fa6';
+import { FaHouse, FaScrewdriverWrench } from 'react-icons/fa6';
+import { BsGridFill } from 'react-icons/bs';
 import { PropsWithChildren } from 'react';
 import { LinkProps, Link as RouterLink } from '@tanstack/react-router';
 
@@ -76,16 +77,9 @@ export function DashboardSidebar() {
           to={projectListRoute.to}
           params={{}}
         >
-          <FaList size={18} />
+          <BsGridFill size={18} />
           Project List
         </SidebarLink>
-        {/* <SidebarLink */}
-        {/*  to={dashboardRoute.to} */}
-        {/*  params={{}} */}
-        {/* > */}
-        {/*  <FaQuestion size={18} /> */}
-        {/*  About */}
-        {/* </SidebarLink> */}
       </Flex>
       <Flex
         direction="column"

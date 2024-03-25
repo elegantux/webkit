@@ -6,10 +6,11 @@ class webkitTemplateProjectCollection
   protected $page;
   protected $sort;
   protected $order;
-  protected $keyword;
   protected $per_page;
+  protected $keyword;
+  protected $template_type;
 
-  private $wtp_fields = 'wtp.id as wtp_id, wtp.project_id as wtp_project_id, wtp.status as wtp_status, wtp.template_type as wtp_template_type, wtp.template_location as wtp_template_location';
+  private $wtp_fields = 'wtp.id as wtp_id, wtp.project_id as wtp_project_id, wtp.page_id as wtp_page_id, wtp.status as wtp_status, wtp.template_type as wtp_template_type, wtp.template_location as wtp_template_location';
   private $template_table = 'webkit_template';
   private $template_project_table = 'webkit_template_project';
 
@@ -44,6 +45,10 @@ class webkitTemplateProjectCollection
 
     if (isset($this->keyword) && !empty($this->keyword)) {
       $queryBuilder->like('name', $this->keyword);
+    }
+
+    if (isset($this->template_type)) {
+      $queryBuilder->like('template_type', $this->template_type);
     }
 
     if ($this->page) {
@@ -141,12 +146,13 @@ class webkitTemplateProjectCollection
   }
 
 
-  public function applyFilters($page = 1, $sort = 'DESC', $order = 'create_datetime', $keyword = null, $per_page = 10) {
+  public function applyFilters($page = 1, $sort = 'DESC', $order = 'create_datetime', $per_page = 10, $keyword = null, $template_type = null) {
     $this->page = $page;
     $this->sort = $sort;
     $this->order = $order;
-    $this->keyword = $keyword;
     $this->per_page = $per_page;
+    $this->keyword = $keyword;
+    $this->template_type = $template_type;
   }
 
 }

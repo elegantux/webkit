@@ -1,0 +1,31 @@
+<li>
+  <div style="position: relative; height: 8px; width: 20px; overflow: visible;">
+    <img id="edit-with-webkit-button" src="/wa-apps/webkit/img/webkit96.svg?v=1.0.0" style="position: absolute; top: -6px; width: 24px; cursor: pointer;" />
+  </div>
+  <script>
+    (function () {
+      var imageEl = document.getElementById('edit-with-webkit-button');
+      imageEl.addEventListener('click', function () {
+        $.ajax({
+          url: '{$wa_backend_url}webkit/?module=editInfoPage',
+          data: {
+            app_id: "{$app_id}",
+            theme_id: "{$theme_id}",
+            page_id: "{$page_id}",
+            page_title: "{$page_title}"
+          },
+          type: 'post',
+          dataType: 'json',
+          success: function (response) {
+            if (response.status === 'ok') {
+              window.location.href = '{$wa_backend_url}webkit/app/editor/' + response.data;
+            }
+          },
+          error: function (response) {
+            console.log('error', response);
+          }
+        });
+      });
+    })();
+  </script>
+</li>
