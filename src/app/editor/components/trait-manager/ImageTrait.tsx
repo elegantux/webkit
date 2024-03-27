@@ -26,11 +26,11 @@ import { AxiosError } from 'axios';
 
 import { Modal, useModal } from '@ui/atomic/organisms/modal';
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
-import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { PropertyHeader } from '@app/editor/components/style-manager/components/PropertyHeader';
 import { useImageAssetList } from '@lib/state';
 import { ImageAsset } from '@lib/models/asset';
 import { appPath, getInfoToastObject } from '@lib/utils';
+import { useTraitProperty } from '@app/editor/components/trait-manager/lib/utils';
 
 import WebkitIcon from '@assets/icons/webkit.svg?react';
 
@@ -339,7 +339,10 @@ function ImageList() {
 }
 
 function ImageTraitContent({ trait }: { trait: Trait }) {
-  const [value, setValue] = useState<string | undefined>(trait.getValue());
+  const { value, setValue, updateTraitValue, clearTraitValue, traitLabel } = useTraitProperty<string | undefined>(
+    trait,
+    ''
+  );
 
   const theme = useTheme();
   const modal = useModal();
@@ -348,11 +351,7 @@ function ImageTraitContent({ trait }: { trait: Trait }) {
 
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
 
-  const component = editor.getSelected();
-  const traitName = trait.getName();
-  const traitLabel = trait.getLabel();
   const hasValue = !!value;
-  const traitDefaultValue = trait.getDefault();
 
   const bgImageColor = useColorModeValue(theme.colors.grey[300], theme.colors.ebony[400]);
   const bgColor = useColorModeValue('grey.100', 'ebony.500');
@@ -363,9 +362,8 @@ function ImageTraitContent({ trait }: { trait: Trait }) {
     modal.modalDisclosure.onClose();
   };
 
-  const updateTraitValue = () => {
-    component?.set(traitName, activeImage?.full_path);
-    trait.setValue(activeImage?.full_path);
+  const handlePrimaryButtonClick = () => {
+    updateTraitValue(activeImage?.full_path);
     setValue(activeImage?.full_path);
 
     setActiveImage(undefined);
@@ -373,33 +371,24 @@ function ImageTraitContent({ trait }: { trait: Trait }) {
   };
 
   const handleClearButton = () => {
-    component?.set(traitName, traitDefaultValue);
-    trait.setValue(traitDefaultValue);
-    setValue(traitDefaultValue);
+    clearTraitValue();
     setActiveImage(undefined);
   };
 
-  const updatePropertyStyles = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const traitValue = lastSelectedComponent?.getTrait(trait.getId())?.getValue();
-    setValue(traitValue);
+  const updateTrait = () => {
+    setValue(trait.getValue());
   };
 
-  // Update state when:
-  // 1. selected
-  // 2. deselected
-  // 3. removed
   useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updatePropertyStyles);
-    editor.on('undo', updatePropertyStyles);
-    editor.on('redo', updatePropertyStyles);
+    updateTrait();
+    editor.on('undo', updateTrait);
+    editor.on('redo', updateTrait);
 
     return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updatePropertyStyles);
-      editor.off('undo', updatePropertyStyles);
-      editor.off('redo', updatePropertyStyles);
+      editor.off('undo', updateTrait);
+      editor.off('redo', updateTrait);
     };
-  }, [editor]);
+  }, [trait]);
 
   return (
     <Box key={trait.getId()}>
@@ -466,7 +455,7 @@ function ImageTraitContent({ trait }: { trait: Trait }) {
         isCentered
         minWidth="800px"
         primaryButtonLabel="Insert"
-        onPrimaryButtonClick={updateTraitValue}
+        onPrimaryButtonClick={handlePrimaryButtonClick}
         primaryButtonEnabled={!!activeImage}
         showSecondaryButton={false}
         {...modal.modalProps}

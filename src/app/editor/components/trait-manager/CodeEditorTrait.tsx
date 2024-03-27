@@ -2,34 +2,20 @@ import { Trait } from 'grapesjs';
 import { useEffect, useMemo, useState } from 'react';
 import { Box } from '@chakra-ui/react';
 
-import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { debounce } from '@lib/utils';
-import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { PropertyHeader } from '@app/editor/components/style-manager/components/PropertyHeader';
 import { CodeEditor } from '@ui/atomic/molecules';
+import { useTraitProperty } from '@app/editor/components/trait-manager/lib/utils';
 
 export function CodeEditorTrait({ trait }: { trait: Trait }) {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [value, setValue] = useState<string>(trait.getValue());
+  const { value, setValue, updateTraitValue, clearTraitValue, traitDefaultValue, traitLabel } = useTraitProperty(
+    trait,
+    trait.getValue()
+  );
   const [codeEditor, setCodeEditor] = useState<Record<any, any> | null>(null);
 
-  const component = editor.getSelected();
-  const traitName = trait.getName();
-  const traitLabel = trait.getLabel();
-  const traitDefaultValue = trait.getDefault() ?? '';
-
-  const updateTraitValue = (v: string) => {
-    component?.set(traitName, v);
-    trait.setValue(v);
-  };
-
   // Debounce updating the display color
-  const debouncedUpdateTraitValue = useMemo(() => {
-    if (component) {
-      return debounce(updateTraitValue, 500);
-    }
-    return () => {};
-  }, [component]);
+  const debouncedUpdateTraitValue = useMemo(() => debounce(updateTraitValue, 500), [trait]);
 
   const handleInputChange = (v: string) => {
     debouncedUpdateTraitValue(v);
@@ -37,42 +23,23 @@ export function CodeEditorTrait({ trait }: { trait: Trait }) {
   };
 
   const handleClearButton = () => {
-    updateTraitValue(traitDefaultValue);
-    setValue(traitDefaultValue);
+    clearTraitValue();
     codeEditor?.setValue(traitDefaultValue);
   };
 
-  const updateProperty = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const traitValue = lastSelectedComponent?.getTrait(trait.getId())?.getValue();
-    if (typeof traitValue === 'string') {
-      setValue(traitValue);
-    } else {
-      setValue('');
-    }
-  };
-
-  // Update state when:
-  // 1. selected
-  // 2. deselected
-  // 3. removed
   useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-    };
-  }, [editor]);
+    setValue(trait.getValue());
+  }, [trait]);
 
   return (
-    <Box key={trait.getId()}>
+    <Box key={trait.id}>
       <PropertyHeader
         onClear={handleClearButton}
         propertyLabel={traitLabel}
         hasValue={!!value}
       />
       <CodeEditor
-        key={component?.getId()}
+        key={trait.id}
         value={value}
         onChange={handleInputChange}
         codeEditor={codeEditor}

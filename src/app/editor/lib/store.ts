@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { create } from 'zustand';
-import grapesjs, { Editor, EditorConfig, Sector, Selector, State } from 'grapesjs';
+import grapesjs, { Editor, EditorConfig, Sector } from 'grapesjs';
 
 import { RuleManagerToggleSidebarCommandPayload } from '@lib/models/commands';
 

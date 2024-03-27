@@ -10,6 +10,9 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
+  Input,
+  InputGroup,
+  InputLeftElement,
   Tab,
   TabList,
   TabPanel,
@@ -20,7 +23,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { FaComputerMouse as ComputerMouseIcon, FaCirclePlus } from 'react-icons/fa6';
+import { FaComputerMouse as ComputerMouseIcon, FaCirclePlus, FaMagnifyingGlass } from 'react-icons/fa6';
 import { Component } from 'grapesjs';
 
 import { TraitManager } from '@app/editor/components/trait-manager/TraitManager';
@@ -261,7 +264,12 @@ export function Sidebar() {
             px="16px"
             borderBottomWidth="1px"
           >
-            Block List
+            <InputGroup pr="40px">
+              <InputLeftElement pointerEvents="none">
+                <FaMagnifyingGlass />
+              </InputLeftElement>
+              <Input placeholder="search ..." />
+            </InputGroup>
             <DrawerCloseButton />
           </DrawerHeader>
           <DrawerBody p={0}>

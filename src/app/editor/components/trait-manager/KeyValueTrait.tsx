@@ -3,9 +3,8 @@ import { Trait } from 'grapesjs';
 import { Box, Button, Flex, Input, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
 import { FaPlus } from 'react-icons/fa6';
 
-import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
-import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { PropertyHeader } from '../style-manager/components/PropertyHeader';
+import { useTraitProperty } from '@app/editor/components/trait-manager/lib/utils';
 
 type KeyValue = { key: string; value: string };
 
@@ -59,67 +58,48 @@ function KeyValueList({ list, onRemove }: { list: KeyValue[]; onRemove: (item: K
 }
 
 export function KeyValueTrait({ trait }: { trait: Trait }) {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [values, setValues] = useState<KeyValue[]>(parseAttributesStringToArray(trait.getValue()));
+  const [values, setValues] = useState<KeyValue[]>([]);
   const [inputValues, setInputValues] = useState({ key: '', value: '' });
+  const { setValue, updateTraitValue, clearTraitValue, traitLabel, traitDefaultValue } = useTraitProperty<
+    string | undefined
+  >(trait, '');
 
-  const component = editor.getSelected();
-  const traitName = trait.getName();
-  const traitLabel = trait.getLabel();
-  const traitDefaultValue = trait.getDefault() ?? '';
   // @ts-ignore
   const ignoreKeys: string[] = trait.get('ignoreKeys') ?? [];
 
   const ignoredKeysUsed = ignoreKeys.includes(inputValues.key);
   const isValid = Object.values(inputValues).every((item) => item.trim().length > 0) && !ignoredKeysUsed;
 
-  const updateTraitValue = (v: string) => {
-    component?.set(traitName, v);
-    trait.setValue(v);
-  };
-
   const handleAddKeyValue = () => {
     const item: KeyValue = { key: inputValues.key, value: inputValues.value };
     const updatedValues = [...values, item];
 
-    updateTraitValue(convertArrayToAttributesString(updatedValues));
+    const convertedValue = convertArrayToAttributesString(updatedValues);
+    updateTraitValue(convertedValue);
     setValues(updatedValues);
     setInputValues({ key: '', value: '' });
+    setValue(convertedValue);
   };
 
   const handleKeyValueRemove = (item: KeyValue) => {
-    const filteredValues = values.filter((value) => value.key !== item.key);
+    const filteredValues = values.filter((v) => v.key !== item.key);
 
-    updateTraitValue(convertArrayToAttributesString(filteredValues));
+    const convertedValue = convertArrayToAttributesString(filteredValues);
+    updateTraitValue(convertedValue);
     setValues(filteredValues);
+    setValue(convertedValue);
   };
 
   const handleClearButton = () => {
-    updateTraitValue(traitDefaultValue);
+    clearTraitValue();
     setValues(traitDefaultValue);
   };
 
-  const updateProperty = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const traitValue = lastSelectedComponent?.getTrait(trait.getId())?.getValue();
-    if (typeof traitValue === 'string') {
-      setValues(parseAttributesStringToArray(traitValue));
-    } else {
-      setValues([]);
-    }
-  };
-
-  // Update state when:
-  // 1. selected
-  // 2. deselected
-  // 3. removed
   useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-    };
-  }, [editor]);
+    const traitValue = trait.getValue();
+    setValue(traitValue);
+    setValues(parseAttributesStringToArray(traitValue));
+  }, [trait]);
 
   return (
     <Box key={trait.getId()}>
