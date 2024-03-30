@@ -1,4 +1,4 @@
-import { SearchParams } from '@lib/models/response.ts';
+import { SearchParams } from '@lib/models/response';
 
 export enum TEMPLATE_PROJECT_TEMPLATE_TYPES {
   DEFAULT = 'default',
@@ -6,13 +6,43 @@ export enum TEMPLATE_PROJECT_TEMPLATE_TYPES {
   INFO_PAGE = 'info_page',
 }
 
+export enum TEMPLATE_PROJECT_TEMPLATE_LOCATIONS {
+  // Site
+  SITE_HEADER = 'site_header',
+  SITE_FOOTER = 'site_footer',
+  SITE_PAGE = 'site_page',
+  SITE_ERROR = 'site_error',
+  // Blog
+  BLOG_HEADER = 'blog_header',
+  BLOG_FOOTER = 'blog_footer',
+  BLOG_PAGE = 'blog_page',
+  BLOG_POST = 'blog_post',
+  BLOG_ARCHIVE = 'blog_archive',
+  BLOG_SEARCH = 'blog_search',
+  BLOG_EMPTY = 'blog_empty',
+  BLOG_ERROR = 'blog_error',
+  // Shop
+  SHOP_HEADER = 'shop_header',
+  SHOP_FOOTER = 'shop_footer',
+  SHOP_PAGE = 'shop_page',
+  SHOP_HOME = 'shop_home',
+  SHOP_CATEGORY = 'shop_category',
+  SHOP_SEARCH = 'shop_search',
+  SHOP_EMPTY = 'shop_empty',
+  SHOP_PRODUCT = 'shop_product',
+  SHOP_ORDER = 'shop_order',
+  SHOP_ORDER_SUCCESS = 'shop_order_success',
+  SHOP_ORDER_ERROR = 'shop_order_error',
+  SHOP_ERROR = 'shop_error',
+}
+
 export interface TemplateProject {
   wtp_id: string;
   wtp_project_id: string;
-  wtp_page_id: string;
+  wtp_page_id?: string;
   wtp_status: string; // 0 | 1
   wtp_template_type: TEMPLATE_PROJECT_TEMPLATE_TYPES;
-  wtp_template_location: string;
+  wtp_template_location: string | null;
 }
 
 export interface Template extends TemplateProject {

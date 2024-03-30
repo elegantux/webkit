@@ -113,7 +113,7 @@ function BlockSection({ section }: { section: Section }) {
       defaultIndex={[0]}
       allowMultiple
     >
-      <AccordionItem>
+      <AccordionItem borderTopWidth={0}>
         <AccordionButton
           as={Flex}
           justifyContent="space-between"

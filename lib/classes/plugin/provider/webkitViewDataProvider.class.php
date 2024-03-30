@@ -18,4 +18,15 @@ class webkitViewDataProvider
     $this->blog = new webkitBlogDataProvider();
   }
 
+  /**
+   * @return waPageModel
+   * @throws waException
+   */
+  public static function getPageModel($app_id)
+  {
+    wa($app_id);
+    $model = $app_id . 'PageModel';
+    return new $model();
+  }
+
 }

@@ -19,9 +19,9 @@ import { create } from 'zustand';
 import { FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
 
 import { Modal, useModal } from '@ui/atomic/organisms/modal';
-import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
-import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { PropertyHeader } from '@app/editor/components/style-manager/components/PropertyHeader';
+import { useTraitProperty } from '@app/editor/components/trait-manager/lib/utils';
+import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 
 const GRID_COLS = 5;
 const GRID_CONTAINER_WITH = 744;
@@ -218,20 +218,18 @@ function IconList() {
 }
 
 function IconTraitContent({ trait }: { trait: Trait }) {
-  const [value, setValue] = useState<string | undefined>(trait.getValue());
+  const { value, setValue, updateTraitValue, clearTraitValue, traitLabel } = useTraitProperty<string | undefined>(
+    trait,
+    ''
+  );
 
+  const editor = useEditorStore(EDITOR_STORE.EDITOR);
   const theme = useTheme();
   const modal = useModal();
   const activeIcon = useIconTraitStore((store) => store.icon);
   const setActiveIcon = useIconTraitStore((store) => store.setActiveIcon);
 
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-
-  const component = editor.getSelected();
-  const traitName = trait.getName();
-  const traitLabel = trait.getLabel();
   const hasValue = !!value;
-  const traitDefaultValue = trait.getDefault();
 
   const bgImageColor = useColorModeValue(theme.colors.grey[300], theme.colors.ebony[400]);
   const bgColor = useColorModeValue('grey.100', 'ebony.500');
@@ -242,9 +240,8 @@ function IconTraitContent({ trait }: { trait: Trait }) {
     modal.modalDisclosure.onClose();
   };
 
-  const updateTraitValue = () => {
-    component?.set(traitName, activeIcon?.className);
-    trait.setValue(activeIcon?.className);
+  const handlePrimaryButtonClick = () => {
+    updateTraitValue(activeIcon?.className);
     setValue(activeIcon?.className);
 
     setActiveIcon(undefined);
@@ -252,33 +249,24 @@ function IconTraitContent({ trait }: { trait: Trait }) {
   };
 
   const handleClearButton = () => {
-    component?.set(traitName, traitDefaultValue);
-    trait.setValue(traitDefaultValue);
-    setValue(traitDefaultValue);
+    clearTraitValue();
     setActiveIcon(undefined);
   };
 
-  const updatePropertyStyles = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const traitValue = lastSelectedComponent?.getTrait(trait.getId())?.getValue();
-    setValue(traitValue);
+  const updateTrait = () => {
+    setValue(trait.getValue());
   };
 
-  // Update state when:
-  // 1. selected
-  // 2. deselected
-  // 3. removed
   useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updatePropertyStyles);
-    editor.on('undo', updatePropertyStyles);
-    editor.on('redo', updatePropertyStyles);
+    updateTrait();
+    editor.on('undo', updateTrait);
+    editor.on('redo', updateTrait);
 
     return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updatePropertyStyles);
-      editor.off('undo', updatePropertyStyles);
-      editor.off('redo', updatePropertyStyles);
+      editor.off('undo', updateTrait);
+      editor.off('redo', updateTrait);
     };
-  }, [editor]);
+  }, [trait]);
 
   return (
     <Box key={trait.getId()}>
@@ -339,7 +327,7 @@ function IconTraitContent({ trait }: { trait: Trait }) {
         isCentered
         minWidth="800px"
         primaryButtonLabel="Insert"
-        onPrimaryButtonClick={updateTraitValue}
+        onPrimaryButtonClick={handlePrimaryButtonClick}
         primaryButtonEnabled={!!activeIcon}
         showSecondaryButton={false}
         {...modal.modalProps}

@@ -25,7 +25,7 @@ class webkitTemplateAddController extends webkitJsonController
       $project_id = $post['wtp_project_id'];
       $status = $post['wtp_status'];
       $template_type = $post['wtp_template_type'];
-      $template_location = $post['wtp_template_location'];
+      $template_location = $post['wtp_template_location'] === 'null' ? null : $post['wtp_template_location'];
 
       /**
        * Clear $post of garbage

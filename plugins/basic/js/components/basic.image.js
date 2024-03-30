@@ -56,6 +56,7 @@
               type: 'select',
               label: 'Object Fit',
               name: TRAITS.OBJECT_FIT,
+              changeProp: true,
               options: [
                 { label: 'Contain', value: 'contain' },
                 { label: 'Cover', value: 'cover' },

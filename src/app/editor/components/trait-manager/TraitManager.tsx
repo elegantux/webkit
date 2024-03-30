@@ -25,7 +25,7 @@ import {
   useColorModeValue,
   useTheme,
 } from '@chakra-ui/react';
-import { Trait, Traits } from 'grapesjs';
+import { Trait } from 'grapesjs';
 import { ColorResult } from '@uiw/color-convert';
 import { FaEyeDropper as ColorPickerIcon } from 'react-icons/fa6';
 
@@ -35,7 +35,7 @@ import { PropertyHeader } from '@app/editor/components/style-manager/components/
 import { debounce } from '@lib/utils';
 import { SelectProperty } from '@app/editor/components/style-manager/components/SelectPropertyType';
 import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
-import { EDITOR_COMMANDS, TRAIT_TYPES } from '@app/editor/lib/constant';
+import { TRAIT_TYPES } from '@app/editor/lib/constant';
 import { hexOpacity } from '@ui/theme/utils';
 import { ColorPicker } from '@app/editor/components/style-manager/components/ColorPropertyType';
 import { IconTrait } from '@app/editor/components/trait-manager/IconTrait';
@@ -44,71 +44,29 @@ import { CodeEditorTrait } from '@app/editor/components/trait-manager/CodeEditor
 import { ButtonTrait } from '@app/editor/components/trait-manager/ButtonTrait';
 import { CssRuleManagerButtonTrait } from '@app/editor/components/trait-manager/CssRuleManagerButtonTrait';
 import { KeyValueTrait } from '@app/editor/components/trait-manager/KeyValueTrait';
+import { useTraitProperty } from '@app/editor/components/trait-manager/lib/utils';
 
 function InputTrait({ trait }: { trait: Trait }) {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [value, setValue] = useState<string>(trait.getValue());
+  const { value, setValue, updateTraitValue, clearTraitValue, traitPlaceholder, traitLabel, traitOptions } =
+    useTraitProperty(trait, '');
 
-  const component = editor.getSelected();
-  const traitName = trait.getName();
-  const traitLabel = trait.getLabel();
-  const traitDefaultValue = trait.getDefault() ?? '';
-  const traitPlaceholder = trait.attributes?.placeholder ?? '';
-  const traitOptions = trait
-    .getOptions()
-    // The trait option type in GrapesJS has "id" and "label" keys, but we use the "value" key instead of "id".
-    // @ts-ignore
-    ?.map((option) => ({ value: option.value, label: option.label })) as SelectOptionProps[];
-
-  const updateTraitValue = (v: string) => {
-    component?.set(traitName, v);
-    trait.setValue(v);
-  };
-
-  // Debounce updating the display color
   const debouncedUpdateTraitValue = useMemo(() => {
-    if (component) {
-      return debounce(updateTraitValue, 500);
-    }
-    return () => {};
-  }, [component]);
+    return debounce(updateTraitValue, 500);
+  }, [trait]);
 
   const handleInputChange = (v: string) => {
     debouncedUpdateTraitValue(v);
     setValue(v);
   };
 
-  const handleClearButton = () => {
-    updateTraitValue(traitDefaultValue);
-    setValue(traitDefaultValue);
-  };
-
-  const updateProperty = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const traitValue = lastSelectedComponent?.getTrait(trait.getId())?.getValue();
-    if (typeof traitValue === 'string') {
-      setValue(traitValue);
-    } else {
-      setValue('');
-    }
-  };
-
-  // Update state when:
-  // 1. selected
-  // 2. deselected
-  // 3. removed
   useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-    };
-  }, [editor]);
+    setValue(trait.getValue());
+  }, [trait]);
 
   return (
     <Box key={trait.getId()}>
       <PropertyHeader
-        onClear={handleClearButton}
+        onClear={clearTraitValue}
         propertyLabel={traitLabel}
         hasValue={!!value}
       />
@@ -123,31 +81,21 @@ function InputTrait({ trait }: { trait: Trait }) {
 }
 
 function NumberTrait({ trait }: { trait: Trait }) {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [value, setValue] = useState<string>(trait.getValue());
+  const {
+    value,
+    setValue,
+    updateTraitValue,
+    clearTraitValue,
+    traitMinValue,
+    traitMaxValue,
+    traitLabel,
+    traitStep,
+    traitDebounce,
+  } = useTraitProperty(trait, '');
 
-  const component = editor.getSelected();
-  const traitName = trait.getName();
-  const traitLabel = trait.getLabel();
-  const traitDefaultValue = trait.getDefault() ?? '';
-  const traitMinValue = trait.attributes?.min;
-  const traitMaxValue = trait.attributes?.max;
-  const traitStep = trait.attributes?.step;
-  // @ts-ignore
-  const traitDebounce = trait.get('debounce') ?? 0;
-
-  const updateTraitValue = (v: string) => {
-    component?.set(traitName, v);
-    trait.setValue(v);
-  };
-
-  // Debounce updating the display color
   const debouncedUpdateTraitValue = useMemo(() => {
-    if (component) {
-      return debounce(updateTraitValue, traitDebounce);
-    }
-    return () => {};
-  }, [component]);
+    return debounce(updateTraitValue, traitDebounce);
+  }, [trait]);
 
   const handleInputChange = (v: string) => {
     if (typeof traitMinValue !== 'undefined' && Number(v) < traitMinValue) {
@@ -161,33 +109,14 @@ function NumberTrait({ trait }: { trait: Trait }) {
     setValue(v);
   };
 
-  const handleClearButton = () => {
-    updateTraitValue(traitDefaultValue);
-    setValue(traitDefaultValue);
-  };
-
-  const updateProperty = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const traitValue = lastSelectedComponent?.getTrait(trait.getId())?.getValue();
-    setValue(traitValue);
-  };
-
-  // Update state when:
-  // 1. selected
-  // 2. deselected
-  // 3. removed
   useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-    };
-  }, [editor]);
+    setValue(trait.getValue());
+  }, [trait]);
 
   return (
     <Box key={trait.getId()}>
       <PropertyHeader
-        onClear={handleClearButton}
+        onClear={clearTraitValue}
         propertyLabel={traitLabel}
         hasValue={!!value}
       />
@@ -209,14 +138,12 @@ function NumberTrait({ trait }: { trait: Trait }) {
 }
 
 function ColorTrait({ trait }: { trait: Trait }) {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [value, setValue] = useState<string>(trait.getValue());
+  const { value, setValue, updateTraitValue, clearTraitValue, traitLabel, traitDefaultValue } = useTraitProperty(
+    trait,
+    ''
+  );
   const [displayColor, setDisplayColor] = useState<string>(value);
 
-  const component = editor.getSelected();
-  const traitName = trait.getName();
-  const traitLabel = trait.getLabel();
-  const traitDefaultValue = trait.getDefault() ?? '';
   const hasColor = value.length > 0;
 
   const theme = useTheme();
@@ -227,53 +154,29 @@ function ColorTrait({ trait }: { trait: Trait }) {
   );
 
   // Debounce updating the display color
-  const updateDisplayColor = useMemo(() => debounce(setDisplayColor, 50), []);
-
-  const updateTraitValue = (v: string) => {
-    component?.set(traitName, v);
-    trait.setValue(v);
-  };
+  const updateDisplayColor = useMemo(() => debounce(setDisplayColor, 50), [trait]);
 
   // Debounce updating the display color
-  const debouncedUpdateTraitValue = useMemo(() => {
-    if (component) {
-      return debounce(updateTraitValue, 500);
-    }
-    return () => {};
-  }, [component]);
+  const debouncedUpdateTraitValue = useMemo(() => debounce(updateTraitValue, 500), [trait]);
 
-  const handleInputChange = useCallback((color: ColorResult) => {
-    debouncedUpdateTraitValue(color.hexa);
-    setValue(color.hexa);
-    updateDisplayColor(color.hexa);
-  }, []);
+  const handleInputChange = useCallback(
+    (color: ColorResult) => {
+      debouncedUpdateTraitValue(color.hexa);
+      setValue(color.hexa);
+      updateDisplayColor(color.hexa);
+    },
+    [trait]
+  );
 
   const handleClearButton = () => {
-    updateTraitValue(traitDefaultValue);
-    setValue(traitDefaultValue);
+    clearTraitValue();
+    setDisplayColor(traitDefaultValue);
   };
 
-  const updateProperty = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const traitValue = lastSelectedComponent?.getTrait(trait.getId())?.getValue();
-    if (typeof traitValue === 'string') {
-      setValue(traitValue);
-    } else {
-      setValue(traitDefaultValue);
-    }
-  };
-
-  // Update state when:
-  // 1. selected
-  // 2. deselected
-  // 3. removed
   useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-    };
-  }, [editor]);
+    setValue(trait.getValue());
+    setDisplayColor(trait.getValue());
+  }, [trait]);
 
   return (
     <Box key={trait.getId()}>
@@ -310,65 +213,27 @@ function ColorTrait({ trait }: { trait: Trait }) {
 }
 
 function TextareaTrait({ trait }: { trait: Trait }) {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [value, setValue] = useState<string>(trait.getValue());
-
-  const component = editor.getSelected();
-  const traitName = trait.getName();
-  const traitLabel = trait.getLabel();
-  const traitDefaultValue = trait.getDefault() ?? '';
-  // @ts-ignore
-  const traitDescription: string | undefined = trait.get('description');
-
-  const updateTraitValue = (v: string) => {
-    component?.set(traitName, v);
-    trait.setValue(v);
-  };
+  const { value, setValue, updateTraitValue, clearTraitValue, traitDescription, traitLabel } = useTraitProperty(
+    trait,
+    ''
+  );
 
   // Debounce updating the display color
-  const debouncedUpdateTraitValue = useMemo(() => {
-    if (component) {
-      return debounce(updateTraitValue, 500);
-    }
-    return () => {};
-  }, [component]);
+  const debouncedUpdateTraitValue = useMemo(() => debounce(updateTraitValue, 500), [trait]);
 
   const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     debouncedUpdateTraitValue(event.target.value);
     setValue(event.target.value);
   };
 
-  const handleClearButton = () => {
-    updateTraitValue(traitDefaultValue);
-    setValue(traitDefaultValue);
-  };
-
-  const updateProperty = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const traitValue = lastSelectedComponent?.getTrait(trait.getId())?.getValue();
-    if (typeof traitValue === 'string') {
-      setValue(traitValue);
-    } else {
-      setValue('');
-    }
-  };
-
-  // Update state when:
-  // 1. selected
-  // 2. deselected
-  // 3. removed
   useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-    };
-  }, [editor]);
+    setValue(trait.getValue());
+  }, [trait]);
 
   return (
     <Box key={trait.getId()}>
       <PropertyHeader
-        onClear={handleClearButton}
+        onClear={clearTraitValue}
         propertyLabel={traitLabel}
         hasValue={!!value}
       />
@@ -382,60 +247,26 @@ function TextareaTrait({ trait }: { trait: Trait }) {
 }
 
 function CheckboxTrait({ trait }: { trait: Trait }) {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [value, setValue] = useState<boolean>(trait.getValue());
+  const { value, setValue, updateTraitValue, clearTraitValue, traitText, traitLabel } = useTraitProperty<boolean>(
+    trait,
+    false
+  );
 
-  const component = editor.getSelected();
-  const traitName = trait.getName();
-  const traitLabel = trait.getLabel();
-  const traitDefaultValue = trait.getDefault() ?? false;
-  const traitText = trait.get('text');
-
-  const updateTraitValue = (v: boolean) => {
-    component?.set(traitName, v);
-    trait.setValue(v);
-  };
-
-  // Debounce updating the display color
-  const debouncedUpdateTraitValue = useMemo(() => {
-    if (component) {
-      return debounce(updateTraitValue, 200);
-    }
-    return () => {};
-  }, [component]);
+  const debouncedUpdateTraitValue = useMemo(() => debounce(updateTraitValue, 200), [trait]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     debouncedUpdateTraitValue(event.target.checked);
     setValue(event.target.checked);
   };
 
-  const handleClearButton = () => {
-    updateTraitValue(traitDefaultValue);
-    setValue(traitDefaultValue);
-  };
-
-  const updateProperty = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const traitValue = lastSelectedComponent?.getTrait(trait.getId())?.getValue();
-    setValue(traitValue);
-  };
-
-  // Update state when:
-  // 1. selected
-  // 2. deselected
-  // 3. removed
   useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updateProperty);
-    };
-  }, [editor]);
+    setValue(trait.getValue());
+  }, [trait]);
 
   return (
     <Box key={trait.getId()}>
       <PropertyHeader
-        onClear={handleClearButton}
+        onClear={clearTraitValue}
         propertyLabel={traitLabel}
         hasValue={false}
       />
@@ -450,28 +281,16 @@ function CheckboxTrait({ trait }: { trait: Trait }) {
 }
 
 function SelectTrait({ trait }: { trait: Trait }) {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [value, setValue] = useState<string | number>(trait.getValue());
+  const { value, setValue, updateTraitValue, traitDefaultValue, traitOptions } = useTraitProperty<string>(trait, '');
 
-  const component = editor.getSelected();
-  const traitName = trait.getName();
-  const traitDefaultValue = trait.getDefault() ?? '';
-  const options = trait
-    .getOptions()
-    // The trait option type in GrapesJS has "id" and "label" keys, but we use the "value" key instead of "id".
-    // @ts-ignore
-    ?.map((option) => ({ value: option.value, label: option.label })) as SelectOptionProps[];
-
-  const selectedValue = options.find((option) => option.value === value) ?? null;
+  const selectedValue = traitOptions.find((option) => option.value === value) ?? null;
 
   const handleSelectChange = (option: SelectOptionProps | any) => {
     if (option) {
-      component?.set(traitName, option.value);
-      trait.setValue(option.value);
+      updateTraitValue(option.value);
       setValue(option.value);
     } else {
-      component?.set(traitName, traitDefaultValue);
-      trait.setValue(traitDefaultValue);
+      updateTraitValue(traitDefaultValue);
       setValue(traitDefaultValue);
     }
   };
@@ -480,23 +299,9 @@ function SelectTrait({ trait }: { trait: Trait }) {
     handleSelectChange(null);
   };
 
-  const updatePropertyStyles = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const traitValue = lastSelectedComponent?.getTrait(trait.getId())?.getValue();
-    setValue(traitValue);
-  };
-
-  // Update state when:
-  // 1. selected
-  // 2. deselected
-  // 3. removed
   useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updatePropertyStyles);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updatePropertyStyles);
-    };
-  }, [editor]);
+    setValue(trait.getValue());
+  }, [trait]);
 
   return (
     <Box key={trait.getId()}>
@@ -507,7 +312,7 @@ function SelectTrait({ trait }: { trait: Trait }) {
       />
       <SelectProperty
         value={selectedValue}
-        options={options}
+        options={traitOptions}
         onChange={handleSelectChange}
       />
     </Box>
@@ -515,19 +320,12 @@ function SelectTrait({ trait }: { trait: Trait }) {
 }
 
 function ButtonGroupTrait({ trait }: { trait: Trait }) {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const [value, setValue] = useState<string | number>(trait.getValue());
+  const { value, setValue, updateTraitValue, clearTraitValue, traitOptions } = useTraitProperty<string | number>(
+    trait,
+    ''
+  );
 
-  const component = editor.getSelected();
-  const traitName = trait.getName();
-  const traitDefaultValue = trait.getDefault() ?? '';
-  const options = trait
-    .getOptions()
-    // The trait option type in GrapesJS has "id" and "label" keys, but we use the "value" key instead of "id".
-    // @ts-ignore
-    ?.map((option) => ({ value: option.value, label: option.label })) as SelectOptionProps[];
-
-  const selectedValue = options.find((option) => option.value === value) ?? null;
+  const selectedValue = traitOptions.find((option) => option.value === value) ?? null;
 
   const theme = useTheme();
   const color = useColorModeValue('grey.900', 'grey.300');
@@ -544,39 +342,18 @@ function ButtonGroupTrait({ trait }: { trait: Trait }) {
   const focusedBorderColor = useColorModeValue(hexOpacity(theme.colors.stratos[500], 0.2), theme.colors.dodger[500]);
 
   const handleChange = (v: SelectOptionProps['value']) => {
-    component?.set(traitName, v);
-    trait.setValue(v);
+    updateTraitValue(v);
     setValue(v);
   };
 
-  const handleClearButton = () => {
-    component?.set(traitName, traitDefaultValue);
-    trait.setValue(traitDefaultValue);
-    setValue(traitDefaultValue);
-  };
-
-  const updatePropertyStyles = () => {
-    const lastSelectedComponent = editor.getSelected();
-    const traitValue = lastSelectedComponent?.getTrait(trait.getId())?.getValue();
-    setValue(traitValue);
-  };
-
-  // Update state when:
-  // 1. selected
-  // 2. deselected
-  // 3. removed
   useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updatePropertyStyles);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY}`, updatePropertyStyles);
-    };
-  }, [editor]);
+    setValue(trait.getValue());
+  }, [trait]);
 
   return (
     <Box key={trait.getId()}>
       <PropertyHeader
-        onClear={handleClearButton}
+        onClear={clearTraitValue}
         propertyLabel={trait.getLabel()}
         hasValue={!!selectedValue}
       />
@@ -586,7 +363,7 @@ function ButtonGroupTrait({ trait }: { trait: Trait }) {
         width="full"
         isAttached
       >
-        {options.map((option) => (
+        {traitOptions.map((option) => (
           <Tooltip
             hasArrow
             key={option.value}
@@ -610,7 +387,7 @@ function ButtonGroupTrait({ trait }: { trait: Trait }) {
 }
 
 export function TraitManager() {
-  const [traitList, setTraitList] = useState<Traits | undefined>(undefined);
+  const [traitList, setTraitList] = useState<Trait[] | undefined>(undefined);
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
 
   const groupedTraitList: Record<string, Trait[]> = useMemo(() => {
@@ -639,45 +416,30 @@ export function TraitManager() {
   }, [traitList]);
 
   const handleUpdateTraitList = () => {
-    const selectedComponent = editor.getSelected();
-
-    if (selectedComponent) {
-      // Get a new instance of the traits model to update the link and user interface.
-      // Otherwise, the link will remain the same and the user interface will not update.
-      // https://arc.net/l/quote/ztapwusb
-      // TODO: Be careful with performance
-      const componentTraitList = selectedComponent.get('traits')?.clone();
-      setTraitList(componentTraitList);
-      editor.runCommand(EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY);
-    } else {
-      setTraitList(undefined);
-    }
+    setTraitList(editor.Traits.getTraits());
+    // editor.runCommand(EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY);
   };
 
   useEffect(() => {
-    editor.on('component:selected', handleUpdateTraitList);
-    editor.on('component:deselected', handleUpdateTraitList);
-    editor.on('component:remove', handleUpdateTraitList);
+    editor.on('trait:custom', handleUpdateTraitList);
 
     // Run the callback on first mount to update traits UI
-    handleUpdateTraitList();
+    // handleUpdateTraitList();
 
     return () => {
-      editor.off('component:selected', handleUpdateTraitList);
-      editor.off('component:deselected', handleUpdateTraitList);
-      editor.off('component:remove', handleUpdateTraitList);
+      editor.off('trait:custom', handleUpdateTraitList);
     };
   }, []);
 
   // Update state when:
   // 1. Someone manually triggered a re-rendering
-  useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY_LIST}`, handleUpdateTraitList);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY_LIST}`, handleUpdateTraitList);
-    };
-  }, []);
+  // useEffect(() => {
+  //   editor.on(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY_LIST}`, handleUpdateTraitList);
+  //
+  //   return () => {
+  //     editor.off(`run:${EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY_LIST}`, handleUpdateTraitList);
+  //   };
+  // }, []);
 
   return (
     <>

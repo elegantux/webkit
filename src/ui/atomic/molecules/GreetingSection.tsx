@@ -1,0 +1,39 @@
+import { ChakraProps, Image, Link, Text } from '@chakra-ui/react';
+
+import { ContentSection } from '@app/dashboard/components/PageComponents';
+
+export function GreetingSection(props: ChakraProps) {
+  return (
+    <ContentSection
+      bgGradient="linear(to-r, #e8f5ff, #f3f5f7)"
+      _dark={{ bgGradient: 'linear(to-r, #504d65, #24213f)' }}
+      {...props}
+    >
+      <Text
+        fontSize="sm"
+        mb="12px"
+        color="ebony.800"
+        _dark={{ color: 'white' }}
+      >
+        Hey There 👋. Hope you enjoy the app. Consider supporting our app with your comment on &nbsp;
+        <Image
+          src="/wa-apps/installer/img/installer.svg"
+          width="24px"
+          mb="-6px"
+          mr="4px"
+          display="inline-block"
+        />
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <Link
+          href="https://www.webasyst.ru/store/app/webkit/"
+          target="_blank"
+          color="dodger.500"
+          textDecoration="underline"
+        >
+          Webasyst Store
+        </Link>
+        .
+      </Text>
+    </ContentSection>
+  );
+}

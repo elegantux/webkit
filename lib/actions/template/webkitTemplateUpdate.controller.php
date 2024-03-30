@@ -32,6 +32,17 @@ class webkitTemplateUpdateController extends webkitJsonController
       $wtp_id = $post['wtp_id'];
       $wtp_status = $post['wtp_status'];
 
+      $event_params = [
+        'template' => array_merge($post, ['id' => $template_id])
+      ];
+
+      /**
+       * @event editor_before_template_save
+       * @param array $event_params
+       * @return array List of ['name-plugin' => [...]]
+       */
+      wa(webkitConst::APP_ID)->event(webkitConst::EDITOR_BEFORE_TEMPLATE_SAVE_EVENT, $event_params);
+
       /**
        * Clear $post of garbage
        */
@@ -53,11 +64,18 @@ class webkitTemplateUpdateController extends webkitJsonController
       $page_id = $template_project_service->template_project_manager->page_id;
       if (isset($page_id) && $template_project_service->template_project_manager->template_type === webkitTemplateProjectModel::$TEMPLATE_TYPE_INFO_PAGE) {
         $project = new webkitProject($template_project_service->template_project_manager->project_id);
-        $page_model = $this->getPageModel($project->app_id);
+        $page_model = webkitViewDataProvider::getPageModel($project->app_id);
         $page_model->update($template_project_service->template_project_manager->page_id, [
           'content' => $post['front_content']
         ]);
       }
+
+      /**
+       * @event editor_after_template_save
+       * @param array $event_params
+       * @return array List of ['name-plugin' => [...]]
+       */
+      wa(webkitConst::APP_ID)->event(webkitConst::EDITOR_AFTER_TEMPLATE_SAVE_EVENT, $event_params);
 
       $this->response = $template_project_service->collection->getByTemplateProjectId($wtp_id);
 
@@ -69,16 +87,6 @@ class webkitTemplateUpdateController extends webkitJsonController
 
     }
 
-  }
-
-  /**
-   * @return waPageModel
-   */
-  protected function getPageModel($app_id)
-  {
-    wa($app_id);
-    $model = $app_id . 'PageModel';
-    return new $model();
   }
 
 }

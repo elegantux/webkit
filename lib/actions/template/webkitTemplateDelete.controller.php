@@ -27,12 +27,12 @@ class webkitTemplateDeleteController extends webkitJsonController
 
       $template_id = $get['id'];
 
-      $template_project_service = new webkitTemplateProjectService(
-        new webkitTemplate(null),
-        new webkitTemplateProject(null)
-      );
+      $template = new webkitTemplate($template_id);
+      $template_project_service = new webkitTemplateProjectService($template, new webkitTemplateProject(null));
+      $template_child_service = new webkitTemplateChildService($template);
 
       $template_project_service->deleteTemplateAndTemplateProject($template_id);
+      $template_child_service->deleteAllChildTemplates();
 
       $this->response = true;
 

@@ -7,9 +7,12 @@ import { ProjectListPage } from '@app/dashboard/project/ProjectListPage';
 import { ProjectPage } from '@app/dashboard/project/ProjectPage';
 import { Editor } from '@app/editor/Editor';
 import { SettingsPage } from '@app/dashboard/settings/SettingsPage';
+import { PageError } from '@ui/atomic/templates/PageError';
+import { TEMPLATE_PROJECT_TEMPLATE_TYPES } from '@lib/models/template';
 
 const rootRoute = createRootRoute({
   component: Root,
+  errorComponent: PageError,
 });
 
 const dashboardLayout = createRoute({
@@ -40,6 +43,11 @@ const projectRoute = createRoute({
   getParentRoute: () => dashboardLayout,
   path: 'app/dashboard/project-list/$projectId',
   component: ProjectPage,
+  validateSearch: (search: Record<string, any>): { templateType?: TEMPLATE_PROJECT_TEMPLATE_TYPES } => {
+    return {
+      templateType: search?.templateType,
+    };
+  },
 });
 
 const settingsRoute = createRoute({

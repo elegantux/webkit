@@ -99,13 +99,25 @@ trait webkitFrontend
         $parents_head_inline_styles .= $html_parser->tagToHtml('style', [], $front_styles);
       }
 
-      if (strlen($template['child_templates']) && $ids = explode(',', $template['child_templates'])) {
+      if (strlen($template['child_templates']) > 0 && $ids = explode(',', $template['child_templates'])) {
         $child_template_ids = array_merge($ids, $child_template_ids);
       }
       if (strlen($template['component_types']) && $ids = explode(',', $template['component_types'])) {
         $component_types = array_merge($ids, $component_types);
       }
     }
+
+    /**
+     * Collect child template ids
+     * TODO: At the moment this is a very expensive operation. We need to find a more efficient way.
+     */
+    foreach ($templates as $template) {
+      $template_child_service = new webkitTemplateChildService(new webkitTemplate($templates['id']));
+      $child_templates = $template_child_service->getTemplateChildren($template['id']);
+      $child_ids = array_values(array_column($child_templates, 'child_id'));
+      $child_template_ids = $child_template_ids + $child_ids;
+    }
+
     // Removes duplicated ids
     $child_template_ids = array_unique($child_template_ids);
     $component_types = array_unique($component_types);

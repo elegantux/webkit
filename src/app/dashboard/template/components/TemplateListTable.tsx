@@ -204,7 +204,11 @@ export function TemplateListTable({
               _last={{ '& td': { border: 'none' } }}
             >
               <Td>{template.name}</Td>
-              <Td>{TEMPLATE_LOCATION_NAME_MAP[template.wtp_template_location]}</Td>
+              <Td>
+                {template.wtp_template_location && TEMPLATE_LOCATION_NAME_MAP[template.wtp_template_location]
+                  ? TEMPLATE_LOCATION_NAME_MAP[template.wtp_template_location]
+                  : 'Dynamic'}
+              </Td>
               <Td>
                 <Tag colorScheme={template.wtp_status === '1' ? 'malachite' : 'grey'}>
                   {template.wtp_status === '1' ? 'Published' : 'Draft'}

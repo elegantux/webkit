@@ -18,6 +18,7 @@ export const WA_THEME_MODE_CHANGE_EVENT_NAME = 'wa-theme-change';
 
 export const HELP_LINKS = {
   VENDOR_URL: 'https://elegantux.com',
+  TELEGRAM_CHANNEL: 'https://t.me/webasyst_webkit',
   TELEGRAM_SUPPORT: 'https://t.me/webasyst_webkit_support',
   HELP_EMAIL: 'webasyst@elegantux.com',
 };
