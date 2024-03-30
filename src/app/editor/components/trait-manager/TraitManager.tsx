@@ -81,8 +81,21 @@ function InputTrait({ trait }: { trait: Trait }) {
 }
 
 function NumberTrait({ trait }: { trait: Trait }) {
-  const { value, setValue, updateTraitValue, clearTraitValue, traitMinValue, traitMaxValue, traitLabel, traitStep } =
-    useTraitProperty(trait, '');
+  const {
+    value,
+    setValue,
+    updateTraitValue,
+    clearTraitValue,
+    traitMinValue,
+    traitMaxValue,
+    traitLabel,
+    traitStep,
+    traitDebounce,
+  } = useTraitProperty(trait, '');
+
+  const debouncedUpdateTraitValue = useMemo(() => {
+    return debounce(updateTraitValue, traitDebounce);
+  }, [trait]);
 
   const handleInputChange = (v: string) => {
     if (typeof traitMinValue !== 'undefined' && Number(v) < traitMinValue) {
@@ -92,7 +105,7 @@ function NumberTrait({ trait }: { trait: Trait }) {
       return;
     }
 
-    updateTraitValue(v);
+    debouncedUpdateTraitValue(v);
     setValue(v);
   };
 

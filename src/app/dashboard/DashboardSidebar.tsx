@@ -1,20 +1,20 @@
-import { Box, ChakraProps, Flex, Link, useColorModeValue } from '@chakra-ui/react';
-import { FaHouse, FaScrewdriverWrench } from 'react-icons/fa6';
+import { Box, ChakraProps, Flex, Heading, Image, Link, useColorModeValue } from '@chakra-ui/react';
+import { FaHouse, FaImages, FaScrewdriverWrench } from 'react-icons/fa6';
 import { BsGridFill } from 'react-icons/bs';
 import { PropsWithChildren } from 'react';
 import { LinkProps, Link as RouterLink } from '@tanstack/react-router';
 
 import { dashboardRoute, projectListRoute, settingsRoute } from '../../routes';
-import { CreateProjectButton } from '@app/dashboard/project/components/CreateProjectButton';
+import { GreetingSection } from '@ui/atomic/molecules/GreetingSection';
+import { appPath } from '@lib/utils.tsx';
 
 function SidebarLink(props: PropsWithChildren<ChakraProps & LinkProps>) {
   const activeColor = useColorModeValue('dodger.600', 'dodger.200');
-  const activeBgColor = useColorModeValue('stratos.50', 'ebony.600');
+  const activeBgColor = useColorModeValue('grey.50', 'ebony.600');
 
   const { to } = props;
 
   const hoverStyle = {
-    // bg: activeBgColor,
     color: activeColor,
   };
   const activeStyle = {
@@ -54,13 +54,27 @@ export function DashboardSidebar() {
       py={6}
       height="full"
     >
-      <Box
+      <Flex
+        alignItems="center"
+        gap="14px"
         px={3}
-        mb={6}
         width="full"
       >
-        <CreateProjectButton width="full" />
-      </Box>
+        <Image
+          src={appPath('/img/webkit.svg')}
+          width="42px"
+        />
+        <Heading size="sm">WebKit</Heading>
+      </Flex>
+      <Box
+        width="100%"
+        height="1px"
+        bgColor="grey.50"
+        my="24px"
+        _dark={{
+          bgColor: 'ebony.600',
+        }}
+      />
       <Flex
         direction="column"
         gap="14px"
@@ -80,6 +94,13 @@ export function DashboardSidebar() {
           <BsGridFill size={18} />
           Project List
         </SidebarLink>
+        <SidebarLink
+          to={settingsRoute.to}
+          params={{}}
+        >
+          <FaImages size={18} />
+          Media files
+        </SidebarLink>
       </Flex>
       <Flex
         direction="column"
@@ -88,10 +109,15 @@ export function DashboardSidebar() {
         <SidebarLink
           to={settingsRoute.to}
           params={{}}
+          mb="24px"
         >
           <FaScrewdriverWrench size={18} />
           Settings
         </SidebarLink>
+        <GreetingSection
+          mx="12px"
+          padding="18px 14px"
+        />
       </Flex>
     </Flex>
   );

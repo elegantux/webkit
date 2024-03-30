@@ -73,7 +73,7 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
           styles: [],
         };
 
-    console.log('projectData', projectData);
+    // console.log('projectData', projectData);
     e.loadProjectData(projectData);
 
     // Load project data before canvas render
@@ -88,7 +88,7 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
 
   const editor = init({
     container: '#editor-container',
-    // protectedCss: '',
+    protectedCss: '', // Remove default styles: '* { box-sizing: border-box; } body {margin: 0;}'
     width: '100%',
     height: '100%',
     autorender: false,
@@ -162,6 +162,10 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     ],
   });
 
+  return editor;
+};
+
+const initCommands = (editor: EditorInterface) => {
   // Custom commands
   editor.Commands.add(EDITOR_COMMANDS.UPDATE_STYLE_MANAGER_PROPERTY, { run() {} });
   editor.Commands.add(EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY, { run() {} });
@@ -184,8 +188,14 @@ export function Editor() {
 
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
 
+  const init = async () => {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const _editor = await initEditor(template, pluginsDependencies);
+    initCommands(_editor);
+  };
+
   useEffectOnce(() => {
-    initEditor(template, pluginsDependencies);
+    init();
   });
 
   return (

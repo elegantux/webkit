@@ -46,7 +46,6 @@ import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
 import { useTemplateList, useWebasystApplicationList } from '@lib/state';
 import { useModalContext } from '@ui/atomic/organisms/modal';
 import { useStepper } from '@lib/utils/utils';
-import { appPath } from '@lib/utils';
 import {
   ADD_TEMPLATE_STEPS,
   ATFBasicInfoPayload,
@@ -54,26 +53,14 @@ import {
   ATFTemplateLocationPayload,
 } from '@app/dashboard/template/components/add-project-template-flow/models';
 import { TEMPLATE_LOCATION_NAME_MAP } from '@app/dashboard/lib/constants';
+import { TEMPLATE_PROJECT_TEMPLATE_TYPES } from '@lib/models/template';
+import { prepareTemplateImageUrl } from '@app/dashboard/lib/utils';
 
 const stepList = [
   { title: 'Location', description: 'Template Location' },
   { title: 'Info', description: 'Basic template info' },
   { title: 'Review', description: 'Create template' },
 ];
-
-const prepareTemplateImageUrl = (templateLocation: string, colorMode: string) => {
-  let templateImageFileName = `${templateLocation}-${colorMode}.svg`;
-
-  if (['header', 'footer', 'page'].find((item) => templateLocation.includes(item))) {
-    templateImageFileName = `${templateLocation.split('_')[1]}-${colorMode}.svg`;
-  }
-
-  if (templateLocation.includes('error')) {
-    templateImageFileName = `404-${colorMode}.svg`;
-  }
-
-  return appPath(`/img/templates/${templateImageFileName}`);
-};
 
 function FromStepper({
   activeStep,
@@ -543,7 +530,7 @@ export function CreateProjectTemplateFlow({ project }: { project: Project }) {
         name: stepper.stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.name!,
         wtp_status: stepper.stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.status ? '1' : '0',
         wtp_template_location: stepper.stepperState[ADD_TEMPLATE_STEPS.TEMPLATE_LOCATION]?.templateLocation!,
-        wtp_template_type: 'default',
+        wtp_template_type: TEMPLATE_PROJECT_TEMPLATE_TYPES.DEFAULT,
         wtp_project_id: project.id,
       });
 

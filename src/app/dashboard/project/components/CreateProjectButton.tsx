@@ -1,5 +1,5 @@
-import { Button, ChakraProps } from '@chakra-ui/react';
-import { FaRegSquarePlus } from 'react-icons/fa6';
+import { Button, Card, ChakraProps } from '@chakra-ui/react';
+import { FaCirclePlus, FaRegSquarePlus } from 'react-icons/fa6';
 import { Suspense } from 'react';
 
 import { Modal, ModalProvider, useModal } from '@ui/atomic/organisms/modal';
@@ -19,6 +19,58 @@ export function CreateProjectButton(props: ChakraProps) {
       >
         Create Project
       </Button>
+      <ModalProvider {...modal}>
+        <Modal
+          title="Create Project"
+          showSecondaryButton={false}
+          primaryButtonLabel="Create"
+          isCentered
+          {...modal.modalProps}
+          {...modal.modalDisclosure}
+        >
+          <Suspense fallback={<FormSkeleton />}>
+            <UpsertProjectForm />
+          </Suspense>
+        </Modal>
+      </ModalProvider>
+    </>
+  );
+}
+
+export function CreateProjectCard(props: ChakraProps) {
+  const modal = useModal();
+  return (
+    <>
+      <Card
+        justifyContent="center"
+        alignItems="center"
+        height="100%"
+        shadow="xs"
+        transition="background 0.1s ease-in-out"
+        bg="transparent"
+        border="1px solid"
+        borderColor="ebony.50"
+        borderRadius="16px"
+        cursor="pointer"
+        onClick={modal.modalDisclosure.onOpen}
+        _hover={{
+          borderColor: 'dodger.200',
+        }}
+        _dark={{ borderColor: 'ebony.600' }}
+        {...props}
+      >
+        <FaCirclePlus
+          size={62}
+          style={{ opacity: 0.5 }}
+        />
+        <Button
+          size="sm"
+          mt="42px"
+          py={4}
+        >
+          Create New Project
+        </Button>
+      </Card>
       <ModalProvider {...modal}>
         <Modal
           title="Create Project"

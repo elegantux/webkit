@@ -17,7 +17,7 @@ import {
 import { useEffect } from 'react';
 import { AxiosError } from 'axios';
 
-import { Template, UpdateTemplatePayload } from '@lib/models/template';
+import { TEMPLATE_PROJECT_TEMPLATE_TYPES, Template, UpdateTemplatePayload } from '@lib/models/template';
 import { useModalContext } from '@ui/atomic/organisms/modal';
 import { useTemplateList } from '@lib/state';
 import { Project } from '@lib/models/project';
@@ -27,11 +27,21 @@ type FormValues = Pick<UpdateTemplatePayload, 'name'> & {
   status: boolean;
 };
 
-export function UpsertTemplateForm({ template, project }: { template?: Template; project: Project }) {
+export function UpsertTemplateForm({
+  template,
+  templateType = TEMPLATE_PROJECT_TEMPLATE_TYPES.DEFAULT,
+  templateLocation = null,
+  project,
+}: {
+  template?: Template;
+  templateType?: TEMPLATE_PROJECT_TEMPLATE_TYPES;
+  templateLocation?: string | null;
+  project: Project;
+}) {
   const toast = useToast();
   const { setModalProps, modalDisclosure } = useModalContext();
 
-  const { updateTemplate, isLoading } = useTemplateList(project.id);
+  const { createTemplate, updateTemplate, isLoading } = useTemplateList(project.id);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(
@@ -58,13 +68,26 @@ export function UpsertTemplateForm({ template, project }: { template?: Template;
             wtp_status: formValues.status ? '1' : '0',
           },
         });
+        toast({
+          title: 'Template updated successfully',
+          status: 'success',
+          duration: 3000,
+        });
+      } else {
+        await createTemplate({
+          name: formValues.name!,
+          wtp_status: formValues.status ? '1' : '0',
+          wtp_template_location: templateLocation,
+          wtp_template_type: templateType,
+          wtp_project_id: project.id,
+        });
+        toast({
+          title: 'Template created successfully',
+          status: 'success',
+          duration: 3000,
+        });
       }
       modalDisclosure.onClose();
-      toast({
-        title: 'Template updated successfully',
-        status: 'success',
-        duration: 3000,
-      });
     } catch (error: AxiosError | any) {
       const responseErrorMessage = error?.response?.data?.errors?.message ?? 'Something went wrong!';
       toast({
@@ -109,7 +132,7 @@ export function UpsertTemplateForm({ template, project }: { template?: Template;
           <FormControl isInvalid={!!form.formState.errors.name}>
             <FormLabel fontSize="sm">Template Name*</FormLabel>
             <Input
-              placeholder="Site Header Template"
+              placeholder="Template for ..."
               {...form.register('name')}
             />
             <FormErrorMessage>This field is required</FormErrorMessage>

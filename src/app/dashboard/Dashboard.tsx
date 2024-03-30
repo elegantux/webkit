@@ -1,32 +1,144 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Flex, Heading, IconButton, useToast } from '@chakra-ui/react';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
-import { Swiper as ISwiper } from 'swiper';
-import { Navigation, Scrollbar } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Box, Card, Flex, Heading, Image, Progress, Text, useToast } from '@chakra-ui/react';
+import { FaArrowRight } from 'react-icons/fa6';
 import { AxiosError } from 'axios';
+import { Link } from '@tanstack/react-router';
 
 // Import Swiper styles
 import 'swiper/css';
 
 import { ContentSection, PageHeading } from '@app/dashboard/components/PageComponents';
-import { ProjectCard } from '@app/dashboard/project/components/ProjectCard';
 import { Project } from '@lib/models/project';
 import { api } from '@lib/api';
 import { ProjectListEmptyState } from '@app/dashboard/project/components/ProjectListEmptyState';
 import { SliderSkeleton, TableSkeleton } from '@ui/atomic/molecules';
-import { getInfoToastObject } from '@lib/utils';
-import { Template } from '@lib/models/template';
+import { appPath, getInfoToastObject } from '@lib/utils';
+import { TEMPLATE_PROJECT_TEMPLATE_TYPES, Template } from '@lib/models/template';
 import { TemplateListTable } from '@app/dashboard/template/components/TemplateListTable';
 import { RecentTemplateListEmptyState } from '@app/dashboard/template/components/TemplateListEmptyState';
 import { PageContainer } from '@ui/atomic/templates/PageContainer';
+import { projectListRoute, projectRoute } from '../../routes';
+import { PROJECT_TASKS } from '@app/dashboard/lib/constants';
+import { useTemplateList, useWebasystApplicationList } from '@lib/state.ts';
 
 import Ornament76 from '@assets/decorations/ornament-76.svg?react';
 
 const FETCH_DELAY = 500;
 
-function RecentProjectListSlider() {
-  const [swiper, setSwiper] = useState<ISwiper>();
+function ProjectProgressCard({ project }: { project: Project }) {
+  const { templateList } = useTemplateList(project.id);
+  const { appList } = useWebasystApplicationList();
+
+  const projectApp = appList.find((app) => app.app_id === project.app_id)!;
+
+  const completedTasksCount = PROJECT_TASKS[project.app_id]
+    .map((task) => task.check(project, templateList))
+    .filter((isComplete: boolean) => isComplete).length;
+  const progress = (completedTasksCount / PROJECT_TASKS[project.app_id].length) * 100;
+  let progressColorScheme = 'scarlet';
+  if (progress >= 50) {
+    progressColorScheme = 'dodger';
+  }
+  if (progress === 100) {
+    progressColorScheme = 'malachite';
+  }
+
+  return (
+    <Card
+      as={Link}
+      to={projectRoute.fullPath}
+      params={{ projectId: project.id }}
+      search={() => ({ templateType: TEMPLATE_PROJECT_TEMPLATE_TYPES.DEFAULT })}
+      flex={1}
+      shadow="xs"
+      padding="24px"
+      transition="background 0.1s ease-in-out"
+      bg="white"
+      _dark={{
+        bg: 'ebony.500',
+        _hover: {
+          bg: 'ebony.600',
+          color: 'white',
+          borderColor: 'dodger.800',
+        },
+      }}
+      border="1px solid transparent"
+      borderRadius="16px"
+      _hover={{
+        color: 'black',
+        borderColor: 'dodger.200',
+      }}
+    >
+      <Flex
+        position="relative"
+        alignItems="center"
+        justify="center"
+        mb="14px"
+      >
+        <Box
+          position="absolute"
+          top="0px"
+          left="0px"
+        >
+          <Image
+            src={projectApp.icon}
+            alt={projectApp.app_id}
+            width="32px"
+            flexShrink={0}
+          />
+        </Box>
+        <Image
+          src={project.preview_image_url}
+          fallback={
+            <Image
+              src={appPath('/img/webkit.svg')}
+              filter="grayscale(100%)"
+              opacity="0.2"
+              height="140px"
+            />
+          }
+          alt="Project Preview Image"
+          mx="auto"
+          width="auto"
+          w="full"
+          maxH="210px"
+          objectFit="cover"
+          borderRadius="lg"
+        />
+        <Box
+          position="absolute"
+          top="0px"
+          right="0px"
+        >
+          <FaArrowRight />
+        </Box>
+      </Flex>
+      <Heading
+        as="h4"
+        size="lg"
+      >
+        {project.name}
+      </Heading>
+      <Box>
+        <Text
+          fontSize="sm"
+          mb="12px"
+          opacity={0.6}
+        >
+          {completedTasksCount}/{PROJECT_TASKS[project.app_id].length} tasks | {progress}%
+        </Text>
+        <Progress
+          value={progress === 0 ? 5 : progress}
+          colorScheme={progressColorScheme}
+          size="sm"
+          borderRadius="8px"
+        />
+      </Box>
+    </Card>
+  );
+}
+
+function RecentProjectList() {
   const [projectList, setProjectList] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -44,7 +156,7 @@ function RecentProjectListSlider() {
           setTimeout(r, FETCH_DELAY);
         });
       }
-      setProjectList(response.data);
+      setProjectList(response.data.slice(0, 3));
     } catch (error: AxiosError | any) {
       const responseErrorMessage = error?.response?.data?.errors?.message ?? 'Something went wrong!';
       toast({
@@ -70,7 +182,7 @@ function RecentProjectListSlider() {
           <Flex
             justify="space-between"
             align="center"
-            mb="14px"
+            mb="24px"
           >
             <Heading
               as="h4"
@@ -79,45 +191,25 @@ function RecentProjectListSlider() {
             >
               Recent Projects
             </Heading>
-            <Flex>
-              <IconButton
-                aria-label=""
-                variant="ghost"
-                size="sm"
-                onClick={() => swiper?.slidePrev()}
-                icon={<FaChevronLeft />}
-              />
-              <IconButton
-                aria-label=""
-                variant="ghost"
-                size="sm"
-                onClick={() => swiper?.slideNext()}
-                icon={<FaChevronRight />}
-              />
+            <Flex
+              as={Link}
+              to={projectListRoute.to}
+              params={{}}
+              alignItems="center"
+              gap="8px"
+            >
+              See all
+              <FaArrowRight />
             </Flex>
           </Flex>
-          <Swiper
-            spaceBetween={14}
-            slidesPerView={3}
-            onInit={(sw) => {
-              setSwiper(sw);
-            }}
-            modules={[Navigation, Scrollbar]}
-            breakpoints={{
-              '1200': { slidesPerView: 3 },
-              '720': { slidesPerView: 2 },
-            }}
-            style={{ margin: '0 -12px', height: 'max-content' }}
-          >
+          <Flex gap="32px">
             {projectList.map((project) => (
-              <SwiperSlide
-                style={{ padding: '12px', height: 'auto' }}
+              <ProjectProgressCard
                 key={project.id}
-              >
-                <ProjectCard project={project} />
-              </SwiperSlide>
+                project={project}
+              />
             ))}
-          </Swiper>
+          </Flex>
         </>
       )}
     </Box>
@@ -194,7 +286,8 @@ export function Dashboard() {
   return (
     <PageContainer>
       <PageHeading>Dashboard</PageHeading>
-      <RecentProjectListSlider />
+      {/* <RecentProjectListSlider /> */}
+      <RecentProjectList />
       <Flex
         my="32px"
         opacity="1"

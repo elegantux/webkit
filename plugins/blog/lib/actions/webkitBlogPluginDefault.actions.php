@@ -9,12 +9,23 @@ class webkitBlogPluginDefaultActions extends waJsonActions
     $this->getResponse()->sendHeaders();
   }
 
-  public function defaultAction()
+  public function postExcerptAction()
   {
-    $this->response = [
-      ['value' => 1, 'label' => 'Blog 1'],
-      ['value' => 2, 'label' => 'Blog 2'],
-    ];
+    try {
+      $component = new webkitBlogComponentPostExcerpt();
+
+      $this->response = [
+        'view' => $component->prepareView(),
+        'model' => $component->prepareModel(),
+      ];
+
+    } catch (webkitAPIException $exception) {
+
+      $this->setStatus($exception->getCode());
+
+      $this->errors = $exception->getPayload();
+
+    }
   }
 
 }

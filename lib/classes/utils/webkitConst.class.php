@@ -20,5 +20,7 @@ class webkitConst
   const EDITOR_CANVAS_HEAD = 'editor_canvas_head';
   const EDITOR_PAGE_HEAD = 'editor_page_head';
   const EDITOR_TEMPLATE_SNIPPETS = 'editor_template_snippets';
+  const EDITOR_BEFORE_TEMPLATE_SAVE_EVENT = 'editor_before_template_save';
+  const EDITOR_AFTER_TEMPLATE_SAVE_EVENT = 'editor_after_template_save';
 
 }

@@ -1,7 +1,13 @@
+export enum PROJECT_APP_IDS {
+  SITE = 'site',
+  BLOG = 'blog',
+  SHOP = 'shop',
+}
+
 export interface Project {
   id: string;
   name: string;
-  app_id: string;
+  app_id: PROJECT_APP_IDS;
   theme_id: string;
   theme_settings_id: string;
   preview_image_url: string;

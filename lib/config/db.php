@@ -26,9 +26,10 @@ return array(
     'id'                => array('int', 11, 'null' => 0, 'autoincrement' => 1),
     'parent_id'         => array('int', 11, 'null' => 0),
     'child_id'          => array('int', 11, 'null' => 0),
+    'param'             => array('varchar', 255, 'null' => 1),
     ':keys' => array(
       'PRIMARY' => 'id',
-      'parent_id' => array('parent_id', 'child_id', 'unique' => 1),
+      'parent_id' => array('parent_id', 'child_id', 'param', 'unique' => 1),
     ),
   ),
 
@@ -39,7 +40,7 @@ return array(
     'page_id'           => array('int', 11, 'null' => 1),
     'status'            => array('int', 11, 'unsigned' => 1, 'null' => 0),
     'template_type'     => array('varchar', 255, 'null' => 0),
-    'template_location' => array('varchar', 255, 'null' => 0),
+    'template_location' => array('varchar', 255, 'null' => 1),
     ':keys'             => array(
       'PRIMARY' => 'id',
       'project_id' => 'project_id',

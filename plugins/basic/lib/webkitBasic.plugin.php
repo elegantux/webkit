@@ -22,6 +22,7 @@ class webkitBasicPlugin extends webkitEditorPlugin {
     webkitComponentRegistry::register(webkitBasicComponentSlider::$type, 'webkitBasicComponentSlider');
     webkitComponentRegistry::register(webkitBasicComponentSmarty::$type, 'webkitBasicComponentSmarty');
     webkitComponentRegistry::register(webkitBasicComponentHtml::$type, 'webkitBasicComponentHtml');
+    webkitComponentRegistry::register(webkitBasicComponentLoopGrid::$type, 'webkitBasicComponentLoopGrid');
     webkitComponentRegistry::register(webkitBasicComponentPageInfo::$type, 'webkitBasicComponentPageInfo');
     webkitComponentRegistry::register(webkitBasicComponentBreadcrumbs::$type, 'webkitBasicComponentBreadcrumbs');
 
@@ -63,6 +64,23 @@ class webkitBasicPlugin extends webkitEditorPlugin {
   public function editorPageHead($params)
   {
     return webkitComponentFactory::getSourcesByTypes($this->component_types, $params);
+  }
+
+  /**
+   * Hook
+   * @param $params
+   * @return void
+   * @throws Exception
+   */
+  public function editorAfterTemplateSave($params)
+  {
+    $components = webkitComponentFactory::findComponentByTypes($this->component_types);
+
+    foreach ($components as $component) {
+      if (method_exists($component, webkitConst::EDITOR_AFTER_TEMPLATE_SAVE_EVENT)) {
+        $component->editor_after_template_save($params);
+      }
+    }
   }
 
   /**

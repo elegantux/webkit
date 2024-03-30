@@ -29,10 +29,10 @@ abstract class webkitEditorComponent
       throw new waException('Plugin name must be provided!');
     }
 
-    if (!self::$plugin) {
-      self::$plugin = wa(webkitConst::APP_ID)->getPlugin($name);
-    }
-    return self::$plugin;
+//    if (!self::$plugin) {
+//      self::$plugin = wa(webkitConst::APP_ID)->getPlugin($name);
+//    }
+    return wa(webkitConst::APP_ID)->getPlugin($name);
   }
 
   /**

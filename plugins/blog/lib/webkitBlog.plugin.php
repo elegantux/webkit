@@ -1,36 +1,56 @@
 <?php
 
 class webkitBlogPlugin extends webkitEditorPlugin {
+  /**
+   * @var array Component types
+   */
+  private $component_types;
+
+  public function __construct($info)
+  {
+    parent::__construct($info);
+
+    webkitComponentRegistry::register(webkitBlogComponentPostTitle::$type, 'webkitBlogComponentPostTitle');
+    webkitComponentRegistry::register(webkitBlogComponentPostExcerpt::$type, 'webkitBlogComponentPostExcerpt');
+
+    $this->component_types = webkitComponentRegistry::getRegisteredTypes();
+  }
 
   /**
-   * @param array $params
-   * @return array
+   * Hook
+   * @throws Exception
    */
-  public function dependencies($params)
-  {
-    return array();
-  }
-
   public function frontendHead($params)
   {
-    if (in_array($this->getId(), $params['component_types'])) {
-      return $this->dependencies($params);
+    $component_types = $params['component_types'] ?? [];
+
+    $used_components = array_filter($component_types, function ($type) {
+      return in_array($type, $this->component_types);
+    });
+
+    if (empty($used_components)) {
+      return [];
     }
-    return [];
+
+    return webkitComponentFactory::getDependencySourcesByTypes($used_components, $params);
   }
 
-  public function pluginDependencies($params)
+  /**
+   * Hook
+   * @throws Exception
+   */
+  public function editorCanvasHead($params)
   {
-    return $this->dependencies($params);
+    return webkitComponentFactory::getDependencySourcesByTypes($this->component_types, $params);
   }
 
-  public function pluginAssets($params)
+  /**
+   * Hook
+   * @throws Exception
+   */
+  public function editorPageHead($params)
   {
-    return array(
-      'scripts' => [
-        ['src' => $this->getPluginStaticUrl() . 'js/plugins/post.title.js' . '?v=' . $this->getVersion()],
-      ],
-    );
+    return webkitComponentFactory::getSourcesByTypes($this->component_types, $params);
   }
 
   /**

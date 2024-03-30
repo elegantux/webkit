@@ -6,6 +6,7 @@ import { useWebasystApplicationList } from '@lib/state';
 import { Project } from '@lib/models/project';
 import { appPath } from '@lib/utils';
 import { projectRoute } from '../../../../routes';
+import { TEMPLATE_PROJECT_TEMPLATE_TYPES } from '@lib/models/template';
 
 export function ProjectCard({ project }: { project: Project }) {
   const menu = useDisclosure();
@@ -21,6 +22,7 @@ export function ProjectCard({ project }: { project: Project }) {
       as={Link}
       to={projectRoute.to}
       params={{ projectId: project.id }}
+      search={() => ({ templateType: TEMPLATE_PROJECT_TEMPLATE_TYPES.DEFAULT })}
       height="100%"
       shadow="xs"
       transition="background 0.1s ease-in-out"

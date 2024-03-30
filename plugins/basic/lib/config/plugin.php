@@ -13,5 +13,6 @@ return array(
     'editor_page_head' => 'editorPageHead',
     'editor_canvas_head' => 'editorCanvasHead',
     'editor_template_snippets' => 'editorTemplateSnippets',
+    'editor_after_template_save' => 'editorAfterTemplateSave',
   ),
 );
