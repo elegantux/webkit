@@ -286,7 +286,6 @@ export function Dashboard() {
   return (
     <PageContainer>
       <PageHeading>Dashboard</PageHeading>
-      {/* <RecentProjectListSlider /> */}
       <RecentProjectList />
       <Flex
         my="32px"

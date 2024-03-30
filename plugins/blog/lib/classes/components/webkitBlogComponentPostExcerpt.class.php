@@ -28,7 +28,13 @@ class webkitBlogComponentPostExcerpt extends webkitEditorComponent
    */
   public function prepareView()
   {
-    return $this->createHtml(waRequest::post());
+    $view = wa(webkitConst::APP_ID)->getView();
+    $provider = new webkitViewDataProvider();
+    $post = $provider->blog->firstPost();
+
+    $view->assign(['post' => $post]);
+
+    return $view->fetch('string:' . $this->createHtml(waRequest::post()));
   }
 
   /**
@@ -55,12 +61,6 @@ class webkitBlogComponentPostExcerpt extends webkitEditorComponent
     $truncate_at_word = filter_var($data['trait_'.self::$type.'__truncate_at_word'], FILTER_VALIDATE_BOOLEAN);
     $truncate_at_middle = filter_var($data['trait_'.self::$type.'__truncate_at_middle'], FILTER_VALIDATE_BOOLEAN);
 
-    $view = wa(webkitConst::APP_ID)->getView();
-    $provider = new webkitViewDataProvider();
-    $post = $provider->blog->firstPost();
-
-    $view->assign(['post' => $post]);
-
     $result = '{$post["text"]|strip_tags:false|truncate';
     if (isset($text_length) && strlen($text_length) > 0) {
       $result .= ':'.$text_length;
@@ -76,8 +76,6 @@ class webkitBlogComponentPostExcerpt extends webkitEditorComponent
     }
     $result .= '}';
 
-//    return $post['text'];
-//    wa_dump($result, $view->fetch('string:' . $result));
-    return $view->fetch('string:' . $result);
+    return $result;
   }
 }

@@ -6,7 +6,9 @@
     const CATEGORY = 'Basic';
     const API_ENDPOINT = webkit.webkitBackendUrls.backendApiUrl + '?plugin=basic&module=default&action=loopGrid';
     const TEMPLATE_LIST_API_ENDPOINT = webkit.webkitBackendUrls.backendApiUrl + `?module=templateList&project_id=${data.template.wtp_project_id}&per_page=100&template_type=loop`;
-    const BLOG_ICON = `<svg width="100%" height="52px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+    const LOADING_ANIMATION_HTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20" xml:space="preserve" style="width: 44px; height: 20px"><circle fill="#0051d2" cx="6" cy="10" r="6"><animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin=".1"></animate></circle><circle fill="#0051d2" cx="26" cy="10" r="6"><animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin=".2"></animate></circle><circle fill="#0051d2" cx="46" cy="10" r="6"><animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin=".3"></animate></circle></svg>';
+    const BLOG_ICON_HTML = `<svg width="100%" height="52px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="1.5" y="4.5" width="17" height="9" rx="1.5" stroke="currentColor"/>
     <path d="M22 9.5L23 8.5L22 7.5" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M20 8.25C19.8619 8.25 19.75 8.36193 19.75 8.5C19.75 8.63807 19.8619 8.75 20 8.75V8.25ZM20 8.75H23V8.25H20V8.75Z" fill="currentColor"/>
@@ -14,7 +16,13 @@
     <path d="M10.25 18C10.25 17.8619 10.1381 17.75 10 17.75C9.86193 17.75 9.75 17.8619 9.75 18H10.25ZM9.75 18V21H10.25V18H9.75Z" fill="currentColor"/>
     <rect x="5.25" y="15.25" width="9.5" height="0.5" rx="0.25" fill="#D9D9D9" stroke="currentColor" stroke-width="0.5"/>
     <rect x="5.25" y="17.25" width="9.5" height="0.5" rx="0.25" fill="#D9D9D9" stroke="currentColor" stroke-width="0.5"/>
-</svg>
+</svg>`;
+    const EMPTY_VIEW_HTML = `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px;">
+      ${BLOG_ICON_HTML}
+      <h5 style="margin: 0; font-size: 24px;">Loop Grid</h5>
+      <p style="margin: 0; font-size: 14px;">Please configure the component settings</p>
+    </div>
 `;
 
     const TRAIT_GROUPS = {
@@ -97,18 +105,10 @@
           this.el.innerHTML = innerHtml;
         },
         setLoadingView() {
-          const loader = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20" xml:space="preserve" style="width: 44px; height: 20px"><circle fill="#0051d2" cx="6" cy="10" r="6"><animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin=".1"></animate></circle><circle fill="#0051d2" cx="26" cy="10" r="6"><animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin=".2"></animate></circle><circle fill="#0051d2" cx="46" cy="10" r="6"><animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin=".3"></animate></circle></svg>';
-          this.updateInnerHtml(loader);
+          this.updateInnerHtml(LOADING_ANIMATION_HTML);
         },
         setEmptyView() {
-          const view = `
-            <div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px;">
-              ${BLOG_ICON}
-              <h5 style="margin: 0; font-size: 24px;">Loop Grid</h5>
-              <p style="margin: 0; font-size: 14px;">Please configure the component settings</p>
-            </div>
-          `;
-          this.updateInnerHtml(view);
+          this.updateInnerHtml(EMPTY_VIEW_HTML);
         },
         async handleTraitsChange(model) {
           this.setLoadingView();
@@ -159,7 +159,7 @@
       id: COMPONENT_TYPE,
       label: COMPONENT_NAME,
       category: CATEGORY,
-      icon: BLOG_ICON,
+      icon: BLOG_ICON_HTML,
       content: { type: COMPONENT_TYPE, },
       activate: true,
     };

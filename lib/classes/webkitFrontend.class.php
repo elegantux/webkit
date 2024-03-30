@@ -106,15 +106,18 @@ trait webkitFrontend
         $component_types = array_merge($ids, $component_types);
       }
     }
-    // Collect child template ids
-    // $templates_ids = array_values(array_column($templates, 'id'));
+
+    /**
+     * Collect child template ids
+     * TODO: At the moment this is a very expensive operation. We need to find a more efficient way.
+     */
     foreach ($templates as $template) {
       $template_child_service = new webkitTemplateChildService(new webkitTemplate($templates['id']));
       $child_templates = $template_child_service->getTemplateChildren($template['id']);
       $child_ids = array_values(array_column($child_templates, 'child_id'));
       $child_template_ids = $child_template_ids + $child_ids;
     }
-//    wa_dump($child_template_ids);
+
     // Removes duplicated ids
     $child_template_ids = array_unique($child_template_ids);
     $component_types = array_unique($component_types);
