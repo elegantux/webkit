@@ -246,8 +246,7 @@ trait webkitFrontend
   }
 
   /**
-   * @param string $wa_active_theme_url
-   * @param string $template_type
+   * @param $template_id
    * @return string
    * @throws webkitAPIException
    */

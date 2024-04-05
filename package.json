@@ -13,7 +13,7 @@
     "@chakra-ui/react": "2.8.2",
     "@emotion/react": "11.11.3",
     "@emotion/styled": "11.11.0",
-    "@fancyapps/ui": "^5.0.35",
+    "@fancyapps/ui": "5.0.35",
     "@hookform/resolvers": "3.3.4",
     "@tanstack/react-query": "5.15.0",
     "@tanstack/react-query-devtools": "5.15.0",
