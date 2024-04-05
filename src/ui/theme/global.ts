@@ -1,6 +1,11 @@
 import colors from '@ui/theme/colors';
 
 export const global = () => ({
+  // Fancybox
+  body: {
+    '--fancybox-zIndex': 'var(--chakra-zIndices-modal)',
+  },
+
   // Reset Webasyst styles
   '#wa-nav, #wa-nav:hover': {
     // boxShadow: 'none',
@@ -8,6 +13,7 @@ export const global = () => ({
   p: {
     margin: 'unset',
   },
+
   // Reset GJS styles
   ':root': {
     '--gjs-left-width': '0px',
@@ -27,6 +33,8 @@ export const global = () => ({
     '--sketch-background': "var(--background-color, '#07051c') !important",
     '--sketch-swatch-border-top': '1px solid red',
   },
+
+  // Custom classes
   'hide-scrollbar': {
     /* IE and Edge */
     msOverflowStyle: 'none',

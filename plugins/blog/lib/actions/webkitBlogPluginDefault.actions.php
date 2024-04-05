@@ -28,4 +28,23 @@ class webkitBlogPluginDefaultActions extends waJsonActions
     }
   }
 
+  public function paginationAction()
+  {
+    try {
+      $component = new webkitBlogComponentBlogPagination();
+
+      $this->response = [
+        'view' => $component->prepareView(),
+        'model' => $component->prepareModel(),
+      ];
+
+    } catch (webkitAPIException $exception) {
+
+      $this->setStatus($exception->getCode());
+
+      $this->errors = $exception->getPayload();
+
+    }
+  }
+
 }

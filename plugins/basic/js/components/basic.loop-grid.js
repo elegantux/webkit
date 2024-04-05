@@ -8,7 +8,7 @@
     const TEMPLATE_LIST_API_ENDPOINT = webkit.webkitBackendUrls.backendApiUrl + `?module=templateList&project_id=${data.template.wtp_project_id}&per_page=100&template_type=loop`;
 
     const LOADING_ANIMATION_HTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20" xml:space="preserve" style="width: 44px; height: 20px"><circle fill="#0051d2" cx="6" cy="10" r="6"><animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin=".1"></animate></circle><circle fill="#0051d2" cx="26" cy="10" r="6"><animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin=".2"></animate></circle><circle fill="#0051d2" cx="46" cy="10" r="6"><animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin=".3"></animate></circle></svg>';
-    const BLOG_ICON_HTML = `<svg width="100%" height="52px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    const BLOCK_ICON_HTML = `<svg width="100%" height="52px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="1.5" y="4.5" width="17" height="9" rx="1.5" stroke="currentColor"/>
     <path d="M22 9.5L23 8.5L22 7.5" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M20 8.25C19.8619 8.25 19.75 8.36193 19.75 8.5C19.75 8.63807 19.8619 8.75 20 8.75V8.25ZM20 8.75H23V8.25H20V8.75Z" fill="currentColor"/>
@@ -19,8 +19,8 @@
 </svg>`;
     const EMPTY_VIEW_HTML = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px;">
-      ${BLOG_ICON_HTML}
-      <h5 style="margin: 0; font-size: 24px;">Loop Grid</h5>
+      ${BLOCK_ICON_HTML}
+      <h5 style="margin: 0; font-size: 24px;">${COMPONENT_NAME}</h5>
       <p style="margin: 0; font-size: 14px;">Please configure the component settings</p>
     </div>
 `;
@@ -77,7 +77,7 @@
       model: {
         defaults: {
           name: COMPONENT_NAME,
-          attributes: { [DATA_KEY]: COMPONENT_TYPE },
+          attributes: { [DATA_KEY]: COMPONENT_TYPE, class: `.${COMPONENT_TYPE}` },
           droppable: false,
 
           // Traits
@@ -159,7 +159,7 @@
       id: COMPONENT_TYPE,
       label: COMPONENT_NAME,
       category: CATEGORY,
-      icon: BLOG_ICON_HTML,
+      icon: BLOCK_ICON_HTML,
       content: { type: COMPONENT_TYPE, },
       activate: true,
     };

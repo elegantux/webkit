@@ -88,6 +88,13 @@ class webkitProjectModel extends waModel
    */
   public function getFrontendTemplateContent($app_id, $theme_id, $template_location)
   {
+    $query_params = array(
+      'app_id' => $app_id,
+      'theme_id' => $theme_id,
+      'template_type' => webkitTemplateProjectModel::$TEMPLATE_TYPE_DEFAULT,
+      'template_location' => $template_location
+    );
+
     try {
       $response = $this
         ->query('
@@ -97,9 +104,10 @@ class webkitProjectModel extends waModel
           JOIN webkit_project AS wp ON wtp.project_id = wp.id
           WHERE wp.app_id = s:app_id
           AND wp.theme_id = s:theme_id
+          AND wtp.template_type = s:template_type
           AND wtp.template_location = s:template_location
           AND wtp.status = 1
-        ', array('app_id' => $app_id, 'theme_id' => $theme_id, 'template_location' => $template_location))
+        ', $query_params)
         ->fetch();
 
       if (isset($response['front_content'])) {

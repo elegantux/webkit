@@ -19,4 +19,19 @@ export const TRAIT_TYPES = {
   IMAGE: 'image',
   CODE_EDITOR: 'code_editor',
   KEY_VALUE: 'key_value',
+  CHILD_SELECTOR: 'child_selector',
+};
+
+export const DEVICE_TYPE = {
+  DESKTOP: 'desktop',
+  TABLET: 'tablet',
+  MOBILE_PORTRAIT: 'mobilePortrait',
+  MOBILE_LANDSCAPE: 'mobileLandscape',
+};
+
+export const DEVICE_TYPE_NAME = {
+  [DEVICE_TYPE.DESKTOP]: 'Desktop',
+  [DEVICE_TYPE.TABLET]: 'Tablet',
+  [DEVICE_TYPE.MOBILE_PORTRAIT]: 'Mobile Portrait',
+  [DEVICE_TYPE.MOBILE_LANDSCAPE]: 'Mobile Landscape',
 };

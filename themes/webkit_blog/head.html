@@ -1,13 +1,10 @@
-<!-- blog css -->
-<link href="{$wa_active_theme_url}default.blog.css?v{$wa_theme_version}" rel="stylesheet" type="text/css">
-
-<!-- blog js -->
-<script src="{$wa_active_theme_url}default.blog.js?v{$wa_theme_version}"></script>
-
 <!-- next & prev links -->
 {foreach $links as $role => $link}
 <link rel="{$role}" href="{$link}">
 {/foreach}
+
+<!-- blog js -->
+<script src="{$wa_active_theme_url}default.blog.js?v{$wa_theme_version}"></script>
 
 {$wa->webkit->frontendHead($wa_active_theme_path)}
 

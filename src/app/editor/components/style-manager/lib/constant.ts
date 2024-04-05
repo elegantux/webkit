@@ -553,42 +553,42 @@ const borderSector = {
       property: 'border-color',
     },
     {
-      label: 'Top W',
+      label: 'Top Width',
       property: 'border-top-width',
       ...borderWidthProps,
     },
     {
-      label: 'Right W',
+      label: 'Right Width',
       property: 'border-right-width',
       ...borderWidthProps,
     },
     {
-      label: 'Bottom W',
+      label: 'Bottom Width',
       property: 'border-bottom-width',
       ...borderWidthProps,
     },
     {
-      label: 'Left W',
+      label: 'Left Width',
       property: 'border-left-width',
       ...borderWidthProps,
     },
     {
-      label: 'Top Left R',
+      label: 'Top-Left Radius',
       property: 'border-top-left-radius',
       ...borderRadiusProps,
     },
     {
-      label: 'Top Right R',
+      label: 'Top-Right Radius',
       property: 'border-top-right-radius',
       ...borderRadiusProps,
     },
     {
-      label: 'Bottom Left R',
+      label: 'Bottom-Left Radius',
       property: 'border-bottom-left-radius',
       ...borderRadiusProps,
     },
     {
-      label: 'Bottom Right R',
+      label: 'Bottom-Right Radius',
       property: 'border-bottom-right-radius',
       ...borderRadiusProps,
     },
@@ -623,21 +623,21 @@ const borderSector = {
   ],
 };
 
-const boxShadowSector = {
-  name: STYLE_MANAGER_SECTION_NAME.BOX_SHADOW,
-  open: false,
-  properties: [
-    {
-      type: STYLE_TYPES.SELECT,
-      label: 'Box Shadow',
-      property: 'box-shadow',
-      options: [
-        { label: 'Outset', value: 'outset' },
-        { label: 'Inset', value: 'inset' },
-      ],
-    },
-  ],
-};
+// const boxShadowSector = {
+//   name: STYLE_MANAGER_SECTION_NAME.BOX_SHADOW,
+//   open: false,
+//   properties: [
+//     {
+//       type: STYLE_TYPES.SELECT,
+//       label: 'Box Shadow',
+//       property: 'box-shadow',
+//       options: [
+//         { label: 'Outset', value: 'outset' },
+//         { label: 'Inset', value: 'inset' },
+//       ],
+//     },
+//   ],
+// };
 
 const positioningProps = {
   units: [UNIT_TYPES.PX, UNIT_TYPES.VW, UNIT_TYPES.VH, UNIT_TYPES.PERCENT],
@@ -712,14 +712,14 @@ const backgroundSector = {
   name: STYLE_MANAGER_SECTION_NAME.BACKGROUND,
   open: false,
   properties: [
-    {
-      type: STYLE_TYPES.COLOR,
-      label: 'Background Gradient',
-      // default: 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 100%)',
-      default: '',
-      property: 'background',
-      isFullWidth: true,
-    },
+    // {
+    //   type: STYLE_TYPES.COLOR,
+    //   label: 'Background Gradient',
+    //   // default: 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 100%)',
+    //   default: '',
+    //   property: 'background',
+    //   isFullWidth: true,
+    // },
     {
       type: STYLE_TYPES.COLOR,
       label: 'Background Color',
@@ -727,58 +727,58 @@ const backgroundSector = {
       property: 'background-color',
       isFullWidth: true,
     },
-    {
-      type: STYLE_TYPES.COLOR,
-      label: 'Background Image',
-      property: 'background-image',
-      isFullWidth: true,
-    },
-    {
-      type: STYLE_TYPES.SELECT,
-      label: 'Background Repeat',
-      property: 'background-repeat',
-      options: [
-        { label: 'Repeat', value: 'repeat' },
-        { label: 'Repeat X', value: 'repeat-x' },
-        { label: 'Repeat Y', value: 'repeat-y' },
-        { label: 'No Repeat', value: 'no-repeat' },
-      ],
-    },
-    {
-      type: STYLE_TYPES.RADIO,
-      label: 'Background Size',
-      default: '',
-      property: 'background-size',
-      // units: ['px', '%'],
-      options: [
-        { label: 'Cover', value: 'cover' },
-        { label: 'Contain', value: 'contain' },
-      ],
-    },
-    {
-      type: STYLE_TYPES.INPUT,
-      label: 'Position X',
-      default: '',
-      property: 'background-position-x',
-      units: ['px', '%'],
-      options: [
-        { label: 'Left', value: 'left' },
-        { label: 'Center', value: 'center' },
-        { label: 'Right', value: 'right' },
-      ],
-    },
-    {
-      type: STYLE_TYPES.INPUT,
-      label: 'Position Y',
-      default: '',
-      property: 'background-position-y',
-      units: ['px', '%'],
-      options: [
-        { label: 'Top', value: 'top' },
-        { label: 'Center', value: 'center' },
-        { label: 'Bottom', value: 'bottom' },
-      ],
-    },
+    // {
+    //   type: STYLE_TYPES.COLOR,
+    //   label: 'Background Image',
+    //   property: 'background-image',
+    //   isFullWidth: true,
+    // },
+    // {
+    //   type: STYLE_TYPES.SELECT,
+    //   label: 'Background Repeat',
+    //   property: 'background-repeat',
+    //   options: [
+    //     { label: 'Repeat', value: 'repeat' },
+    //     { label: 'Repeat X', value: 'repeat-x' },
+    //     { label: 'Repeat Y', value: 'repeat-y' },
+    //     { label: 'No Repeat', value: 'no-repeat' },
+    //   ],
+    // },
+    // {
+    //   type: STYLE_TYPES.RADIO,
+    //   label: 'Background Size',
+    //   default: '',
+    //   property: 'background-size',
+    //   // units: ['px', '%'],
+    //   options: [
+    //     { label: 'Cover', value: 'cover' },
+    //     { label: 'Contain', value: 'contain' },
+    //   ],
+    // },
+    // {
+    //   type: STYLE_TYPES.INPUT,
+    //   label: 'Position X',
+    //   default: '',
+    //   property: 'background-position-x',
+    //   units: ['px', '%'],
+    //   options: [
+    //     { label: 'Left', value: 'left' },
+    //     { label: 'Center', value: 'center' },
+    //     { label: 'Right', value: 'right' },
+    //   ],
+    // },
+    // {
+    //   type: STYLE_TYPES.INPUT,
+    //   label: 'Position Y',
+    //   default: '',
+    //   property: 'background-position-y',
+    //   units: ['px', '%'],
+    //   options: [
+    //     { label: 'Top', value: 'top' },
+    //     { label: 'Center', value: 'center' },
+    //     { label: 'Bottom', value: 'bottom' },
+    //   ],
+    // },
   ],
 };
 
@@ -790,7 +790,7 @@ export const styleManagerConfig = {
     typographySector,
     spacingSector,
     borderSector,
-    boxShadowSector,
+    // boxShadowSector,
     positioningSector,
     backgroundSector,
   ],

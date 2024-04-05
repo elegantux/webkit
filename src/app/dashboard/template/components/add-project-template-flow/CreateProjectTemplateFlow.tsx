@@ -199,7 +199,7 @@ function TemplateLocationStep({
         bottom="24px"
       >
         <Button
-          variant="outline"
+          variant={selectedLocation ? 'solid' : 'outline'}
           rightIcon={<FaArrowRight />}
           isDisabled={!selectedLocation}
           onClick={handleContinueButtonClick}
@@ -360,7 +360,7 @@ function BasicInfoStep({
               Previous
             </Button>
             <Button
-              variant="outline"
+              variant={form.formState.isValid ? 'solid' : 'outline'}
               rightIcon={<FaArrowRight />}
               onClick={form.handleSubmit(handleFromSubmit)}
               isDisabled={!form.formState.isValid}
@@ -487,7 +487,7 @@ function ReviewStep({
             Previous
           </Button>
           <Button
-            variant="outline"
+            variant="solid"
             onClick={() => onSubmit()}
           >
             Create Template

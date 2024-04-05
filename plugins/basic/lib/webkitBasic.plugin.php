@@ -11,6 +11,7 @@ class webkitBasicPlugin extends webkitEditorPlugin {
     parent::__construct($info);
 
     webkitComponentRegistry::register(webkitBasicComponentContainer::$type, 'webkitBasicComponentContainer');
+    webkitComponentRegistry::register(webkitBasicComponentBox::$type, 'webkitBasicComponentBox');
     webkitComponentRegistry::register(webkitBasicComponentButton::$type, 'webkitBasicComponentButton');
     webkitComponentRegistry::register(webkitBasicComponentHeading::$type, 'webkitBasicComponentHeading');
     webkitComponentRegistry::register(webkitBasicComponentText::$type, 'webkitBasicComponentText');

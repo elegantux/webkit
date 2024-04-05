@@ -398,7 +398,8 @@ export function TraitManager() {
     const groups: Record<string, Trait[]> = {
       default: [],
     };
-    traitList?.forEach((trait) => {
+
+    traitList.forEach((trait) => {
       // @ts-ignore
       const group = trait.get('group');
 
@@ -416,7 +417,11 @@ export function TraitManager() {
   }, [traitList]);
 
   const handleUpdateTraitList = () => {
-    setTraitList(editor.Traits.getTraits());
+    // Remove the trait type TRAIT_TYPES.CHILD_SELECTOR since it has no settings.
+    const traitListWithoutChildSelectors = editor.Traits.getTraits().filter(
+      (trait) => trait.getType() !== TRAIT_TYPES.CHILD_SELECTOR
+    );
+    setTraitList(traitListWithoutChildSelectors);
     // editor.runCommand(EDITOR_COMMANDS.UPDATE_TRAIT_MANAGER_PROPERTY);
   };
 

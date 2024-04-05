@@ -11,7 +11,7 @@ import { Template } from '@lib/models/template';
 import { Navbar } from '@app/editor/components/Navbar';
 import { Sidebar } from '@app/editor/components/Sidebar';
 import { Canvas } from '@app/editor/components/Canvas';
-import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
+import { DEVICE_TYPE, DEVICE_TYPE_NAME, EDITOR_COMMANDS } from '@app/editor/lib/constant';
 import { styleManagerConfig } from '@app/editor/components/style-manager/lib/constant';
 import { editorRoute } from '../../routes';
 import { Breadcrumbs } from '@app/editor/components/Breadcrumbs';
@@ -105,16 +105,17 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     blockManager: { custom: true },
     traitManager: { custom: true },
     selectorManager: {
-      componentFirst: true,
+      componentFirst: false,
       custom: true,
     },
-    // deviceManager: {
-    //   devices: [
-    //     { id: 'desktop', name: 'Desktop', width: '' },
-    //     { id: 'tablet', name: 'Tablet', width: '770px' },
-    //     { id: 'mobile', name: 'Mobile', width: '' },
-    //   ],
-    // },
+    deviceManager: {
+      devices: [
+        { id: DEVICE_TYPE.DESKTOP, name: DEVICE_TYPE_NAME[DEVICE_TYPE.DESKTOP], width: '' },
+        { id: DEVICE_TYPE.TABLET, name: DEVICE_TYPE_NAME[DEVICE_TYPE.TABLET], width: '770px' },
+        { id: DEVICE_TYPE.MOBILE_PORTRAIT, name: DEVICE_TYPE_NAME[DEVICE_TYPE.MOBILE_PORTRAIT], width: '320px' },
+        { id: DEVICE_TYPE.MOBILE_LANDSCAPE, name: DEVICE_TYPE_NAME[DEVICE_TYPE.MOBILE_LANDSCAPE], width: '568px' },
+      ],
+    },
     panels: {
       defaults: [],
     },
@@ -156,9 +157,9 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
           },
         });
       },
-      (e) => {
-        console.log('types', e.DomComponents.getTypes());
-      },
+      // (e) => {
+      //   console.log('types', e.DomComponents.getTypes());
+      // },
     ],
   });
 
