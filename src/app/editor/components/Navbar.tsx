@@ -12,7 +12,7 @@ import {
   Tooltip,
   useToast,
 } from '@chakra-ui/react';
-import { Suspense, memo, useState } from 'react';
+import { Suspense, memo, useEffect, useState } from 'react';
 import { useNavigate, useRouter } from '@tanstack/react-router';
 import {
   FaAngleLeft,
@@ -26,6 +26,7 @@ import {
   FaVectorSquare,
 } from 'react-icons/fa6';
 import { AxiosError } from 'axios';
+import { Device } from 'grapesjs';
 
 import { EDITOR_STORE, useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
 import { editorRoute } from '../../../routes';
@@ -34,22 +35,9 @@ import { Modal, ModalProvider, useModal } from '@ui/atomic/organisms/modal';
 import { appUrl } from '@lib/utils.tsx';
 import { Template } from '@lib/models/template';
 import { TemplateLibrary } from '@app/editor/components/TemplateLibrary';
+import { DEVICE_TYPE, DEVICE_TYPE_NAME } from '@app/editor/lib/constant';
 
-export const DEVICE_TYPE = {
-  DESKTOP: 'desktop',
-  TABLET: 'tablet',
-  MOBILE_PORTRAIT: 'mobilePortrait',
-  MOBILE_LANDSCAPE: 'mobileLandscape',
-};
-
-export const DEVICE_TYPE_NAME = {
-  [DEVICE_TYPE.DESKTOP]: 'Desktop',
-  [DEVICE_TYPE.TABLET]: 'Tablet',
-  [DEVICE_TYPE.MOBILE_PORTRAIT]: 'Mobile Portrait',
-  [DEVICE_TYPE.MOBILE_LANDSCAPE]: 'Mobile Landscape',
-};
-
-export const DEVICE_TYPE_ICON = {
+const DEVICE_TYPE_ICON = {
   [DEVICE_TYPE.DESKTOP]: <FaTv size={16} />,
   [DEVICE_TYPE.TABLET]: <FaTabletButton size={16} />,
   [DEVICE_TYPE.MOBILE_LANDSCAPE]: <FaMobileButton size={16} />,
@@ -197,9 +185,8 @@ function ResponsiveButtons() {
   const [selectedDevice, setSelectedDevice] = useState<string>(DEVICE_TYPE.DESKTOP);
   const [swVisibility, setSwVisibility] = useState(false);
 
-  const handleDeviceButtonClick = (device: string) => {
-    editor.setDevice(device);
-    setSelectedDevice(device);
+  const handleUpdateDevice = (device: Device) => {
+    setSelectedDevice(device.id as string);
   };
 
   const toggleComponentsBorderHandler = () => {
@@ -212,6 +199,16 @@ function ResponsiveButtons() {
 
     setSwVisibility(commands.isActive('sw-visibility'));
   };
+
+  // Listen to device:select event to be aware if the device changes from somewhere else.
+  // For example from ChildSelectors.tsx
+  useEffect(() => {
+    editor.on('device:select', handleUpdateDevice);
+
+    return () => {
+      editor.off('device:select', handleUpdateDevice);
+    };
+  }, []);
 
   return (
     <Flex>
@@ -230,7 +227,7 @@ function ResponsiveButtons() {
             aria-label={DEVICE_TYPE_NAME[device]}
             icon={DEVICE_TYPE_ICON[device]}
             {...(device === DEVICE_TYPE.MOBILE_LANDSCAPE ? { transform: 'rotate(90deg)' } : {})}
-            onClick={() => handleDeviceButtonClick(device)}
+            onClick={() => editor.setDevice(device)}
           />
         </Tooltip>
       ))}

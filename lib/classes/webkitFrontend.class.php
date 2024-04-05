@@ -247,6 +247,19 @@ trait webkitFrontend
 
   /**
    * @param string $wa_active_theme_url
+   * @param string $template_type
+   * @return string
+   * @throws webkitAPIException
+   */
+  public function rawTemplateContentById($template_id)
+  {
+    $template = new webkitTemplate($template_id);
+
+    return $template->front_content;
+  }
+
+  /**
+   * @param string $wa_active_theme_url
    * @param string $template
    * @param $params
    * @return string
@@ -255,7 +268,11 @@ trait webkitFrontend
    */
   public function assign($wa_active_theme_url, $template, $params = null)
   {
-    $view = $this->getView($wa_active_theme_url);
+    if ($wa_active_theme_url) {
+      $view = $this->getView($wa_active_theme_url);
+    } else {
+      $view = wa()->getView();
+    }
     return $view->fetch("string:" . $template, $params);
   }
 

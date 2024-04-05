@@ -20,7 +20,6 @@ import {
   Tabs,
   Text,
   useTheme,
-  useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FaComputerMouse as ComputerMouseIcon, FaCirclePlus, FaMagnifyingGlass } from 'react-icons/fa6';
@@ -29,80 +28,9 @@ import { Component } from 'grapesjs';
 import { TraitManager } from '@app/editor/components/trait-manager/TraitManager';
 import { BlockManager } from '@app/editor/components/manager/BlockManager';
 import { StyleManager } from '@app/editor/components/style-manager/StyleManager';
-import {
-  EDITOR_STORE,
-  useBlockListDisclosure,
-  useEditorStore,
-  useRuleManagerDisclosure,
-  useRuleManagerStore,
-} from '@app/editor/lib/store';
-import { SelectorManager } from '@app/editor/components/manager/SelectorManager';
-import { CssRuleManager } from '@app/editor/components/style-manager/CssRuleManager';
-import { EDITOR_COMMANDS } from '@app/editor/lib/constant';
-import { RuleManagerToggleSidebarCommandPayload } from '@lib/models/commands';
+import { EDITOR_STORE, useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
+import { SelectorManager } from '@app/editor/components/selector-manager/SelectorManager';
 import { hexOpacity } from '@ui/theme/utils';
-
-function RuleManagerDrawer() {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const ruleManagerDisclosure = useRuleManagerDisclosure((state) => state);
-  const setRuleManagerState = useRuleManagerStore((state) => state.setState);
-  const setRuleManagerReset = useRuleManagerStore((state) => state.reset);
-  const toast = useToast();
-
-  const handleRuleManagerRunCommand = (_: any, options: RuleManagerToggleSidebarCommandPayload) => {
-    if (!options.cssRule) {
-      toast({
-        title: `[Command: ${EDITOR_COMMANDS.TOGGLE_RULE_MANAGER_SIDEBAR}] The cssRule property is not defined.`,
-        status: 'error',
-      });
-      return;
-    }
-
-    if (ruleManagerDisclosure.isOpen) {
-      setRuleManagerState({ component: options.component, cssRule: options.cssRule });
-      return;
-    }
-
-    setRuleManagerState({ component: options.component, cssRule: options.cssRule });
-    ruleManagerDisclosure.onOpen();
-  };
-
-  const handleDrawerClose = () => {
-    ruleManagerDisclosure.onClose();
-    setRuleManagerReset();
-  };
-
-  useEffect(() => {
-    editor.on(`run:${EDITOR_COMMANDS.TOGGLE_RULE_MANAGER_SIDEBAR}`, handleRuleManagerRunCommand);
-
-    return () => {
-      editor.off(`run:${EDITOR_COMMANDS.TOGGLE_RULE_MANAGER_SIDEBAR}`, handleRuleManagerRunCommand);
-    };
-  }, []);
-
-  return (
-    <Drawer
-      variant="sidebar-with-transparent-overlay"
-      placement="left"
-      onClose={handleDrawerClose}
-      isOpen={ruleManagerDisclosure.isOpen}
-    >
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerHeader
-          px="16px"
-          borderBottomWidth="1px"
-        >
-          Rule Manager
-          <DrawerCloseButton />
-        </DrawerHeader>
-        <DrawerBody p={0}>
-          <CssRuleManager />
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
-  );
-}
 
 export function Sidebar() {
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -117,21 +45,21 @@ export function Sidebar() {
     setSelectedComponent(editor.getSelected());
   };
 
-  const handleCloseBlockDrawerOnDrop = () => {
-    setTimeout(disclosure.onClose, 200);
-  };
+  // const handleCloseBlockDrawerOnDrop = () => {
+  //   setTimeout(disclosure.onClose, 200);
+  // };
 
   useEffect(() => {
     editor.on('component:selected', handleComponentChange);
     editor.on('component:deselected', handleComponentChange);
     editor.on('component:remove', handleComponentChange);
-    editor.on('block:drag:stop', handleCloseBlockDrawerOnDrop);
+    // editor.on('block:drag:stop', handleCloseBlockDrawerOnDrop);
 
     return () => {
       editor.off('component:selected', handleComponentChange);
       editor.off('component:deselected', handleComponentChange);
       editor.off('component:remove', handleComponentChange);
-      editor.off('block:drag:stop', handleCloseBlockDrawerOnDrop);
+      // editor.off('block:drag:stop', handleCloseBlockDrawerOnDrop);
     };
   }, []);
 
@@ -277,7 +205,6 @@ export function Sidebar() {
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-      <RuleManagerDrawer />
     </>
   );
 }

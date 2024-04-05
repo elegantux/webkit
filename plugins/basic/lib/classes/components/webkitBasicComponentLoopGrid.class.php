@@ -20,7 +20,7 @@ class webkitBasicComponentLoopGrid extends webkitEditorComponent
     $template = $params['template'];
 
     /**
-     * Decode the settings of all template components and look for the trait associated with basic_loop_grid,
+     * Decode the settings of all template components(model) and look for the trait associated with basic_loop_grid,
      * which contains the ID of the child template.
      */
     $data = json_decode($template['editor_components'], true);
@@ -85,16 +85,12 @@ class webkitBasicComponentLoopGrid extends webkitEditorComponent
     $html_parser = new webkitHtmlParser();
 
     $result = null;
-    $assignParams = null;
 
     switch ($data_type) {
       case $this->BLOG_POSTS_QUERY_DATA_TYPE:
-        $posts = $provider->blog->blogPosts();
-        $assignParams = array('posts' => $posts);
-        $view->assign($assignParams);
-
-        $str = '{foreach $posts as $post}';
-        $str .= $template['front_content'];
+        $str = '{$blog_post_template = $wa->webkit->rawTemplateContentById('. $template['id'] .')}';
+        $str .= '{foreach $posts as $post}';
+        $str .= '{$wa->webkit->assign($wa_active_theme_url, $blog_post_template, ["post" => $post])}';
         $str .= '{/foreach}';
 
         $result = $str;
@@ -104,6 +100,10 @@ class webkitBasicComponentLoopGrid extends webkitEditorComponent
     }
 
     if ($is_view) {
+      $posts = $provider->blog->blogPosts();
+      $assignParams = array('posts' => $posts);
+      $view->assign($assignParams);
+
       $result = $view->fetch('string:' . $result);
       if (isset($template['front_styles']) && strlen($template['front_styles'])) {
         $result .= $html_parser->tagToHtml('style', [], $template['front_styles']);

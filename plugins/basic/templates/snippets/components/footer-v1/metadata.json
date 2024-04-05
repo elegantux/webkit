@@ -1,0 +1,17 @@
+{
+  "title": "Footer V1",
+  "description": "This is a Footer V1 example description",
+  "categories": ["Footer"],
+  "type": "component",
+  "tags": ["footer"],
+  "style_links": [{
+    "link": "{$wa_theme_url}/css/bootstrap.min.css",
+    "location": "head",
+    "attributes": ""
+  }],
+  "script_links": [{
+    "link": "{$wa_theme_url}/js/bootstrap.min.js",
+    "location": "head",
+    "attributes": ""
+  }]
+}

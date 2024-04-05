@@ -34,6 +34,7 @@ import { CodeEditor } from '@ui/atomic/molecules';
 import { useTemplate, useThemeSettings } from '@lib/state.ts';
 import { editorRoute } from '../../../routes';
 import { ThemeSettingsScriptLink, ThemeSettingsStyleLink } from '@lib/models/theme-settings';
+import { Fancybox } from '@ui/atomic/organisms/fancybox';
 
 import WebkitIcon from '@assets/icons/webkit.svg?react';
 
@@ -118,28 +119,31 @@ function TemplateSnippetCard({ snippet }: { snippet: TemplateSnippet }) {
         boxShadow="lg"
         _hover={{ bgColor: bgHoverColor }}
       >
-        <Image
-          loading="lazy"
-          fallback={
-            <Flex
-              justify="center"
-              align="center"
-              filter="grayscale(100%)"
-              opacity="0.2"
-            >
-              <WebkitIcon />
-            </Flex>
-          }
-          src={snippet.cover_url}
-          alt={snippet.title}
-          fallbackSrc={appPath('/img/webkit.svg')}
-          width="100%"
-          height="240px"
-          maxW="95%"
-          mx="auto"
-          objectFit="scale-down"
-          borderRadius="2px"
-        />
+        <Fancybox>
+          <Image
+            data-fancybox
+            loading="lazy"
+            fallback={
+              <Flex
+                justify="center"
+                align="center"
+                filter="grayscale(100%)"
+                opacity="0.2"
+              >
+                <WebkitIcon />
+              </Flex>
+            }
+            src={snippet.cover_url}
+            alt={snippet.title}
+            fallbackSrc={appPath('/img/webkit.svg')}
+            width="100%"
+            height="240px"
+            maxW="95%"
+            mx="auto"
+            objectFit="scale-down"
+            borderRadius="2px"
+          />
+        </Fancybox>
         <Spacer />
         <Flex
           gap="12px"
@@ -294,7 +298,7 @@ function TemplateSnippetList({ templateSnippetList }: { templateSnippetList: Tem
       filteredList = filteredList.filter((snippet) => snippet.title.toLowerCase().includes(value.toLowerCase()));
     }
 
-    setSnippetList(filteredList);
+    setSnippetList(filteredList.sort((a, b) => a.title.localeCompare(b.title, 'en', { numeric: true })));
 
     setSearchText(value);
   };

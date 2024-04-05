@@ -33,7 +33,7 @@ class webkitBlogDataProvider
       $queryParams['blog_id'] = $blog_id;
     }
 
-    $posts = $post_model->getByField($queryParams, true);
+    $posts = $post_model->getByField($queryParams, true, 10);
 
     $posts = $post_model->prepareView($posts);
 

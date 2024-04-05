@@ -1,6 +1,3 @@
-<h1>
-	{if $error_code}{$error_code}. {/if}
-	{$error_message|default:"[`Error`]"}
-</h1>
-
-<p>[`The requested resource is not available.`]</p>
+<!-- [WebKit] Blog 404 - Start -->
+{$wa->webkit->template($wa_active_theme_url, 'blog_error')}
+<!-- [WebKit] Blog 404 - End -->

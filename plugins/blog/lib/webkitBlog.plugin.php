@@ -12,6 +12,7 @@ class webkitBlogPlugin extends webkitEditorPlugin {
 
     webkitComponentRegistry::register(webkitBlogComponentPostTitle::$type, 'webkitBlogComponentPostTitle');
     webkitComponentRegistry::register(webkitBlogComponentPostExcerpt::$type, 'webkitBlogComponentPostExcerpt');
+    webkitComponentRegistry::register(webkitBlogComponentBlogPagination::$type, 'webkitBlogComponentBlogPagination');
 
     $this->component_types = webkitComponentRegistry::getRegisteredTypes();
   }

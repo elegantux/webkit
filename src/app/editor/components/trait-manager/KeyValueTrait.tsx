@@ -68,7 +68,10 @@ export function KeyValueTrait({ trait }: { trait: Trait }) {
   const ignoreKeys: string[] = trait.get('ignoreKeys') ?? [];
 
   const ignoredKeysUsed = ignoreKeys.includes(inputValues.key);
-  const isValid = Object.values(inputValues).every((item) => item.trim().length > 0) && !ignoredKeysUsed;
+  const isValid =
+    values.every((item) => item.key !== inputValues.key) &&
+    Object.values(inputValues).every((item) => item.trim().length > 0) &&
+    !ignoredKeysUsed;
 
   const handleAddKeyValue = () => {
     const item: KeyValue = { key: inputValues.key, value: inputValues.value };
@@ -127,6 +130,7 @@ export function KeyValueTrait({ trait }: { trait: Trait }) {
           >
             <Input
               type="text"
+              placeholder="name"
               value={inputValues.key}
               onChange={(event) => setInputValues((prevState) => ({ ...prevState, key: event.target.value }))}
               size="sm"
@@ -135,6 +139,7 @@ export function KeyValueTrait({ trait }: { trait: Trait }) {
             :
             <Input
               type="text"
+              placeholder="value"
               value={inputValues.value}
               onChange={(event) => setInputValues((prevState) => ({ ...prevState, value: event.target.value }))}
               size="sm"

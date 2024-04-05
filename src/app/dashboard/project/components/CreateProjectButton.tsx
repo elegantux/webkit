@@ -45,6 +45,7 @@ export function CreateProjectCard(props: ChakraProps) {
         justifyContent="center"
         alignItems="center"
         height="100%"
+        minH="260px"
         shadow="xs"
         transition="background 0.1s ease-in-out"
         bg="transparent"

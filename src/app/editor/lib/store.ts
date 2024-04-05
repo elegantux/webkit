@@ -2,8 +2,6 @@
 import { create } from 'zustand';
 import grapesjs, { Editor, EditorConfig, Sector } from 'grapesjs';
 
-import { RuleManagerToggleSidebarCommandPayload } from '@lib/models/commands';
-
 export const EDITOR_STORE = {
   EDITOR: (state: EditorInterface) => state.editor,
   EDITOR_ARE_PLUGINS_LOADED: (state: EditorInterface) => state.arePluginsLoaded,
@@ -43,20 +41,6 @@ export const useStyleManagerSectorsStore = create<StyleManagerSectorsInterface>(
   setSectorList: (sectors: Sector[]) => {
     set(() => ({ sectorList: sectors }));
   },
-}));
-
-interface RuleManagerStoreInterface extends RuleManagerToggleSidebarCommandPayload {
-  setState: (payload: RuleManagerToggleSidebarCommandPayload) => void;
-  reset: () => void;
-}
-export const useRuleManagerStore = create<RuleManagerStoreInterface>((set) => ({
-  component: undefined,
-  selector: undefined,
-  cssRule: undefined,
-  setState: (payload: RuleManagerToggleSidebarCommandPayload) => {
-    set(() => ({ ...payload }));
-  },
-  reset: () => set(() => ({})),
 }));
 
 // This hook allows you to manage the Block List popup from anywhere in the application.
