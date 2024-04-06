@@ -1,8 +1,8 @@
 <?php
 
-class webkitBlogComponentPostTitle extends webkitEditorComponent
+class webkitBlogComponentPostContent extends webkitEditorComponent
 {
-  public static $type = "blog_post_title";
+  public static $type = "blog_post_content";
 
   public function dependencySources($params)
   {
@@ -16,7 +16,7 @@ class webkitBlogComponentPostTitle extends webkitEditorComponent
   {
     return array(
       'scripts' => [
-        ['src' => $this->plugin('blog')->getPluginStaticUrl() . 'js/components/post.title.js' . '?v=' . $this->plugin('blog')->getVersion()]
+        ['src' => $this->plugin('blog')->getPluginStaticUrl() . 'js/components/post.content.js' . '?v=' . $this->plugin('blog')->getVersion()]
       ],
     );
   }
@@ -52,6 +52,6 @@ class webkitBlogComponentPostTitle extends webkitEditorComponent
    */
   private function createHtml()
   {
-    return '{$post.title}';
+    return '{$post.text}';
   }
 }

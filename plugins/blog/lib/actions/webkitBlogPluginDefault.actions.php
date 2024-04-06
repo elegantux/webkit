@@ -9,10 +9,48 @@ class webkitBlogPluginDefaultActions extends waJsonActions
     $this->getResponse()->sendHeaders();
   }
 
+  public function postTitleAction()
+  {
+    try {
+      $component = new webkitBlogComponentPostTitle();
+
+      $this->response = [
+        'view' => $component->prepareView(),
+        'model' => $component->prepareModel(),
+      ];
+
+    } catch (webkitAPIException $exception) {
+
+      $this->setStatus($exception->getCode());
+
+      $this->errors = $exception->getPayload();
+
+    }
+  }
+
   public function postExcerptAction()
   {
     try {
       $component = new webkitBlogComponentPostExcerpt();
+
+      $this->response = [
+        'view' => $component->prepareView(),
+        'model' => $component->prepareModel(),
+      ];
+
+    } catch (webkitAPIException $exception) {
+
+      $this->setStatus($exception->getCode());
+
+      $this->errors = $exception->getPayload();
+
+    }
+  }
+
+  public function postContentAction()
+  {
+    try {
+      $component = new webkitBlogComponentPostContent();
 
       $this->response = [
         'view' => $component->prepareView(),
