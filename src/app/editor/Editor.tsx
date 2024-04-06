@@ -105,14 +105,14 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     blockManager: { custom: true },
     traitManager: { custom: true },
     selectorManager: {
-      componentFirst: false,
+      componentFirst: true,
       custom: true,
     },
     deviceManager: {
       devices: [
         { id: DEVICE_TYPE.DESKTOP, name: DEVICE_TYPE_NAME[DEVICE_TYPE.DESKTOP], width: '' },
         { id: DEVICE_TYPE.TABLET, name: DEVICE_TYPE_NAME[DEVICE_TYPE.TABLET], width: '770px' },
-        { id: DEVICE_TYPE.MOBILE_PORTRAIT, name: DEVICE_TYPE_NAME[DEVICE_TYPE.MOBILE_PORTRAIT], width: '320px' },
+        { id: DEVICE_TYPE.MOBILE_PORTRAIT, name: DEVICE_TYPE_NAME[DEVICE_TYPE.MOBILE_PORTRAIT], width: '480px' },
         { id: DEVICE_TYPE.MOBILE_LANDSCAPE, name: DEVICE_TYPE_NAME[DEVICE_TYPE.MOBILE_LANDSCAPE], width: '568px' },
       ],
     },
