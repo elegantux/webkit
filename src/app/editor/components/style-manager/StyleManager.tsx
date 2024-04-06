@@ -23,6 +23,7 @@ import { RadioPropertyType } from '@app/editor/components/style-manager/componen
 import { ColorPropertyType } from '@app/editor/components/style-manager/components/ColorPropertyType';
 import { NumberPropertyType } from '@app/editor/components/style-manager/components/NumberPropertyType';
 import { FontFamilyProperty } from '@app/editor/components/style-manager/components/FontFamilyProperty';
+import { DisplaySector } from '@app/editor/components/style-manager/components/sectors/DisplaySector';
 
 function StyleSector({ sector }: { sector: Sector }) {
   const sectorName = sector.getName();
@@ -126,13 +127,11 @@ export function StyleManager() {
   };
 
   useEffect(() => {
-    onStyleChange();
-  }, []);
-
-  useEffect(() => {
     editor.on('style:custom', onStyleChange);
     editor.on('undo', onStyleChange);
     editor.on('redo', onStyleChange);
+
+    onStyleChange();
 
     return () => {
       editor.off('style:custom', onStyleChange);
@@ -148,7 +147,17 @@ export function StyleManager() {
     >
       {sectorList.map((sector) => (
         <React.Fragment key={sector.getId()}>
-          <StyleSector sector={sector} />
+          {sector.getId() === 'display' ? (
+            <DisplaySector
+              key={sector.getId()}
+              sector={sector}
+            />
+          ) : (
+            <StyleSector
+              key={sector.getId()}
+              sector={sector}
+            />
+          )}
         </React.Fragment>
       ))}
     </Accordion>

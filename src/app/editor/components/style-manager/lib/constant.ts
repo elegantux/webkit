@@ -80,6 +80,110 @@ export const STYLE_MANAGER_SECTION_NAME = {
   ANIMATION: 'Animation',
 };
 
+export const DISPLAY_FLEX_PROPERTIES = [
+  {
+    label: 'Flex Wrap',
+    property: 'flex-wrap',
+    type: STYLE_TYPES.RADIO,
+    default: '',
+    options: [
+      { value: 'nowrap', label: 'No Wrap', icon: BanIcon },
+      { value: 'wrap', label: 'Wrap', icon: ArrowDownIcon },
+      { value: 'wrap-reverse', label: 'Wrap Reverse', icon: ArrowUpIcon },
+    ],
+  },
+  {
+    label: 'Justify Content',
+    property: 'justify-content',
+    type: STYLE_TYPES.RADIO,
+    default: '',
+    colSpan: 2,
+    options: [
+      { value: 'flex-start', label: 'Flex Start', icon: FlexAlignStart },
+      { value: 'center', label: 'Center', icon: FlexAlignCenter },
+      { value: 'flex-end', label: 'Flex End', icon: FlexAlignEnd },
+      { value: 'space-around', label: 'Space Around', icon: HorizontalStretchIcon },
+      { value: 'space-between', label: 'Space Between', icon: HorizontalArrowsLeftRight },
+      // { value: 'space-evenly', label: 'Space Evenly' },
+    ],
+  },
+  {
+    label: 'Align Items',
+    property: 'align-items',
+    type: STYLE_TYPES.RADIO,
+    default: '',
+    colSpan: 2,
+    options: [
+      { value: 'center', label: 'Center', icon: FlexAlignMiddle },
+      { value: 'flex-start', label: 'Flex Start', icon: FlexAlignTop },
+      { value: 'flex-end', label: 'Flex End', icon: FlexAlignBottom },
+      { value: 'stretch', label: 'Stretch', icon: ArrowsUpDownIcon },
+      { value: 'baseline', label: 'Base Line', icon: MinusIcon },
+    ],
+  },
+  {
+    label: 'Flex Direction',
+    property: 'flex-direction',
+    type: STYLE_TYPES.RADIO,
+    default: '',
+    colSpan: 2,
+    options: [
+      { value: 'column', label: 'Column', icon: ArrowDownIcon },
+      { value: 'column-reverse', label: 'Column Reverse', icon: ArrowUpIcon },
+      { value: 'row', label: 'Row', icon: ArrowRightIcon },
+      { value: 'row-reverse', label: 'Row Reverse', icon: ArrowLeftIcon },
+    ],
+  },
+  // {
+  //   label: 'Flex',
+  //   property: 'flex',
+  //   type: STYLE_TYPES.NUMBER,
+  //   default: '',
+  //   min: 0,
+  // },
+];
+
+export const DISPLAY_GRID_PROPERTIES = [
+  {
+    label: 'Grid Columns',
+    property: 'grid-template-columns',
+    type: STYLE_TYPES.INPUT,
+    default: '',
+    min: 0,
+  },
+  // {
+  //   label: 'Grid Rows',
+  //   property: 'grid-template-rows',
+  //   type: STYLE_TYPES.INPUT,
+  //   default: '',
+  //   min: 0,
+  // },
+];
+
+export const DISPLAY_COMMON_PROPERTIES = [
+  {
+    type: STYLE_TYPES.RADIO,
+    label: 'Overflow',
+    property: 'overflow',
+    default: '',
+    colSpan: 2,
+    options: [
+      { label: 'visible', value: 'visible', icon: VisibleIcon },
+      { label: 'hidden', value: 'hidden', icon: HiddenIcon },
+      { label: 'scroll', value: 'scroll', icon: ScrollIcon },
+      { label: 'auto', value: 'auto', icon: AutoIcon },
+    ],
+  },
+  {
+    label: 'Gap',
+    property: 'gap',
+    type: STYLE_TYPES.INPUT,
+    default: '',
+    units: ['px', 'vw'],
+    min: 0,
+  },
+];
+
 export const displaySector = {
   name: STYLE_MANAGER_SECTION_NAME.DISPLAY,
   open: true,
@@ -100,99 +204,9 @@ export const displaySector = {
         { label: 'None', value: 'none' },
       ],
     },
-    {
-      type: STYLE_TYPES.RADIO,
-      label: 'Overflow',
-      property: 'overflow',
-      default: '',
-      colSpan: 2,
-      options: [
-        { label: 'visible', value: 'visible', icon: VisibleIcon },
-        { label: 'hidden', value: 'hidden', icon: HiddenIcon },
-        { label: 'scroll', value: 'scroll', icon: ScrollIcon },
-        { label: 'auto', value: 'auto', icon: AutoIcon },
-      ],
-    },
-    {
-      label: 'Justify Content',
-      property: 'justify-content',
-      type: STYLE_TYPES.RADIO,
-      default: '',
-      colSpan: 2,
-      options: [
-        { value: 'flex-start', label: 'Flex Start', icon: FlexAlignStart },
-        { value: 'center', label: 'Center', icon: FlexAlignCenter },
-        { value: 'flex-end', label: 'Flex End', icon: FlexAlignEnd },
-        { value: 'space-around', label: 'Space Around', icon: HorizontalStretchIcon },
-        { value: 'space-between', label: 'Space Between', icon: HorizontalArrowsLeftRight },
-        // { value: 'space-evenly', label: 'Space Evenly' },
-      ],
-    },
-    {
-      label: 'Align Items',
-      property: 'align-items',
-      type: STYLE_TYPES.RADIO,
-      default: '',
-      colSpan: 2,
-      options: [
-        { value: 'center', label: 'Center', icon: FlexAlignMiddle },
-        { value: 'flex-start', label: 'Flex Start', icon: FlexAlignTop },
-        { value: 'flex-end', label: 'Flex End', icon: FlexAlignBottom },
-        { value: 'stretch', label: 'Stretch', icon: ArrowsUpDownIcon },
-        { value: 'baseline', label: 'Base Line', icon: MinusIcon },
-      ],
-    },
-    {
-      label: 'Flex Direction',
-      property: 'flex-direction',
-      type: STYLE_TYPES.RADIO,
-      default: '',
-      colSpan: 2,
-      options: [
-        { value: 'column', label: 'Column', icon: ArrowDownIcon },
-        { value: 'column-reverse', label: 'Column Reverse', icon: ArrowUpIcon },
-        { value: 'row', label: 'Row', icon: ArrowRightIcon },
-        { value: 'row-reverse', label: 'Row Reverse', icon: ArrowLeftIcon },
-      ],
-    },
-    {
-      label: 'Flex Wrap',
-      property: 'flex-wrap',
-      type: STYLE_TYPES.RADIO,
-      default: '',
-      options: [
-        { value: 'nowrap', label: 'No Wrap', icon: BanIcon },
-        { value: 'wrap', label: 'Wrap', icon: ArrowDownIcon },
-        { value: 'wrap-reverse', label: 'Wrap Reverse', icon: ArrowUpIcon },
-      ],
-    },
-    {
-      label: 'Gap',
-      property: 'gap',
-      type: STYLE_TYPES.INPUT,
-      default: '',
-      units: ['px', 'vw'],
-      min: 0,
-    },
-    {
-      label: 'Flex',
-      property: 'flex',
-      type: STYLE_TYPES.NUMBER,
-      default: '',
-      min: 0,
-    },
-    {
-      label: 'Grid Columns',
-      property: 'grid-template-columns',
-      type: STYLE_TYPES.INPUT,
-      default: '',
-    },
-    {
-      label: 'Grid Rows',
-      property: 'grid-template-rows',
-      type: STYLE_TYPES.INPUT,
-      default: '',
-    },
+    ...DISPLAY_COMMON_PROPERTIES,
+    ...DISPLAY_GRID_PROPERTIES,
+    ...DISPLAY_FLEX_PROPERTIES,
   ],
 };
 
