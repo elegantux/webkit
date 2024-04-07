@@ -39,6 +39,66 @@ class webkitBasicPluginDefaultActions extends webkitJsonActions
     }
   }
 
+  public function pageNameAction()
+  {
+    try {
+
+      $component = new webkitBasicComponentSitePageName();
+
+      $this->response = [
+        'view' => $component->prepareView(),
+        'model' => $component->prepareModel(),
+      ];
+
+    } catch (webkitAPIException $exception) {
+
+      $this->setStatus($exception->getCode());
+
+      $this->errors = $exception->getPayload();
+
+    }
+  }
+
+  public function pageContentAction()
+  {
+    try {
+
+      $component = new webkitBasicComponentSitePageContent();
+
+      $this->response = [
+        'view' => $component->prepareView(),
+        'model' => $component->prepareModel(),
+      ];
+
+    } catch (webkitAPIException $exception) {
+
+      $this->setStatus($exception->getCode());
+
+      $this->errors = $exception->getPayload();
+
+    }
+  }
+
+  public function pageDateAction()
+  {
+    try {
+
+      $component = new webkitBasicComponentSitePageDate();
+
+      $this->response = [
+        'view' => $component->prepareView(),
+        'model' => $component->prepareModel(),
+      ];
+
+    } catch (webkitAPIException $exception) {
+
+      $this->setStatus($exception->getCode());
+
+      $this->errors = $exception->getPayload();
+
+    }
+  }
+
   public function breadcrumbsAction()
   {
     try {
