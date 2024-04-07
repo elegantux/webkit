@@ -23,7 +23,7 @@ class webkitBasicPlugin extends webkitEditorPlugin {
     webkitComponentRegistry::register(webkitBasicComponentSlider::$type, 'webkitBasicComponentSlider');
     webkitComponentRegistry::register(webkitBasicComponentSmarty::$type, 'webkitBasicComponentSmarty');
     webkitComponentRegistry::register(webkitBasicComponentHtml::$type, 'webkitBasicComponentHtml');
-    webkitComponentRegistry::register(webkitBasicComponentLoopGrid::$type, 'webkitBasicComponentLoopGrid');
+    // webkitComponentRegistry::register(webkitBasicComponentLoopGrid::$type, 'webkitBasicComponentLoopGrid');
     webkitComponentRegistry::register(webkitBasicComponentPageInfo::$type, 'webkitBasicComponentPageInfo');
     webkitComponentRegistry::register(webkitBasicComponentBreadcrumbs::$type, 'webkitBasicComponentBreadcrumbs');
 
