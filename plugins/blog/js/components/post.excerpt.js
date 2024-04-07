@@ -47,9 +47,8 @@
         defaults: {
           tagName: 'p',
           name: COMPONENT_NAME,
-          attributes: { [DATA_KEY]: COMPONENT_TYPE },
+          attributes: { [DATA_KEY]: COMPONENT_TYPE, class: COMPONENT_TYPE },
           droppable: false,
-          components: '{$post.title}',
 
           [TRAITS.TEXT_LENGTH.name]: 120,
           [TRAITS.TRUNCATE_REPLACE.name]: '...',

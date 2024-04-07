@@ -49,8 +49,9 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
   // const pluginsBlocks = extractPluginsBlocks(plugins);
   // const pluginsComponents = extractPluginsComponents(plugins);
 
+  const pluginList = window.webkit.plugins.functions;
   const pluginOptions: Record<any, CallableFunction> = {};
-  window.webkit.plugins.functions.forEach((plugin: CallableFunction) => {
+  pluginList.forEach((plugin: CallableFunction) => {
     pluginOptions[plugin] = { template };
   });
 
@@ -134,7 +135,7 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     // pluginsOpts: pluginOptions,
     pluginsOpts: {
       [loadPlugins]: {
-        pluginList: window.webkit.plugins.functions,
+        pluginList,
         pluginListOptions: pluginOptions,
         onFinished: onPluginsLoaded,
       },

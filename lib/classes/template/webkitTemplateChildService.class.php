@@ -98,6 +98,7 @@ class webkitTemplateChildService
   }
 
   /**
+   * TODO: It's likely that getting all the rows from a table in one query and then filtering them would be more efficient than recursively fetching from the database.
    * @param $parent_id
    * @return array
    * @throws waException

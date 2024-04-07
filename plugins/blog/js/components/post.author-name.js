@@ -1,47 +1,63 @@
 ((webkit) => {
   async function plugin(editor) {
-    const COMPONENT_TYPE = 'blog_post_title';
-    const COMPONENT_NAME = 'Post Title';
+    const COMPONENT_TYPE = 'blog_post_author_name';
+    const COMPONENT_NAME = 'Author Name';
     const DATA_KEY = 'data-wk-type';
     const CATEGORY = 'Blog';
-    const API_ENDPOINT = webkit.webkitBackendUrls.backendApiUrl + '?plugin=blog&module=default&action=postTitle';
+    const API_ENDPOINT = webkit.webkitBackendUrls.backendApiUrl + '?plugin=blog&module=default&action=authorName';
 
-    const tagNameTrait = {
-      type: 'select',
-      label: 'Tag Name',
-      name: 'tagName',
-      default: 'p',
-      changeProp: true,
-      options: [
-        { value: 'h1', label: 'H1'},
-        { value: 'h2', label: 'H2'},
-        { value: 'h3', label: 'H3'},
-        { value: 'h4', label: 'H4'},
-        { value: 'h5', label: 'H5'},
-        { value: 'p', label: 'Paragraph'},
-        { value: 'div', label: 'Div'},
-        { value: 'span', label: 'Span'},
-      ],
+    const TRAITS = {
+      TAG_NAME: {
+        type: 'select',
+        label: 'Tag Name',
+        name: 'tagName',
+        default: 'p',
+        changeProp: true,
+        options: [
+          { value: 'p', label: 'p'},
+          { value: 'span', label: 'span'},
+          { value: 'div', label: 'div'},
+        ],
+      },
+      NAME_TYPE: {
+        name: `trait_${COMPONENT_TYPE}__name_type`,
+        type: 'select',
+        label: 'Name Type',
+        default: 'name',
+        changeProp: true,
+        options: [
+          { value: 'name', label: 'Full Name'},
+          { value: 'firstname', label: 'First Name'},
+          { value: 'middlename', label: 'Middle Name'},
+          { value: 'lastname', label: 'Last Name'},
+        ],
+      }
     };
 
     const component = {
       isComponent: (el) => el?.dataset?.[DATA_KEY] === COMPONENT_TYPE,
       model: {
         defaults: {
-          tagName: 'h4',
+          tabName: 'p',
           name: COMPONENT_NAME,
           attributes: { [DATA_KEY]: COMPONENT_TYPE, class: COMPONENT_TYPE },
           droppable: false,
-          components: '{$post.title}',
 
+          [TRAITS.NAME_TYPE.name]: TRAITS.NAME_TYPE.default,
           traits: [
-            tagNameTrait
+            TRAITS.TAG_NAME,
+            TRAITS.NAME_TYPE,
           ],
         },
       },
       view: {
-        listenToProps: [],
-        init({ model }) {},
+        listenToProps: [
+          TRAITS.NAME_TYPE.name,
+        ],
+        init({ model }) {
+          const propsList = this.listenToProps.map(prop => `change:${prop}`).join(' ');
+          this.listenTo(model, propsList, this.handleTraitsChange);
+        },
         onRender({ model }) {
           this.handleTraitsChange(model);
         },
@@ -64,7 +80,10 @@
         async handleTraitsChange(model) {
           this.setLoadingView();
 
+          const name_type = model.get(TRAITS.NAME_TYPE.name);
+
           const formData = new FormData();
+          formData.append(TRAITS.NAME_TYPE.name, name_type);
           formData.append('_csrf', window.webkit.getCsrf());
 
           const response = await fetch(API_ENDPOINT, {
@@ -101,9 +120,10 @@
       label: COMPONENT_NAME,
       category: CATEGORY,
       icon: `<svg width="100%" height="52px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M13.1816 3.81812H7.45436C7.02037 3.81812 6.60415 3.99052 6.29727 4.2974C5.9904 4.60427 5.81799 5.02049 5.81799 5.45448V18.5454C5.81799 18.9794 5.9904 19.3956 6.29727 19.7025C6.60415 20.0094 7.02037 20.1818 7.45436 20.1818H17.2725C17.7065 20.1818 18.1227 20.0094 18.4296 19.7025C18.7365 19.3956 18.9089 18.9794 18.9089 18.5454V9.54539L13.1816 3.81812Z" stroke="currentColor" stroke-width="0.818182" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M13.1819 3.81812V9.54539H18.9092" stroke="currentColor" stroke-width="0.818182" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M11.5586 13.1602C11.3398 13.1602 11.1598 13.1715 11.0186 13.1943C10.8818 13.2171 10.7679 13.265 10.6768 13.3379C10.5902 13.4108 10.5195 13.5133 10.4648 13.6455C10.4147 13.7731 10.3669 13.944 10.3213 14.1582H10.1299L10.1777 12.832H14.5801L14.6279 14.1582H14.4365C14.391 13.944 14.3408 13.7731 14.2861 13.6455C14.236 13.5133 14.1676 13.4108 14.0811 13.3379C13.9945 13.265 13.8805 13.2171 13.7393 13.1943C13.598 13.1715 13.4157 13.1602 13.1924 13.1602H12.7754V17.1592C12.7754 17.3005 12.7845 17.4144 12.8027 17.501C12.821 17.5876 12.8551 17.6559 12.9053 17.7061C12.96 17.7562 13.0352 17.7926 13.1309 17.8154C13.2311 17.8337 13.361 17.8473 13.5205 17.8564V18H11.251V17.8564C11.4105 17.8473 11.5381 17.8337 11.6338 17.8154C11.7295 17.7926 11.8024 17.7539 11.8525 17.6992C11.9072 17.64 11.9414 17.5602 11.9551 17.46C11.9733 17.3597 11.9824 17.2275 11.9824 17.0635V13.1602H11.5586Z" fill="currentColor"/>
+    <path d="M19.1111 19.7144V18.0001C19.1111 17.0908 18.7365 16.2187 18.0697 15.5757C17.4029 14.9328 16.4986 14.5715 15.5556 14.5715H8.44447C7.50148 14.5715 6.59711 14.9328 5.93031 15.5757C5.26352 16.2187 4.88892 17.0908 4.88892 18.0001V19.7144" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12 11.9999C14.2091 11.9999 16 10.273 16 8.14279C16 6.01255 14.2091 4.28564 12 4.28564C9.79086 4.28564 8 6.01255 8 8.14279C8 10.273 9.79086 11.9999 12 11.9999Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12 10.0714V8.14282" stroke="currentColor" stroke-width="0.67" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12 6.69995H12.0052" stroke="currentColor" stroke-width="0.67" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`,
       content: { type: COMPONENT_TYPE, },
       activate: true,

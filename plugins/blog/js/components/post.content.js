@@ -11,7 +11,7 @@
       model: {
         defaults: {
           name: COMPONENT_NAME,
-          attributes: { [DATA_KEY]: COMPONENT_TYPE },
+          attributes: { [DATA_KEY]: COMPONENT_TYPE, class: COMPONENT_TYPE },
           droppable: false,
 
           traits: [],

@@ -36,6 +36,14 @@ class webkitEditorAction extends waViewAction
       }
     }
 
+    /**
+     * Sort the list of plugins is the following order:
+     * 1. Basic
+     * 2. Site
+     * 3. Blog
+     */
+    $this->sortScripts($plugin_scripts);
+
     $html = new webkitHtmlParser();
 
     $head_plugin_script = $html->arrayToHtmlScript($plugin_scripts);
@@ -46,5 +54,36 @@ class webkitEditorAction extends waViewAction
       'lang' => substr(wa()->getLocale(), 0, 2),
     ]);
     $this->view->assign($view_vars);
+  }
+
+  private function sortScripts(&$plugin_scripts)
+  {
+    usort($plugin_scripts, function ($a, $b) {
+      // Define the order
+      $order = ['basic.', 'site.', 'blog.'];
+
+      // Extract filenames
+      $filenameA = basename($a['src']);
+      $filenameB = basename($b['src']);
+
+      // Initialize priorities
+      $priorityA = $priorityB = PHP_INT_MAX;
+
+      // Determine priorities based on the order
+      foreach ($order as $priority => $prefix) {
+        if (strpos($filenameA, $prefix) === 0 && $priorityA === PHP_INT_MAX) {
+          $priorityA = $priority;
+        }
+        if (strpos($filenameB, $prefix) === 0 && $priorityB === PHP_INT_MAX) {
+          $priorityB = $priority;
+        }
+      }
+
+      // Compare priorities
+      if ($priorityA == $priorityB) {
+        return 0;
+      }
+      return ($priorityA < $priorityB) ? -1 : 1;
+    });
   }
 }
