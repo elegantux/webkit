@@ -4,15 +4,9 @@ import {
   Button,
   Divider,
   Drawer,
-  DrawerBody,
-  DrawerCloseButton,
   DrawerContent,
-  DrawerHeader,
   DrawerOverlay,
   Flex,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Tab,
   TabList,
   TabPanel,
@@ -22,7 +16,7 @@ import {
   useTheme,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { FaComputerMouse as ComputerMouseIcon, FaCirclePlus, FaMagnifyingGlass } from 'react-icons/fa6';
+import { FaComputerMouse as ComputerMouseIcon, FaCirclePlus } from 'react-icons/fa6';
 import { Component } from 'grapesjs';
 
 import { TraitManager } from '@app/editor/components/trait-manager/TraitManager';
@@ -188,21 +182,7 @@ export function Sidebar() {
       >
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader
-            px="16px"
-            borderBottomWidth="1px"
-          >
-            <InputGroup pr="40px">
-              <InputLeftElement pointerEvents="none">
-                <FaMagnifyingGlass />
-              </InputLeftElement>
-              <Input placeholder="search ..." />
-            </InputGroup>
-            <DrawerCloseButton />
-          </DrawerHeader>
-          <DrawerBody p={0}>
-            <BlockManager />
-          </DrawerBody>
+          <BlockManager />
         </DrawerContent>
       </Drawer>
     </>
