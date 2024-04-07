@@ -1,17 +1,17 @@
 ((webkit) => {
   async function plugin(editor) {
-    const COMPONENT_TYPE = 'blog_post_author_box';
-    const COMPONENT_NAME = 'Author Link Box';
+    const COMPONENT_TYPE = 'blog_post_link_box';
+    const COMPONENT_NAME = 'Post Link Box';
     const DATA_KEY = 'data-wk-type';
     const CATEGORY = 'Blog';
 
     const BLOCK_ICON_HTML = `<svg width="100%" height="52px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M20 15.4426V8.33151C19.9997 8.01975 19.9174 7.71356 19.7614 7.44365C19.6054 7.17375 19.3811 6.94961 19.1111 6.79373L12.8889 3.23818C12.6186 3.08214 12.3121 3 12 3C11.6879 3 11.3814 3.08214 11.1111 3.23818L4.88889 6.79373C4.6189 6.94961 4.39465 7.17375 4.23863 7.44365C4.08262 7.71356 4.00032 8.01975 4 8.33151V15.4426C4.00032 15.7544 4.08262 16.0606 4.23863 16.3305C4.39465 16.6004 4.6189 16.8245 4.88889 16.9804L11.1111 20.536C11.3814 20.692 11.6879 20.7741 12 20.7741C12.3121 20.7741 12.6186 20.692 12.8889 20.536L19.1111 16.9804C19.3811 16.8245 19.6054 16.6004 19.7614 16.3305C19.9174 16.0606 19.9997 15.7544 20 15.4426Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12.3333 8.31812H9.99992C9.82311 8.31812 9.65354 8.38516 9.52851 8.5045C9.40349 8.62384 9.33325 8.7857 9.33325 8.95448V14.0454C9.33325 14.2142 9.40349 14.376 9.52851 14.4954C9.65354 14.6147 9.82311 14.6818 9.99992 14.6818H13.9999C14.1767 14.6818 14.3463 14.6147 14.4713 14.4954C14.5963 14.376 14.6666 14.2142 14.6666 14.0454V10.5454L12.3333 8.31812Z" stroke="currentColor" stroke-width="0.818182" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12.3333 8.31812V10.5454H14.6666" stroke="currentColor" stroke-width="0.818182" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M4.23999 7.40698L7 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M17 9L19.76 7.40698" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M12 20.5V17.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M15.5554 15.3571V14.4999C15.5554 14.0453 15.3681 13.6092 15.0347 13.2877C14.7013 12.9663 14.2492 12.7856 13.7777 12.7856H10.2221C9.75062 12.7856 9.29843 12.9663 8.96503 13.2877C8.63164 13.6092 8.44434 14.0453 8.44434 14.4999V15.3571" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M11.9999 11.0714C12.9818 11.0714 13.7777 10.3039 13.7777 9.35711C13.7777 8.41033 12.9818 7.64282 11.9999 7.64282C11.0181 7.64282 10.2222 8.41033 10.2222 9.35711C10.2222 10.3039 11.0181 11.0714 11.9999 11.0714Z" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
     const PLACEHOLDER_HTML = `
     <div class="${COMPONENT_TYPE}-placeholder" style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px;">
@@ -26,7 +26,7 @@
       model: {
         defaults: {
           name: COMPONENT_NAME,
-          attributes: { [DATA_KEY]: COMPONENT_TYPE, class: COMPONENT_TYPE, href: '{$post.user.posts_link}', title: '{$post.user.name}' },
+          attributes: { [DATA_KEY]: COMPONENT_TYPE, class: COMPONENT_TYPE, href: '{$post.link}', title: '{$post.title}' },
           style: {
             'display': 'block',
             'text-decoration': 'none',
