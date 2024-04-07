@@ -71,7 +71,7 @@ How to use?
               <p style="margin: 0; font-size: 14px;">Please create one or more posts.</p>
             </div>
           `;
-          this.showViewDisclaimer(view);
+          this.updateInnerHtml(view);
         },
         async handleTraitsChange(model) {
           this.setLoadingView();
