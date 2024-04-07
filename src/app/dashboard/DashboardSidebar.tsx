@@ -6,6 +6,7 @@ import { LinkProps, Link as RouterLink } from '@tanstack/react-router';
 
 import { dashboardRoute, projectListRoute, settingsRoute } from '../../routes';
 import { GreetingSection } from '@ui/atomic/molecules/GreetingSection';
+import { ContactsSection } from '@ui/atomic/molecules/ContactsSection';
 import { appPath } from '@lib/utils.tsx';
 
 function SidebarLink(props: PropsWithChildren<ChakraProps & LinkProps>) {
@@ -115,6 +116,11 @@ export function DashboardSidebar() {
           Settings
         </SidebarLink>
         <GreetingSection
+          mx="12px"
+          padding="18px 14px"
+        />
+        <ContactsSection
+          mt="14px"
           mx="12px"
           padding="18px 14px"
         />

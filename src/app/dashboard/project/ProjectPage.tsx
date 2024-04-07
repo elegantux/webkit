@@ -38,7 +38,6 @@ import { ThemeSettings } from './components/ThemeSettings';
 import { PageContainer } from '@ui/atomic/templates/PageContainer';
 import { TEMPLATE_PROJECT_TEMPLATE_TYPES } from '@lib/models/template';
 import { PROJECT_TASKS } from '@app/dashboard/lib/constants';
-import { ContactsSection } from '@ui/atomic/molecules/ContactsSection';
 
 import Ornament82 from '@assets/decorations/ornament-82.svg?react';
 
@@ -266,7 +265,6 @@ function ProjectTasks() {
       <Flex
         direction="column"
         gap="8px"
-        mb="24px"
       >
         {PROJECT_TASKS[project.app_id as PROJECT_APP_IDS].map((task) => (
           <Flex
@@ -283,7 +281,6 @@ function ProjectTasks() {
           </Flex>
         ))}
       </Flex>
-      <ContactsSection padding="18px 14px" />
     </ContentSection>
   );
 }
