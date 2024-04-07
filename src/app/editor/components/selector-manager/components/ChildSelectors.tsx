@@ -15,7 +15,7 @@ import {
   useColorModeValue,
   useTheme,
 } from '@chakra-ui/react';
-import { FaBroom, FaMobileButton, FaTabletButton, FaTv, FaXmark } from 'react-icons/fa6';
+import { FaMobileButton, FaRegTrashCan, FaTabletButton, FaTv, FaXmark } from 'react-icons/fa6';
 import { Device, State } from 'grapesjs';
 import { create } from 'zustand';
 import { useEffect } from 'react';
@@ -71,9 +71,15 @@ const updateChildStyleSelector = () => {
 
   let styleManagerSelector: string | undefined;
   if (childSelectorState.selectedChildSelector) {
-    const parentSelectorClasses = editor.SelectorManager.getSelected()
+    let parentSelectorClasses = editor.SelectorManager.getSelected()
+      .filter((s) => s.getActive())
       .map((s) => s.toString())
       .join('');
+
+    if (parentSelectorClasses.length === 0) {
+      editor.getSelected()?.getSelectors();
+      parentSelectorClasses = `#${editor.getSelected()?.getId()}`;
+    }
 
     const parentState = editor.SelectorManager.getState().length > 0 ? `:${editor.SelectorManager.getState()}` : '';
     const selectorState = childSelectorState.selectedChildSelectorState
@@ -364,7 +370,7 @@ function SelectedChildSelector() {
             variant="ghost"
             size="xs"
             colorScheme="grey"
-            icon={<FaBroom size={18} />}
+            icon={<FaRegTrashCan size={18} />}
             onClick={handleClearSelectorStyles}
           />
         </Tooltip>

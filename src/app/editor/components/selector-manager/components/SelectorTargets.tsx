@@ -13,7 +13,7 @@ import {
   useTheme,
 } from '@chakra-ui/react';
 import { Selector } from 'grapesjs';
-import { FaBroom, FaSquare, FaSquareCheck } from 'react-icons/fa6';
+import { FaRegTrashCan, FaSquare, FaSquareCheck } from 'react-icons/fa6';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { checkSync, syncStyle } from '@app/editor/lib/utils';
@@ -106,7 +106,7 @@ export function SelectorTargets() {
             variant="ghost"
             size="xs"
             colorScheme="grey"
-            icon={<FaBroom size={18} />}
+            icon={<FaRegTrashCan size={18} />}
             onClick={handleClearSelectorStyles}
           />
         </Tooltip>

@@ -66,10 +66,67 @@ class webkitBlogPluginDefaultActions extends waJsonActions
     }
   }
 
+  public function postDateAction()
+  {
+    try {
+      $component = new webkitBlogComponentPostDate();
+
+      $this->response = [
+        'view' => $component->prepareView(),
+        'model' => $component->prepareModel(),
+      ];
+
+    } catch (webkitAPIException $exception) {
+
+      $this->setStatus($exception->getCode());
+
+      $this->errors = $exception->getPayload();
+
+    }
+  }
+
   public function paginationAction()
   {
     try {
       $component = new webkitBlogComponentBlogPagination();
+
+      $this->response = [
+        'view' => $component->prepareView(),
+        'model' => $component->prepareModel(),
+      ];
+
+    } catch (webkitAPIException $exception) {
+
+      $this->setStatus($exception->getCode());
+
+      $this->errors = $exception->getPayload();
+
+    }
+  }
+
+  public function authorNameAction()
+  {
+    try {
+      $component = new webkitBlogComponentAuthorName();
+
+      $this->response = [
+        'view' => $component->prepareView(),
+        'model' => $component->prepareModel(),
+      ];
+
+    } catch (webkitAPIException $exception) {
+
+      $this->setStatus($exception->getCode());
+
+      $this->errors = $exception->getPayload();
+
+    }
+  }
+
+  public function authorPhotoAction()
+  {
+    try {
+      $component = new webkitBlogComponentAuthorPhoto();
 
       $this->response = [
         'view' => $component->prepareView(),

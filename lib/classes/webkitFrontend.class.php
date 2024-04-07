@@ -109,10 +109,13 @@ trait webkitFrontend
 
     /**
      * Collect child template ids
-     * TODO: At the moment this is a very expensive operation. We need to find a more efficient way.
      */
     foreach ($templates as $template) {
       $template_child_service = new webkitTemplateChildService(new webkitTemplate($templates['id']));
+      /**
+       * TODO: At the moment this is a very expensive operation. We need to find a more efficient way.
+       * TODO: It's likely that getting all the rows from a table in one query and then filtering them would be more efficient than recursively fetching from the database.
+       */
       $child_templates = $template_child_service->getTemplateChildren($template['id']);
       $child_ids = array_values(array_column($child_templates, 'child_id'));
       $child_template_ids = $child_template_ids + $child_ids;
