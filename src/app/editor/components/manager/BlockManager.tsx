@@ -7,14 +7,23 @@ import {
   AccordionPanel,
   Card,
   CardBody,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerHeader,
   Flex,
   Grid,
   GridItem,
   Heading,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
   Text,
   useColorModeValue,
   useTheme,
 } from '@chakra-ui/react';
+import { FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
+import { ChangeEvent, useMemo, useState } from 'react';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { hexOpacity } from '@ui/theme/utils';
@@ -24,7 +33,7 @@ interface Section {
   category: string;
   blockList: Block[];
 }
-const formatBlockListToSections = (blocks: Blocks) => {
+const formatBlockListToSections = (blocks: Blocks | Block[]) => {
   const availableCategories = new Set<string>();
   const result: Section[] = [];
 
@@ -107,42 +116,55 @@ function BlockCard({ block }: { block: Block }) {
   );
 }
 
-function BlockSection({ section }: { section: Section }) {
+function BlockSection({ section, isSearching }: { section: Section; isSearching?: boolean }) {
   return (
     <Accordion
+      key={section.category}
       defaultIndex={[0]}
       allowMultiple
     >
-      <AccordionItem borderTopWidth={0}>
-        <AccordionButton
-          as={Flex}
-          justifyContent="space-between"
-          cursor="pointer"
-          userSelect="none"
-        >
-          <Heading
-            as="span"
-            fontSize="sm"
-            fontWeight="500"
-            textTransform="uppercase"
-          >
-            {section.category}
-          </Heading>
-          <AccordionIcon />
-        </AccordionButton>
-        <AccordionPanel>
-          <Grid
-            templateColumns="1fr 1fr"
-            gap="12px"
-          >
-            {section.blockList.map((block) => (
-              <BlockCard
-                key={block.getId()}
-                block={block}
-              />
-            ))}
-          </Grid>
-        </AccordionPanel>
+      <AccordionItem
+        id={section.category}
+        borderTopWidth={0}
+      >
+        {({ isExpanded }) => (
+          <>
+            <AccordionButton
+              as={Flex}
+              justifyContent="space-between"
+              cursor="pointer"
+              userSelect="none"
+            >
+              <Heading
+                as="span"
+                fontSize="sm"
+                fontWeight="500"
+                textTransform="uppercase"
+              >
+                {section.category}
+              </Heading>
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel
+              // Open all panels when searching
+              {...(isSearching
+                ? { motionProps: { in: true, unmountOnExit: true } }
+                : { motionProps: { in: isExpanded, unmountOnExit: true } })}
+            >
+              <Grid
+                templateColumns="1fr 1fr"
+                gap="12px"
+              >
+                {section.blockList.map((block) => (
+                  <BlockCard
+                    key={block.getId()}
+                    block={block}
+                  />
+                ))}
+              </Grid>
+            </AccordionPanel>
+          </>
+        )}
       </AccordionItem>
     </Accordion>
   );
@@ -150,22 +172,67 @@ function BlockSection({ section }: { section: Section }) {
 
 export function BlockManager() {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const blockList = editor.BlockManager.getAll();
-  const sectionList = formatBlockListToSections(blockList);
-  // console.log(
-  //   'blockList',
-  //   blockList.map((block) => block.getCategoryLabel()),
-  //   sectionList
-  // );
+  const [searchText, setSearchText] = useState<string>('');
+  const [blockList, setBlockList] = useState<Blocks | Block[]>(editor.BlockManager.getAll());
+  const sectionList = useMemo(() => formatBlockListToSections(blockList), [blockList]);
+
+  const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+
+    if (value.length > 0) {
+      const filteredList = editor.BlockManager.getAll().filter((block) =>
+        block.getLabel().toLowerCase().includes(value.toLowerCase())
+      );
+      setBlockList(filteredList);
+    } else {
+      setBlockList(editor.BlockManager.getAll());
+    }
+    setSearchText(event.target.value);
+  };
+
+  const handleClearSearchInput = () => {
+    setSearchText('');
+    setBlockList(editor.BlockManager.getAll());
+  };
 
   return (
-    <Flex direction="column">
-      {sectionList.map((section) => (
-        <BlockSection
-          key={section.category}
-          section={section}
-        />
-      ))}
-    </Flex>
+    <>
+      <DrawerHeader
+        px="16px"
+        borderBottomWidth="1px"
+      >
+        <InputGroup pr="40px">
+          <InputLeftElement pointerEvents="none">
+            <FaMagnifyingGlass />
+          </InputLeftElement>
+          <Input
+            placeholder="search ..."
+            value={searchText}
+            onInput={handleSearchInputChange}
+          />
+          {searchText.length > 0 && (
+            <InputRightElement
+              right="40px"
+              cursor="pointer"
+              onClick={handleClearSearchInput}
+            >
+              <FaXmark size={18} />
+            </InputRightElement>
+          )}
+        </InputGroup>
+        <DrawerCloseButton top="18px" />
+      </DrawerHeader>
+      <DrawerBody p={0}>
+        <Flex direction="column">
+          {sectionList.map((section) => (
+            <BlockSection
+              key={section.category}
+              section={section}
+              isSearching={searchText.length > 0}
+            />
+          ))}
+        </Flex>
+      </DrawerBody>
+    </>
   );
 }
