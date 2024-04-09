@@ -15,6 +15,8 @@ import { DEVICE_TYPE, DEVICE_TYPE_NAME, EDITOR_COMMANDS } from '@app/editor/lib/
 import { styleManagerConfig } from '@app/editor/components/style-manager/lib/constant';
 import { editorRoute } from '../../routes';
 import { Breadcrumbs } from '@app/editor/components/Breadcrumbs';
+import { LayerManager } from '@app/editor/components/layer-manager/LayerManager';
+import { useLayerManagerStore } from '@app/editor/components/layer-manager/lib/utils';
 
 const loadPlugins = async (
   editor: EditorInterface,
@@ -105,6 +107,9 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     styleManager: styleManagerConfig,
     blockManager: { custom: true },
     traitManager: { custom: true },
+    layerManager: {
+      appendTo: '#webkit-layer-manager',
+    },
     selectorManager: {
       componentFirst: true,
       custom: true,
@@ -190,6 +195,7 @@ export function Editor() {
   useThemeSettings(template.wtp_project_id);
 
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
+  const layerManagerIsOpen = useLayerManagerStore((store) => store.isOpen);
 
   const init = async () => {
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -204,12 +210,14 @@ export function Editor() {
   return (
     <Grid
       templateAreas={`
-        "header header"
-        "sidebar canvas"
-        "sidebar breadcrumbs"
+        "header header header"
+        "sidebar canvas layer"
+        "sidebar breadcrumbs breadcrumbs"
       `}
       gridTemplateRows="54px 1fr 22px"
-      gridTemplateColumns="320px 1fr"
+      gridTemplateColumns={`320px 1fr ${layerManagerIsOpen ? '320px' : '0px'}`}
+      // Animating the appearance of the Layer Manager
+      transition="0.3s"
       height="calc(100vh - 64px)"
       bgColor="webasyst.backgroundColor"
     >
@@ -229,6 +237,9 @@ export function Editor() {
       )}
       <GridItem area="canvas">
         <Canvas />
+      </GridItem>
+      <GridItem area="layer">
+        <LayerManager />
       </GridItem>
       {editor && (
         <GridItem

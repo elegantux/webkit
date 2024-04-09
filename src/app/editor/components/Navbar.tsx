@@ -19,6 +19,7 @@ import {
   FaChevronDown,
   FaCirclePlus,
   FaFloppyDisk,
+  FaLayerGroup,
   FaMagnifyingGlass,
   FaMobileButton,
   FaTabletButton,
@@ -36,6 +37,7 @@ import { appUrl } from '@lib/utils.tsx';
 import { Template } from '@lib/models/template';
 import { TemplateLibrary } from '@app/editor/components/TemplateLibrary';
 import { DEVICE_TYPE, DEVICE_TYPE_NAME } from '@app/editor/lib/constant';
+import { useLayerManagerStore } from '@app/editor/components/layer-manager/lib/utils';
 
 const DEVICE_TYPE_ICON = {
   [DEVICE_TYPE.DESKTOP]: <FaTv size={16} />,
@@ -180,6 +182,8 @@ const SaveProject = memo(() => {
 
 function ResponsiveButtons() {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
+  const layerManagerStore = useLayerManagerStore((store) => store);
+
   const commands = editor.Commands;
 
   const [selectedDevice, setSelectedDevice] = useState<string>(DEVICE_TYPE.DESKTOP);
@@ -244,6 +248,21 @@ function ResponsiveButtons() {
           aria-label="Toggle components visibility"
           icon={<FaVectorSquare size={16} />}
           onClick={() => toggleComponentsBorderHandler()}
+        />
+      </Tooltip>
+      <Tooltip
+        placement="bottom"
+        borderRadius="4px"
+        label="Toggle Layer Manager"
+        hasArrow
+      >
+        <IconButton
+          aria-label="Open Layer Manager"
+          variant="ghost"
+          size="sm"
+          colorScheme={layerManagerStore.isOpen ? 'dodger' : 'grey'}
+          icon={<FaLayerGroup size={18} />}
+          onClick={() => layerManagerStore.onToggle()}
         />
       </Tooltip>
     </Flex>
