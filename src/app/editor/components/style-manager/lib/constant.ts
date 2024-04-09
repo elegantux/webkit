@@ -78,6 +78,7 @@ export const STYLE_MANAGER_SECTION_NAME = {
   BOX_SHADOW: 'Box Shadow',
   TRANSFORM: 'Transform',
   ANIMATION: 'Animation',
+  OTHER: 'Other',
 };
 
 export const DISPLAY_FLEX_PROPERTIES = [
@@ -796,6 +797,26 @@ const backgroundSector = {
   ],
 };
 
+const otherSector = {
+  name: STYLE_MANAGER_SECTION_NAME.OTHER,
+  open: false,
+  properties: [
+    {
+      type: STYLE_TYPES.RADIO,
+      label: 'Object Fit',
+      property: 'object-fit',
+      default: 'contain',
+      colSpan: 2,
+      options: [
+        { label: 'contain', value: 'contain' },
+        { label: 'cover', value: 'cover' },
+        { label: 'fill', value: 'fill' },
+        { label: 'none', value: 'none' },
+      ],
+    },
+  ],
+};
+
 export const styleManagerConfig = {
   custom: true,
   sectors: [
@@ -807,5 +828,6 @@ export const styleManagerConfig = {
     // boxShadowSector,
     positioningSector,
     backgroundSector,
+    otherSector,
   ],
 };

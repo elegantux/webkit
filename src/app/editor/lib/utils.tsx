@@ -9,6 +9,9 @@ export const getBlockMedia = (block: ExtendedBlock) => {
       <Image
         src={block.attributes.image}
         alt={block.getLabel()}
+        height="full"
+        borderRadius="6px"
+        objectFit="cover"
       />
     );
   }
