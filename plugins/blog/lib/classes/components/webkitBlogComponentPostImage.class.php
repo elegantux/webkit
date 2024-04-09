@@ -70,8 +70,6 @@ class webkitBlogComponentPostImage extends webkitEditorComponent
    */
   private function isPluginInstalledAndOn()
   {
-    wa('blog');
-
     $plugins = wa('blog')->getConfig()->getPlugins();
 
     if (class_exists('blogEwblogpimgHelper') && $plugins['ewblogpimg']) {

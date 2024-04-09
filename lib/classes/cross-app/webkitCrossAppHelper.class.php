@@ -55,7 +55,7 @@ class webkitCrossAppHelper
   }
 
   /**
-   * Determine if the page route belongs to a settlement using a WebKit theme.
+   * Determine if the route belongs to a settlement using a WebKit theme.
    * @param $app_id
    * @param $route
    * @return mixed|null
