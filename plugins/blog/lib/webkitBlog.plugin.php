@@ -11,6 +11,7 @@ class webkitBlogPlugin extends webkitEditorPlugin {
     parent::__construct($info);
 
     webkitComponentRegistry::register(webkitBlogComponentBlogPagination::$type, 'webkitBlogComponentBlogPagination');
+    webkitComponentRegistry::register(webkitBlogComponentBlogSearchForm::$type, 'webkitBlogComponentBlogSearchForm');
     webkitComponentRegistry::register(webkitBlogComponentAuthorPhoto::$type, 'webkitBlogComponentAuthorPhoto');
     webkitComponentRegistry::register(webkitBlogComponentAuthorName::$type, 'webkitBlogComponentAuthorName');
     webkitComponentRegistry::register(webkitBlogComponentAuthorBox::$type, 'webkitBlogComponentAuthorBox');

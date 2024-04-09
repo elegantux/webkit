@@ -26,7 +26,7 @@ import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 const GRID_PROPERTIES_MAP = {
   GRID_TEMPLATE_COLUMNS: 'grid-template-columns',
   GRID_TEMPLATE_ROWS: 'grid-template-rows',
-  JUSTIFY_CONTENT: 'justify-content',
+  // JUSTIFY_CONTENT: 'justify-content',
   ALIGN_CONTENT: 'align-content',
 };
 
