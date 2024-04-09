@@ -108,6 +108,7 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     selectorManager: {
       componentFirst: true,
       custom: true,
+      states: [{ name: 'hover' }, { name: 'active' }, { name: 'focus' }, { name: 'nth-of-type(2n)' }],
     },
     deviceManager: {
       devices: [

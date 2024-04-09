@@ -370,7 +370,7 @@ function SelectedChildSelector() {
             variant="ghost"
             size="xs"
             colorScheme="grey"
-            icon={<FaRegTrashCan size={18} />}
+            icon={<FaRegTrashCan size={16} />}
             onClick={handleClearSelectorStyles}
           />
         </Tooltip>
