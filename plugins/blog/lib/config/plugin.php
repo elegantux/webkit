@@ -1,8 +1,8 @@
 <?php
 
 return array(
-  'name'            => 'Blog Widgets',
-  'description'     => 'Description',
+  'name'            => 'Blog Components',
+  'description'     => 'A collection of components for your blog',
   'img'             => 'img/plugin.png',
   'vendor'          => '1275846',
   'version'         => '1.0.0',

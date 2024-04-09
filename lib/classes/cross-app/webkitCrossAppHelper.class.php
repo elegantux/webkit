@@ -55,6 +55,28 @@ class webkitCrossAppHelper
   }
 
   /**
+   * Determine if the route belongs to a settlement using a WebKit theme.
+   * @param $app_id
+   * @param $route
+   * @return mixed|null
+   * @throws waException
+   */
+  public static function getWebkitSettlementByRoute($app_id, $route)
+  {
+    $settlements = self::getAppSettlements($app_id);
+    $page_settlement = null;
+
+    foreach ($settlements as $settlement) {
+      $settlement_slug = explode('/', $settlement['settlement'], 2)[1];
+      if ($settlement_slug === $route && substr($settlement['theme'], 0, 7) === webkitConst::THEME_ID_PREFIX) {
+        $page_settlement = $settlement;
+      }
+    }
+
+    return $page_settlement;
+  }
+
+  /**
    * @param $app_id
    * @return array|mixed
    * @throws waException
