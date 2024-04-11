@@ -3,11 +3,5 @@
   "description": "",
   "categories": ["Blot Post"],
   "type": "component",
-  "tags": ["post", "blog"],
-  "font_links": [{
-    "name": "Playfair Display SC",
-    "link": "{$wa_webkit_app_url}plugins/blog/css/fonts/playfair/font-playfair.css",
-    "location": "head",
-    "attributes": ""
-  }]
+  "tags": ["post", "blog"]
 }

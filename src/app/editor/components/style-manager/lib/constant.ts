@@ -415,7 +415,7 @@ const sizingProps = {
     { label: 'auto', value: 'auto' },
     { label: 'max-content', value: 'max-content' },
     { label: 'min-content', value: 'min-content' },
-    { label: 'fit-content', value: 'fit-content' },
+    // { label: 'fit-content', value: 'fit-content' },
   ],
 };
 const sizingSector = {

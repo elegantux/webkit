@@ -59,7 +59,7 @@
           name: COMPONENT_NAME,
           attributes: { [DATA_KEY]: COMPONENT_TYPE, class: COMPONENT_TYPE },
           droppable: false,
-          style: { width: '200px' },
+          style: { width: 'auto', 'max-width': '100%', },
 
           [TRAITS.IMAGE_GROUP.name]: imageGroupOptions[0].value,
           [TRAITS.USE_RETINA.name]: TRAITS.USE_RETINA.default,
