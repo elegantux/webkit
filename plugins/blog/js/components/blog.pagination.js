@@ -69,6 +69,32 @@
           name: COMPONENT_NAME,
           attributes: { [DATA_KEY]: COMPONENT_TYPE, class: `.${COMPONENT_TYPE}` },
           droppable: false,
+          styles: `
+            .${COMPONENT_TYPE} ${TRAITS.CONTAINER_SELECTOR.value} {
+              padding-left: 0px;
+              margin-bottom: 0px;
+              display: flex;
+              align-items: center;
+              gap: 20px;
+            }
+
+            .${COMPONENT_TYPE} ${TRAITS.LINK_SELECTOR.value} {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 40px;
+              height: 40px;
+              border-radius: 50px;
+              background-color: #F5F5F5;
+              color: #000638;
+              text-decoration: none;
+            }
+
+            .${COMPONENT_TYPE} ${TRAITS.ACTIVE_LINK_SELECTOR.value} {
+              background-color: #000638;
+              color: #ffffff;
+            }
+          `,
 
           [TRAITS.CONTAINER_SELECTOR.name]: TRAITS.CONTAINER_SELECTOR.value,
           [TRAITS.ITEM_SELECTOR.name]: TRAITS.ITEM_SELECTOR.value,
