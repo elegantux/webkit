@@ -246,8 +246,14 @@ export const useProjectList = (filters: SearchParams = {}) => {
     {
       mutationFn: deleteProject,
       // @ts-ignore
-      onSettled: async (response, error, variables) => {
-        await queryClient.invalidateQueries({ queryKey: [STATE_TYPES.PROJECT, variables] });
+      onSettled: async (response, error, projectId) => {
+        /**
+         * This runs another request(fetch) for a project that has already been removed from the DB,
+         * resulting in a "Project not found" response error.
+         * For now, it makes sense to not clear the cache right away so that it clears after 30 minutes.
+         * https://tanstack.com/router/latest/docs/framework/react/api/router/RouteOptionsType#gctime-property
+         */
+        queryClient.removeQueries({ queryKey: [STATE_TYPES.PROJECT, projectId] });
         return queryClient.invalidateQueries({ queryKey: [STATE_TYPES.PROJECT_LIST] });
       },
     },

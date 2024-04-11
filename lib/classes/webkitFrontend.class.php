@@ -41,6 +41,11 @@ trait webkitFrontend
 
     [$app_id, $theme_id] = $this->parseThemeAndAppIds($wa_active_theme_url);
 
+    /**
+     * Get all the project templates, so we can extract the scripts and styles for the head.
+     * Perhaps it makes sense to get only the required fields and not the entire entity.
+     * TODO: Optimize this request.
+     */
     $templates = (new webkitProjectModel())->getTemplatesByAppAndThemeIds($app_id, $theme_id);
 
     $theme_settings = $this->getThemeSettings($app_id, $theme_id);
@@ -99,9 +104,6 @@ trait webkitFrontend
         $parents_head_inline_styles .= $html_parser->tagToHtml('style', [], $front_styles);
       }
 
-      if (strlen($template['child_templates']) > 0 && $ids = explode(',', $template['child_templates'])) {
-        $child_template_ids = array_merge($ids, $child_template_ids);
-      }
       if (strlen($template['component_types']) && $ids = explode(',', $template['component_types'])) {
         $component_types = array_merge($ids, $component_types);
       }
@@ -111,7 +113,7 @@ trait webkitFrontend
      * Collect child template ids
      */
     foreach ($templates as $template) {
-      $template_child_service = new webkitTemplateChildService(new webkitTemplate($templates['id']));
+      $template_child_service = new webkitTemplateChildService(new webkitTemplate($template['id']));
       /**
        * TODO: At the moment this is a very expensive operation. We need to find a more efficient way.
        * TODO: It's likely that getting all the rows from a table in one query and then filtering them would be more efficient than recursively fetching from the database.
@@ -162,7 +164,7 @@ trait webkitFrontend
 
     /**
      * @event frontend_head
-     * @param array $event_params
+     * @param webkitFrontendHeadEventDTO $event_params
      * @return array List of ['name-plugin' => [dependencies]]
      */
     $dependencies = wa(webkitConst::APP_ID)->event(webkitConst::FRONTEND_HEAD_EVENT, $event_params);
@@ -174,12 +176,12 @@ trait webkitFrontend
     $head_script_links = [];
     foreach ($dependencies as $plugin_name => $dependency) {
       if (count($dependency) > 0) {
-        if (count($dependency['styles']) > 0) {
+        if (isset($dependency['styles']) && count($dependency['styles']) > 0) {
           foreach ($dependency['styles'] as $dep) {
             $head_style_links[] = $html_parser->tagToHtml('link', $dep);
           }
         }
-        if (count($dependency['scripts']) > 0) {
+        if (isset($dependency['scripts']) && count($dependency['scripts']) > 0) {
           foreach ($dependency['scripts'] as $dep) {
             $head_script_links[] = $html_parser->tagToHtml('script', $dep);
           }

@@ -7,10 +7,10 @@ return array(
   'vendor'          => '1275846',
   'version'         => '1.0.0',
   'rights'          => false,
-  'handlers' => array(
-    'frontend_head' => 'frontendHead',
-    'frontend_footer' => 'frontendFooter',
-    'editor_page_head' => 'pluginAssets',
-    'editor_canvas_head' => 'pluginDependencies',
-  ),
+//  'handlers' => array(
+//    'frontend_head' => 'frontendHead',
+//    'frontend_footer' => 'frontendFooter',
+//    'editor_page_head' => 'pluginAssets',
+//    'editor_canvas_head' => 'pluginDependencies',
+//  ),
 );
