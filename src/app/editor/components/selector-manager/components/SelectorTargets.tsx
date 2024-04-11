@@ -112,13 +112,21 @@ export function SelectorTargets() {
             {selectorManagerState.targets}
           </Code>
           {showSyncStylesButton && (
-            <Tag
-              cursor="pointer"
+            <Tooltip
+              placement="bottom"
+              borderRadius="4px"
+              label="Move styles from the id to classes"
               fontSize="xs"
-              onClick={() => syncStyle(editor)}
+              hasArrow
             >
-              Sync
-            </Tag>
+              <Tag
+                cursor="pointer"
+                fontSize="xs"
+                onClick={() => syncStyle(editor)}
+              >
+                Sync
+              </Tag>
+            </Tooltip>
           )}
         </Flex>
         <Tooltip

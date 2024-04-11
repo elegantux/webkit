@@ -18,6 +18,40 @@ export const global = () => ({
   ':root': {
     '--gjs-left-width': '0px',
     '--gjs-canvas-top': '0px',
+    '--gjs-color-blue': colors.dodger['600'],
+    '--gjs-color-green': colors.malachite['500'],
+  },
+  '.gjs-selected-parent': {
+    outlineColor: colors.scarlet['200'],
+  },
+  '.gjs-toolbar': {
+    py: '4px',
+    backgroundColor: 'transparent',
+  },
+  '.gjs-toolbar-items': {
+    borderRadius: '2px',
+    backgroundColor: 'var(--gjs-color-blue)',
+  },
+  '.gjs-toolbar-item': {
+    borderRadius: '2px',
+    padding: '4px',
+    '&:hover': {
+      bgColor: colors.dodger['700'],
+    },
+  },
+  '.gjs-badge': {
+    fontWeight: '600',
+    py: '4px',
+    px: '0px',
+    backgroundColor: 'transparent',
+  },
+  '.gjs-badge__name': {
+    borderRadius: '2px',
+    px: '4px',
+    backgroundColor: colors.dodger['700'], // 'var(--gjs-color-blue)',
+  },
+  '.gjs-resizer-h': {
+    borderRadius: '20px',
   },
   '[data-theme][data-theme=dark]': {
     '--chakra-colors-chakra-body-bg': colors.webasyst.backgroundColor,
