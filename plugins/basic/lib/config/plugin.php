@@ -5,7 +5,7 @@ return array(
   'description'     => 'Description',
   'img'             => 'img/plugin.png',
   'vendor'          => '1275846',
-  'version'         => '1.0.0',
+  'version'         => '0.0.1',
   'rights'          => false,
   'handlers' => array(
     'frontend_head' => 'frontendHead',

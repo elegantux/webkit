@@ -67,6 +67,23 @@ class webkitBlogPlugin extends webkitEditorPlugin {
 
   /**
    * Hook
+   * @param $params
+   * @return void
+   * @throws Exception
+   */
+  public function editorAfterTemplateSave($params)
+  {
+    $components = webkitComponentFactory::findComponentByTypes($this->component_types);
+
+    foreach ($components as $component) {
+      if (method_exists($component, webkitConst::EDITOR_AFTER_TEMPLATE_SAVE_EVENT)) {
+        $component->editor_after_template_save($params);
+      }
+    }
+  }
+
+  /**
+   * Hook
    * @throws Exception
    */
   public function editorTemplateSnippets($params)
@@ -79,6 +96,14 @@ class webkitBlogPlugin extends webkitEditorPlugin {
       try {
         $metadata = webkitJsonFileLoader::loadResource($snippets_folder_path . $snippet['metadata']);
 
+        $front_content = strlen($snippet['template']) ? file_get_contents($snippets_folder_path . $snippet['template']) : null;
+        $front_styles = strlen($snippet['styles']) ? file_get_contents($snippets_folder_path . $snippet['styles']) : null;
+        $front_scripts = strlen($snippet['scripts']) ? file_get_contents($snippets_folder_path . $snippet['scripts']) : null;
+
+        $metadata_style_links = $metadata["style_links"] ?? null;
+        $metadata_script_links = $metadata["script_links"] ?? null;
+        $metadata_font_links = $metadata["font_links"] ?? null;
+
         $snippet_dto = new webkitTemplateSnippetDTO([
           "categories" => $metadata["categories"],
           "type" => $metadata["type"],
@@ -86,12 +111,12 @@ class webkitBlogPlugin extends webkitEditorPlugin {
           "title" => $metadata["title"],
           "description" => $metadata["description"],
           "cover_url" => $this->getPluginStaticUrl() .'templates/snippets/' . $snippet['cover'],
-          "front_content" => file_get_contents($snippets_folder_path . $snippet['template']),
-          "front_styles" => file_get_contents($snippets_folder_path . $snippet['styles']),
-          "front_scripts" => file_get_contents($snippets_folder_path . $snippet['scripts']),
-          "style_links" => $metadata["style_links"],
-          "script_links" => $metadata["script_links"],
-          "font_links" => $metadata["font_links"],
+          "front_content" => $front_content,
+          "front_styles" => $front_styles,
+          "front_scripts" => $front_scripts,
+          "style_links" => $metadata_style_links,
+          "script_links" => $metadata_script_links,
+          "font_links" => $metadata_font_links,
         ]);
 
         $snippet_list[] = $snippet_dto->getData();
