@@ -135,7 +135,7 @@ export function DisplaySector({ sector }: { sector: Sector }) {
           display="flex"
           alignItems="center"
           gap="6px"
-          fontSize="md"
+          fontSize="sm"
           {...(hasChanges ? { color: changedCategoryColor } : {})}
         >
           {hasChanges && <FaPen size={10} />}

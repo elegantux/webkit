@@ -61,6 +61,10 @@ export const ColorPropertyType = memo(({ property }: { property: ExtendedPropert
   );
 
   const handleInputChange = useCallback((color: ColorResult) => {
+    /**
+     * We may have to use opts.partial=true to avoid passing the color to UndoManager every time it changes.
+     * It makes sense to add a 1-second debounce timer to update the value without opts.partial=true.
+     */
     property.upValue(color.hexa);
     updateDisplayColor(color.hexa);
   }, []);
