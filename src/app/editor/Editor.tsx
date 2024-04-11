@@ -136,6 +136,8 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
       * ::-webkit-scrollbar-thumb { background: #ccc; }
       * ::-webkit-scrollbar { width: 8px }
       .gjs-dashed *[data-gjs-highlightable] { outline-color: #8899aa; outline-style: dotted; outline-width: 1px; }
+      .gjs-selected { outline-color: #1a9afe !important; }
+      .gjs-selected-parent { outline-color: #fbd38d !important; }
       body.gjs-dashed { outline: none; }
     `,
     // pluginsOpts: pluginOptions,
