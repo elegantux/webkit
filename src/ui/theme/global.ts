@@ -48,7 +48,7 @@ export const global = () => ({
   '.gjs-badge__name': {
     borderRadius: '2px',
     px: '4px',
-    backgroundColor: colors.dodger['700'], // 'var(--gjs-color-blue)',
+    backgroundColor: colors.dodger['700'],
   },
   '.gjs-resizer-h': {
     borderRadius: '20px',
