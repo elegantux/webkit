@@ -80,11 +80,6 @@
         },
       },
       view: {
-        // listenToProps: [TRAITS.DATE_FORMAT.name],
-        // init({ model }) {
-        //   const propsList = this.listenToProps.map(prop => `change:${prop}`).join(' ');
-        //   this.listenTo(model, propsList, this.handleTraitsChange);
-        // },
         onRender({ model }) {
           this.handleTraitsChange(model);
         },
@@ -107,10 +102,8 @@
         async handleTraitsChange(model) {
           this.setLoadingView();
 
-          // const date_format = model.get(TRAITS.DATE_FORMAT.name);
 
           const formData = new FormData();
-          // formData.append(TRAITS.DATE_FORMAT.name, date_format);
           formData.append('_csrf', window.webkit.getCsrf());
 
           const response = await fetch(API_ENDPOINT, {
