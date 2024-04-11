@@ -120,7 +120,7 @@ class webkitBlogPlugin extends webkitEditorPlugin {
         $file_type = 'styles';
       } elseif (preg_match('/\.html$/', $file_path)) {
         $file_type = 'template';
-      } elseif (preg_match('/\.(jpg|jpeg|png)$/', $file_path)) {
+      } elseif (preg_match('/\.(jpg|jpeg|png|webp)$/', $file_path)) {
         $file_type = 'cover';
       } elseif (preg_match('/\.js$/', $file_path)) {
         $file_type = 'scripts';

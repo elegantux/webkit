@@ -80,7 +80,10 @@ function TemplateSnippetCard({ snippet }: { snippet: TemplateSnippet }) {
     } else {
       editor.addComponents(snippet.front_content);
     }
-    // editor.addComponents(`<style>${snippet.front_styles}</style>${snippet.front_content}`);
+
+    if (snippet.front_styles?.length > 0) {
+      editor.Css.addRules(snippet.front_styles);
+    }
 
     templateModal.modalDisclosure.onClose();
   };

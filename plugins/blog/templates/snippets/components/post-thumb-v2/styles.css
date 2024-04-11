@@ -1,0 +1,6 @@
+.blog_post_image {
+    width: 100px;
+    height: 250px;
+    object-fit: cover;
+    margin-bottom: 14px;
+}
