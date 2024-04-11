@@ -164,7 +164,7 @@ trait webkitFrontend
 
     /**
      * @event frontend_head
-     * @param webkitFrontendHeadEventDTO $event_params
+     * @param array $event_params
      * @return array List of ['name-plugin' => [dependencies]]
      */
     $dependencies = wa(webkitConst::APP_ID)->event(webkitConst::FRONTEND_HEAD_EVENT, $event_params);
