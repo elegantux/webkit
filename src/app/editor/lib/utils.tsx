@@ -63,7 +63,7 @@ export const syncStyle = (editor: Editor) => {
   if (style) {
     rule.addStyle(style);
   }
-  em.trigger('component:toggled');
+
   em.trigger('component:sync-style', {
     component: target,
     selectors,
@@ -72,6 +72,8 @@ export const syncStyle = (editor: Editor) => {
     ruleComponents,
     state,
   });
+  em.trigger('component:toggled');
+  em.trigger('component:styleUpdate');
 };
 
 /**

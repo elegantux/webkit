@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import {
   Code,
   Flex,
@@ -14,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { Selector } from 'grapesjs';
 import { FaRegTrashCan, FaSquare, FaSquareCheck } from 'react-icons/fa6';
+import { useEffect, useState } from 'react';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { checkSync, syncStyle } from '@app/editor/lib/utils';
@@ -24,7 +24,9 @@ import { AddSelectorButton } from '@app/editor/components/selector-manager/compo
 export function SelectorTargets() {
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
   const isComponentFirst = editor.SelectorManager.getComponentFirst();
-  const showSyncStylesButton = useMemo(() => isComponentFirst && checkSync(editor), [editor, isComponentFirst]);
+
+  // const showSyncStylesButton = useMemo(() => isComponentFirst && checkSync(editor), [editor, isComponentFirst]);
+  const [showSyncStylesButton, setShowSyncStylesButton] = useState<boolean>(false);
 
   const selectorManagerState = useSelectorManagerStore((state) => state);
 
@@ -62,6 +64,29 @@ export function SelectorTargets() {
     // });
   };
 
+  const handleSelectorChange = () => {
+    setShowSyncStylesButton(isComponentFirst && !!checkSync(editor));
+  };
+
+  /**
+   * This is a temporary solution.
+   * Waiting for an answer regarding a built-in solution for checking and firing this sync event.
+   * https://github.com/GrapesJS/grapesjs/discussions/5805
+   */
+  useEffect(() => {
+    editor.on('selector:custom', handleSelectorChange);
+    editor.on('undo', handleSelectorChange);
+    editor.on('redo', handleSelectorChange);
+
+    handleSelectorChange();
+
+    return () => {
+      editor.off('selector:custom', handleSelectorChange);
+      editor.off('undo', handleSelectorChange);
+      editor.off('redo', handleSelectorChange);
+    };
+  }, []);
+
   return (
     <>
       <Flex justify="space-between">
@@ -89,6 +114,7 @@ export function SelectorTargets() {
           {showSyncStylesButton && (
             <Tag
               cursor="pointer"
+              fontSize="xs"
               onClick={() => syncStyle(editor)}
             >
               Sync
