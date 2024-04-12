@@ -36,7 +36,7 @@ export function ProjectCard({ project }: { project: Project }) {
         },
       }}
       border="1px solid transparent"
-      borderRadius="16px"
+      borderRadius="8px"
       _hover={{
         color: 'black',
         borderColor: 'dodger.200',

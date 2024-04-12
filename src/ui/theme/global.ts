@@ -29,7 +29,7 @@ export const global = () => ({
     backgroundColor: 'transparent',
   },
   '.gjs-toolbar-items': {
-    borderRadius: '2px',
+    borderRadius: '4px',
     backgroundColor: 'var(--gjs-color-blue)',
   },
   '.gjs-toolbar-item': {

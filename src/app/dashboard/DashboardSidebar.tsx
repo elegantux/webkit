@@ -62,8 +62,8 @@ export function DashboardSidebar() {
         width="full"
       >
         <Image
-          src={appPath('/img/webkit.svg')}
-          width="42px"
+          src={appPath('/img/webkit.png')}
+          width="32px"
         />
         <Heading size="sm">WebKit</Heading>
       </Flex>
@@ -100,7 +100,7 @@ export function DashboardSidebar() {
           params={{}}
         >
           <FaImages size={18} />
-          Media files
+          Media Files
         </SidebarLink>
       </Flex>
       <Flex
@@ -117,12 +117,12 @@ export function DashboardSidebar() {
         </SidebarLink>
         <GreetingSection
           mx="12px"
-          padding="18px 14px"
+          padding="14px 14px"
         />
         <ContactsSection
-          mt="14px"
+          mt="8px"
           mx="12px"
-          padding="18px 14px"
+          padding="14px 14px"
         />
       </Flex>
     </Flex>

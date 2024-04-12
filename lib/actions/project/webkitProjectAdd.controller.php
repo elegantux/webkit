@@ -31,7 +31,7 @@ class webkitProjectAddController extends webkitJsonController
       }
 
       /**
-       * Create Theme folter
+       * Create Theme folder
        */
       try {
         waFiles::copy($default_theme_path, $target_path);

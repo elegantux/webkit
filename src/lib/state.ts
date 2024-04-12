@@ -297,12 +297,12 @@ export const useProjectListValidity = () => {
 
   const invalidProjects = useMemo(() => {
     return projectList.filter((project) => {
-      if (appList.some((app) => app.theme_id_list.includes(project.theme_id))) {
+      if (appList.find((app) => app.app_id === project.app_id && app.theme_id_list.includes(project.theme_id))) {
         return false;
       }
       return true;
     });
-  }, []);
+  }, [projectList, appList]);
 
   return {
     invalidProjects,
