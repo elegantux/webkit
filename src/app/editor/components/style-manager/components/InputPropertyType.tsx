@@ -220,6 +220,7 @@ export const InputProperty = memo(
                   <MenuItem
                     key={option.value}
                     onClick={() => handleMenuChange(option)}
+                    fontSize="sm"
                   >
                     {option.label}
                   </MenuItem>

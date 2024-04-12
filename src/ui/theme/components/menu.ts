@@ -1,97 +1,71 @@
-import { StyleFunctionProps } from '@chakra-ui/react';
-import { modalAnatomy as parts } from '@chakra-ui/anatomy';
+import { menuAnatomy as parts } from '@chakra-ui/anatomy';
 import { createMultiStyleConfigHelpers } from '@chakra-ui/styled-system';
 
 import colors from '@ui/theme/colors';
+import { hexOpacity } from '@ui/theme/utils';
 
 const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(parts.keys);
 
 const baseStyle = definePartsStyle({
-  // // define the part you're going to style
-  // overlay: {
-  //   bg: 'blackAlpha.200', // change the background
+  // button: {
+  //   // this will style the MenuButton component
+  //   fontWeight: 'medium',
+  //   bg: 'teal.500',
+  //   color: 'gray.200',
+  //   _hover: {
+  //     bg: 'teal.600',
+  //     color: 'white',
+  //   },
   // },
-  // dialog: {
-  //   borderRadius: 'md',
-  //   bg: `dodger.100`,
-  // },
-  dialog: {
-    position: 'absolute',
-    bottom: { base: '0', md: 'unset' },
-    // bg: 'webasyst.backgroundColorBlank',
-    bg: `linear-gradient(225deg, ${colors.webasyst.backgroundColor} 0%, ${colors.webasyst.backgroundColorBlank} 99.49%)`,
-    px: { base: '16px', md: '24px' },
-    py: { base: '22px', md: '20px' },
-    borderRadius: { base: '20px 20px 0 0', md: '20px' },
-    my: 0,
-    maxH: '90vh',
+  list: {
+    px: '4px',
+    py: '4px',
+    _dark: {
+      bgColor: 'ebony.800',
+    },
   },
-  body: {
-    p: '0 4px',
-  },
-  header: {
-    p: 0,
-    // color: 'fluentHealthText.100',
-    lineHeight: '2',
-    mb: '24px',
-  },
-  closeButton: {
-    top: '18px',
-    right: '18px',
-    // bgColor: 'iris.500',
-    color: 'white',
-    size: '12px',
-    p: '8px',
-    borderRadius: '50%',
-    sx: {
-      '& > svg': {
-        width: '12px',
-        height: '12px',
+  item: {
+    color: 'grey.900',
+    bgColor: 'transparent',
+    boxShadow: 'none',
+    transitionDuration: '0.1s',
+    py: '6px',
+    _hover: {
+      color: 'grey.900',
+      bg: 'grey.50',
+      boxShadow: 'none',
+    },
+    _focus: {
+      color: 'grey.900',
+      bg: 'grey.50',
+      boxShadow: 'none',
+    },
+    _dark: {
+      color: 'grey.50',
+      _hover: {
+        bg: hexOpacity(colors.grey['50'], 0.1),
+      },
+      _focus: {
+        bg: hexOpacity(colors.grey['50'], 0.1),
       },
     },
   },
+  groupTitle: {
+    opacity: '0.7',
+    mx: '4px',
+    px: '4px',
+  },
+  // command: {
+  // },
+  // divider: {
+  //   // this will style the MenuDivider component
+  //   my: '4',
+  //   borderColor: 'white',
+  //   borderBottom: '2px dotted',
+  // },
 });
-
-const variantSidebar = () => {
-  return {};
-};
-
-const defaultSidebar = (props: StyleFunctionProps) => {
-  const closeButtonStyles =
-    props.colorMode === 'light'
-      ? {
-          top: 'var(--chakra-space-4)',
-          boxShadow: 'none',
-          color: 'gray.600',
-          _hover: {
-            top: 'var(--chakra-space-4)',
-            boxShadow: 'none',
-            color: 'gray.600',
-            bg: 'gray.200',
-          },
-        }
-      : {
-          top: 'var(--chakra-space-4)',
-          boxShadow: 'none',
-          color: 'gray.50',
-          _hover: {
-            top: 'var(--chakra-space-4)',
-            boxShadow: 'none',
-            color: 'gray.50',
-            bg: 'gray.600',
-          },
-        };
-  return {
-    closeButton: closeButtonStyles,
-  };
-};
-
-const variants = {
-  default: defaultSidebar,
-  sidebar: variantSidebar,
-};
 
 export default defineMultiStyleConfig({
   baseStyle,
-  variants,
+  // variants,
 });
