@@ -31,7 +31,7 @@ import { Device } from 'grapesjs';
 
 import { EDITOR_STORE, useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
 import { editorRoute } from '../../../routes';
-import { useRecentTemplateList, useTemplate } from '@lib/state';
+import { useTemplate, useTemplateList } from '@lib/state';
 import { Modal, ModalProvider, useModal } from '@ui/atomic/organisms/modal';
 import { appUrl } from '@lib/utils.tsx';
 import { Template } from '@lib/models/template';
@@ -71,7 +71,8 @@ function extractTypesFromJson(json: any): string[] {
 function TemplateNavigation() {
   const { templateId } = editorRoute.useParams();
   const { template } = useTemplate(Number(templateId));
-  const { templateList } = useRecentTemplateList();
+  const { templateList } = useTemplateList(template.wtp_project_id);
+  const filteredTemplateList = templateList.filter((t) => t.id !== template.id);
 
   const handleTemplateClick = (temp: Template) => {
     window.location.href = appUrl(`/app/editor/${temp.id}`);
@@ -90,8 +91,8 @@ function TemplateNavigation() {
       </MenuButton>
       <Portal>
         <MenuList>
-          <MenuGroup title="Recently edited templates">
-            {templateList.map((item) => (
+          <MenuGroup title="Project templates:">
+            {filteredTemplateList.map((item) => (
               <MenuItem
                 key={item.id}
                 onClick={() => handleTemplateClick(item)}
@@ -99,6 +100,7 @@ function TemplateNavigation() {
                 {item.name}
               </MenuItem>
             ))}
+            {filteredTemplateList.length === 0 && <MenuItem>🤷 No templates</MenuItem>}
           </MenuGroup>
         </MenuList>
       </Portal>
