@@ -3,12 +3,13 @@
 return array(
   'name'        => 'WebKit',
   'description' => 'Визуальный редактор тем дизайна.',
-  'img'         => 'img/webkit.svg',
+  'img'         => 'img/webkit.png',
   'icon'        => [
-    16 => 'img/webkit16.svg',
-    24 => 'img/webkit24.svg',
-    48 => 'img/webkit64.svg',
-    96 => 'img/webkit96.svg',
+    16 => 'img/webkit16.png',
+    24 => 'img/webkit24.png',
+    48 => 'img/webkit48.png',
+    64 => 'img/webkit64.png',
+    96 => 'img/webkit96.png',
   ],
   'frontend'    => false,
   'version'     => '0.0.1',

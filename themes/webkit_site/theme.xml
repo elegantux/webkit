@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE theme PUBLIC "wa-app-theme" "http://www.webasyst.com/wa-content/xml/wa-app-theme.dtd">
 <theme id="webkit_site" system="0" vendor="1275846" author="webkit" app="site" version="0.0.1">
-  <name locale="en_US">WebKit 0.0.1</name>
-  <name locale="ru_RU">WebKit 0.0.1</name>
+  <name locale="en_US">WebKit Light 0.1</name>
+  <name locale="ru_RU">WebKit Light 0.1</name>
   <description locale="en_US">Description...</description>
   <description locale="ru_RU">Описание...</description>
   <support locale="en_US">https://elegantux.com</support>
@@ -64,12 +64,10 @@
     </file>
   </files>
   <about locale="en_US">
-    &lt;p&gt;&lt;b&gt;WebKit Site&lt;/b&gt; — is a starting website theme template containing the basic structure of the site. Visual customization of this theme must be done through the &lt;a href="/webasyst/webkit"&gt;WebKit&lt;/a&gt; application.&lt;/p&gt;
-
+    &lt;p&gt;&lt;b&gt;WebKit Light&lt;/b&gt; — is a starting website theme template containing the basic structure of the site. Visual customization of this theme must be done through the &lt;a href="/webasyst/webkit"&gt;WebKit&lt;/a&gt; application.&lt;/p&gt;
   </about>
   <about locale="ru_RU">
-    &lt;p&gt;&lt;b&gt;WebKit Site&lt;/b&gt; — это стартовый шаблон темы сайта содержащий базобую структуру стайта. Визуальные настройка данной темы необходимо производить через приложение &lt;a href="/webasyst/webkit"&gt;WebKit&lt;/a&gt;.&lt;/p&gt;
-
+    &lt;p&gt;&lt;b&gt;WebKit Light&lt;/b&gt; — это стартовый шаблон темы сайта содержащий базобую структуру стайта. Визуальные настройка данной темы необходимо производить через приложение &lt;a href="/webasyst/webkit"&gt;WebKit&lt;/a&gt;.&lt;/p&gt;
   </about>
   <locales>
     <locale>

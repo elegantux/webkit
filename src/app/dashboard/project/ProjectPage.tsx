@@ -223,6 +223,7 @@ export function ProjectPageHeader() {
       mb={12}
     >
       <Flex
+        position="relative"
         alignItems="center"
         gap="12px"
       >
@@ -233,6 +234,16 @@ export function ProjectPageHeader() {
           flexShrink={0}
         />
         <PageHeading mb={0}>{project.name}</PageHeading>
+        <Text
+          position="absolute"
+          top="100%"
+          left="46px"
+          width="max-content"
+          fontSize="sm"
+          opacity="0.5"
+        >
+          Theme ID: {project.theme_id}
+        </Text>
         <ProjectActionsButton project={project} />
       </Flex>
       <CreateTemplateTypeButton

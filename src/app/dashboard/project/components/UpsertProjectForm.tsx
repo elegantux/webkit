@@ -3,10 +3,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import {
   Box,
+  Checkbox,
+  Divider,
   Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Grid,
   Image,
   Input,
   InputGroup,
@@ -20,7 +23,7 @@ import { PropsWithChildren, useEffect } from 'react';
 import { AxiosError } from 'axios';
 import { useNavigate } from '@tanstack/react-router';
 
-import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models/project';
+import { CreateProjectPayload, PROJECT_APP_IDS, Project, UpdateProjectPayload } from '@lib/models/project';
 import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
 import { useProjectList, useWebasystApplicationList } from '@lib/state';
 import { WebasystApp } from '@lib/models/cross-app';
@@ -53,7 +56,7 @@ const appListToOptions = (appList: WebasystApp[]): SelectOptionProps[] => {
 };
 
 function RadioCard(props: PropsWithChildren<RadioProps & { label: string; imageUrl: string }>) {
-  const { label, imageUrl, isChecked } = props;
+  const { label, imageUrl, isChecked, isDisabled } = props;
 
   const { getInputProps, getRadioProps } = useRadio(props);
   const input = getInputProps();
@@ -61,32 +64,47 @@ function RadioCard(props: PropsWithChildren<RadioProps & { label: string; imageU
 
   return (
     <Box as="label">
-      <input {...input} />
+      <input
+        {...input}
+        disabled={isDisabled}
+      />
       <Box
         {...checkbox}
+        position="relative"
         cursor="pointer"
         borderWidth="1px"
         borderRadius="md"
-        boxShadow="md"
         transition="background 0.2s ease"
         _checked={{
-          bg: 'dodger.300',
-          // color: 'white',
-          borderColor: 'grey.600',
-          _dark: { bg: 'dodger.700' },
+          borderColor: isChecked ? 'dodger.500' : 'dodger.300',
         }}
         _hover={{
-          bg: isChecked ? 'dodger.300' : 'dodger.50',
-          _dark: { bg: isChecked ? 'dodger.700' : 'dodger.900' },
+          borderColor: isChecked ? 'dodger.500' : 'dodger.300',
+        }}
+        _disabled={{
+          opacity: 0.2,
+          pointerEvents: 'none',
+          userSelect: 'none',
         }}
         px={5}
         py={3}
       >
+        <Checkbox
+          position="absolute"
+          top="6px"
+          left="6px"
+          colorScheme="dodger"
+          size="lg"
+          pointerEvents="none"
+          isChecked={isChecked}
+          isDisabled={isDisabled}
+        />
         <Image
           src={imageUrl}
           alt={label}
           width="120px"
           flexShrink={0}
+          mx="auto"
         />
       </Box>
     </Box>
@@ -126,7 +144,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
     mode: 'onChange',
     defaultValues: {
       name: project?.name ?? '',
-      app_id: project?.app_id ?? '',
+      app_id: project?.app_id,
       theme_id: project?.theme_id ?? '',
     },
   });
@@ -135,7 +153,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
 
   const onAppRadioButtonChange = (value: string) => {
     if (!project) {
-      form.setValue('app_id', value);
+      form.setValue('app_id', value as PROJECT_APP_IDS);
       form.trigger('app_id');
     }
   };
@@ -206,8 +224,8 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
         >
           Select an application for the project:
         </FormLabel>
-        <Flex
-          justify="space-between"
+        <Grid
+          gridTemplateColumns={`repeat(${appSelectOptions.length}, 1fr)`}
           gap="32px"
           {...(project
             ? {
@@ -221,11 +239,13 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
               key={app.value}
               label={app.payload.app_id}
               imageUrl={app.payload.icon}
+              isDisabled={app.value === PROJECT_APP_IDS.SHOP}
               {...getRadioProps({ value: app.value })}
             />
           ))}
-        </Flex>
+        </Grid>
       </FormControl>
+      <Divider />
       <FormControl isInvalid={!!form.formState.errors.name}>
         <FormLabel fontSize="sm">Name of the project*</FormLabel>
         <Input
@@ -242,7 +262,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
       >
         <FormLabel fontSize="sm">Name of new theme*</FormLabel>
         <InputGroup>
-          <InputLeftAddon>webkit_</InputLeftAddon>
+          {!project && <InputLeftAddon>webkit_</InputLeftAddon>}
           <Input
             placeholder="blog"
             {...form.register('theme_id')}

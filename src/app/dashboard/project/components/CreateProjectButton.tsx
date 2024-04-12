@@ -51,7 +51,7 @@ export function CreateProjectCard(props: ChakraProps) {
         bg="transparent"
         border="1px solid"
         borderColor="ebony.50"
-        borderRadius="16px"
+        borderRadius="8px"
         cursor="pointer"
         onClick={modal.modalDisclosure.onOpen}
         _hover={{

@@ -325,7 +325,7 @@ export function ThemeSettings() {
           isLoading={form.formState.isSubmitting}
           isDisabled={!form.formState.isValid}
         >
-          Save Theme Settings
+          Save Settings
         </Button>
       </Flex>
       <Alert
