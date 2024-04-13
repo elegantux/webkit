@@ -217,7 +217,7 @@ export function Editor() {
         "sidebar breadcrumbs breadcrumbs"
       `}
       gridTemplateRows="54px 1fr 22px"
-      gridTemplateColumns={`320px 1fr ${layerManagerIsOpen ? '320px' : '0px'}`}
+      gridTemplateColumns={`320px 1fr ${layerManagerIsOpen ? '320px' : '2px'}`}
       // Animating the appearance of the Layer Manager
       transition="0.3s"
       height="calc(100vh - 64px)"
