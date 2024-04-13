@@ -31,6 +31,7 @@ const loadPlugins = async (
     }
 
     try {
+      // @ts-ignore
       // eslint-disable-next-line no-await-in-loop
       await plugin(editor, pluginListOptions[plugin]);
     } catch (error) {
@@ -54,6 +55,7 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
   const pluginList = window.webkit.plugins.functions;
   const pluginOptions: Record<any, CallableFunction> = {};
   pluginList.forEach((plugin: CallableFunction) => {
+    // @ts-ignore
     pluginOptions[plugin] = { template };
   });
 
@@ -142,7 +144,7 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     `,
     // pluginsOpts: pluginOptions,
     pluginsOpts: {
-      [loadPlugins]: {
+      [loadPlugins as any]: {
         pluginList,
         pluginListOptions: pluginOptions,
         onFinished: onPluginsLoaded,
