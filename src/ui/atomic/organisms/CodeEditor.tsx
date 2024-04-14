@@ -34,7 +34,6 @@ export function CodeEditor({
       height={height}
       theme={colorMode === 'dark' ? 'vs-dark' : 'light'}
       defaultLanguage={language}
-      // defaultValue=""
       onMount={onMount}
     />
   );

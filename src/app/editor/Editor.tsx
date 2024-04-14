@@ -95,16 +95,11 @@ const initEditor = async (
     // console.log('projectData', projectData);
     e.loadProjectData(projectData);
 
-    // setTimeout(() => {
-    //   // editor.Canvas.getDocument().head.insertAdjacentHTML('beforeend', themeSettings.custom_head_styles);
-    // }, 0);
-
     // Load project data before canvas render
     // e.loadProjectData(JSON.parse(localStorage.getItem('gjsProject')));
     // Rerender Editor canvas when plugins are loaded
     e.render();
     // After rendering the canvas, add styles and scripts from the Theme Settings to the canvas head.
-    // e.Canvas.getDocument().head.insertAdjacentHTML('beforeend', themeSettings.custom_head_styles);
     e.onReady(() => {
       // Theme Styles
       const style = document.createElement('style');
@@ -118,7 +113,6 @@ const initEditor = async (
       // script.innerHTML = themeSettings.custom_head_styles;
       // e.Canvas.getBody().insertAdjacentHTML('beforeend', script.innerHTML);
     });
-    // e.Canvas.getDocument().head.append(script);
     // Enable canvas
     setArePluginsLoaded(true);
     // Log
