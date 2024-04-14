@@ -24,6 +24,15 @@ const loadPlugins = async (
 ) => {
   const { pluginList, pluginListOptions, onFinished } = params;
 
+  /**
+   * The onFinished function needs to be called only after the editor has been initialized,
+   * so we have to pop it from the stack.
+   */
+  if (pluginList.length === 0) {
+    setTimeout(onFinished, 0, editor);
+    return true;
+  }
+
   for (let i = 0; i < pluginList.length; i++) {
     const plugin = pluginList[i];
     if (typeof plugin !== 'function') {

@@ -48,7 +48,7 @@ class webkitTemplateUpdateController extends webkitJsonController
        */
       unset(
         $post['wtp_id'],
-        $post['wtp_status'],
+        $post['wtp_status']
       );
 
       $template_project_service = new webkitTemplateProjectService(
