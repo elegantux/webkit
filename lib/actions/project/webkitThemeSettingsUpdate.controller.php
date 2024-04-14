@@ -8,7 +8,7 @@ class webkitThemeSettingsUpdateController extends webkitJsonController
   /**
    * @var string[]
    */
-  protected $body_fields = ['style_links', 'script_links', 'font_links', 'custom_head_html'];
+  protected $body_fields = ['style_links', 'script_links', 'font_links', 'custom_head_styles'];
 
   /**
    * @var string[]

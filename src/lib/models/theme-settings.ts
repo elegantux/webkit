@@ -7,7 +7,7 @@ export interface ThemeSettings {
   style_links: string;
   script_links: string;
   font_links: string;
-  custom_head_html: string;
+  custom_head_styles: string;
   create_datetime: string;
   update_datetime: string;
 }

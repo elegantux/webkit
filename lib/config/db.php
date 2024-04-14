@@ -91,8 +91,8 @@ return array(
     // [{ name: 'Ubintu', link: '/font.css', location: 'head/footer', attributes: 'key=value;' }]
     'font_links'        => array('mediumtext', 'null' => 1),
 
-    // html
-    'custom_head_html'  => array('mediumtext', 'null' => 1),
+    // css
+    'custom_head_styles'  => array('mediumtext', 'null' => 1),
 
     'create_datetime'   => array('datetime', 'null' => 0),
     'update_datetime'   => array('datetime', 'null' => 0),

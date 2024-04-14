@@ -17,6 +17,7 @@ import { editorRoute } from '../../routes';
 import { Breadcrumbs } from '@app/editor/components/Breadcrumbs';
 import { LayerManager } from '@app/editor/components/layer-manager/LayerManager';
 import { useLayerManagerStore } from '@app/editor/components/layer-manager/lib/utils';
+import { ThemeSettings } from '@lib/models/theme-settings';
 
 const loadPlugins = async (
   editor: EditorInterface,
@@ -51,7 +52,11 @@ const loadPlugins = async (
   return true;
 };
 
-const initEditor = async (template: Template, pluginsDependencies: PluginDependencies) => {
+const initEditor = async (
+  template: Template,
+  themeSettings: ThemeSettings,
+  pluginsDependencies: PluginDependencies
+) => {
   // eslint-disable-next-line prefer-destructuring
   const init = useEditorStore.getState().init;
   const { setArePluginsLoaded } = useEditorStore.getState();
@@ -90,10 +95,30 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     // console.log('projectData', projectData);
     e.loadProjectData(projectData);
 
+    // setTimeout(() => {
+    //   // editor.Canvas.getDocument().head.insertAdjacentHTML('beforeend', themeSettings.custom_head_styles);
+    // }, 0);
+
     // Load project data before canvas render
     // e.loadProjectData(JSON.parse(localStorage.getItem('gjsProject')));
     // Rerender Editor canvas when plugins are loaded
     e.render();
+    // After rendering the canvas, add styles and scripts from the Theme Settings to the canvas head.
+    // e.Canvas.getDocument().head.insertAdjacentHTML('beforeend', themeSettings.custom_head_styles);
+    e.onReady(() => {
+      // Theme Styles
+      const style = document.createElement('style');
+      style.innerHTML = themeSettings.custom_head_styles;
+      e.Canvas.getDocument().head.insertAdjacentElement('beforeend', style);
+
+      // Theme Scripts
+      // const script = document.createElement('script');
+      // script.type = 'text/javascript';
+      // script.defer = true;
+      // script.innerHTML = themeSettings.custom_head_styles;
+      // e.Canvas.getBody().insertAdjacentHTML('beforeend', script.innerHTML);
+    });
+    // e.Canvas.getDocument().head.append(script);
     // Enable canvas
     setArePluginsLoaded(true);
     // Log
@@ -139,10 +164,9 @@ const initEditor = async (template: Template, pluginsDependencies: PluginDepende
     },
     canvas: {
       styles: pluginsDependencies.styles,
-      scripts: pluginsDependencies.scripts,
+      scripts: ['/wa-content/js/jquery/jquery-1.11.1.min.js', ...pluginsDependencies.scripts],
     },
     canvasCss: `
-      body { background-color: #fff }
       * ::-webkit-scrollbar-track { background: #eee; }
       * ::-webkit-scrollbar-thumb { background: #ccc; }
       * ::-webkit-scrollbar { width: 8px }
@@ -205,14 +229,14 @@ export function Editor() {
    * so that we can change fields before subscribing to GJS events.
    * E.g. editor.on('style:custom', updatePropertyStyles);
    */
-  useThemeSettings(template.wtp_project_id);
+  const { themeSettings } = useThemeSettings(template.wtp_project_id);
 
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
   const layerManagerIsOpen = useLayerManagerStore((store) => store.isOpen);
 
   const init = async () => {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const _editor = await initEditor(template, pluginsDependencies);
+    const _editor = await initEditor(template, themeSettings, pluginsDependencies);
     initCommands(_editor);
   };
 
