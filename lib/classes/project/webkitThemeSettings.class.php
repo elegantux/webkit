@@ -5,7 +5,7 @@
  * @property string $style_links
  * @property string $script_links
  * @property string $font_links
- * @property string $custom_head_html
+ * @property string $custom_head_styles
  * @property string $create_datetime
  * @property string $update_datetime
  */

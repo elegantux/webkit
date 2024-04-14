@@ -58,6 +58,7 @@ trait webkitFrontend
     $theme_settings_head_style_links = [];
     $theme_settings_head_script_links = [];
     $theme_settings_head_font_links = [];
+    $theme_settings_custom_head_styles = $html_parser->tagToHtml('style', [], $theme_settings->custom_head_styles);
     $view_smarties = $theme_settings::getViewSmarties($app_id, $theme_id);
     if ($theme_settings->style_links) {
       foreach (json_decode($theme_settings->style_links) as $style_link) {
@@ -203,6 +204,7 @@ trait webkitFrontend
     $result_head .= $result_theme_settings_scripts;
     $result_head .= $result_head_styles;
     $result_head .= $result_head_scripts;
+    $result_head .= $theme_settings_custom_head_styles;
     $result_head .= '<!-- [WebKit] Head - End -->';
     return $result_head;
   }
