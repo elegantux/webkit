@@ -17,6 +17,13 @@ export const getPropertyInitialValue = (property: ExtendedProperty) => (property
 export const NumberPropertyType = memo(({ property }: { property: ExtendedProperty }) => {
   const { value, hasInheritedValue, clearProperty, propertyLabel } = useStyleProperty(property);
 
+  // @ts-ignore
+  const minValue: number | undefined = property.get('min');
+  // @ts-ignore
+  const maxValue: number | undefined = property.get('max');
+  // @ts-ignore
+  const step: number | undefined = property.get('step');
+
   const handleInputChange = (valueAsString: string) => {
     property.upValue(valueAsString);
   };
@@ -33,8 +40,11 @@ export const NumberPropertyType = memo(({ property }: { property: ExtendedProper
         size="sm"
         value={value}
         onChange={handleInputChange}
+        {...(minValue ? { min: minValue } : {})}
+        {...(maxValue ? { max: maxValue } : {})}
+        {...(step ? { step } : {})}
       >
-        <NumberInputField />
+        <NumberInputField value={value} />
         <NumberInputStepper>
           <NumberIncrementStepper />
           <NumberDecrementStepper />

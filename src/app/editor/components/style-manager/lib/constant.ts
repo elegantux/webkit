@@ -718,7 +718,6 @@ const positioningSector = {
       label: 'Z-Index',
       property: 'z-index',
       default: '',
-      min: 0,
     },
   ],
 };
@@ -813,6 +812,15 @@ const otherSector = {
         { label: 'fill', value: 'fill' },
         { label: 'none', value: 'none' },
       ],
+    },
+    {
+      type: STYLE_TYPES.NUMBER,
+      label: 'Opacity',
+      property: 'opacity',
+      default: '1',
+      min: 0,
+      max: 1,
+      step: 0.01,
     },
   ],
 };
