@@ -63,7 +63,7 @@ class webkitBlogComponentPostsGrid extends webkitEditorComponent
     $template = new webkitTemplate($template_id);
 
     $posts = $provider->blog->blogPosts();
-    $view->assign(array('posts' => $posts));
+    $view->assign(array('posts' => $posts, 'wa_active_theme_url' => null));
 
     $result = $view->fetch('string:' . $this->createHtml(waRequest::post()));
     if (strlen($template->front_styles)) {

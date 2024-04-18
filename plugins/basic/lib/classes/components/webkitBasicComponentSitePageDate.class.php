@@ -31,11 +31,11 @@ class webkitBasicComponentSitePageDate extends webkitEditorComponent
     $page = $provider->site->getPage();
 
     if (!$page) {
-      $this->response = [
-        'view' => 'Site does not have pages!',
-        'model' => 'Site does not have pages!',
-      ];
-      return false;
+      $page = $provider->blog->getPage();
+
+      if (!$page) {
+        return 'Neither the Site nor the Blog have pages!';
+      }
     }
 
     $assign_params = array('page' => $page);

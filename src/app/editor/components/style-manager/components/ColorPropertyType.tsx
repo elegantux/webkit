@@ -50,6 +50,7 @@ export const ColorPropertyType = memo(({ property }: { property: ExtendedPropert
       return color;
     },
   });
+  console.log(propertyLabel, value);
 
   const hasColor = value.length > 0;
 

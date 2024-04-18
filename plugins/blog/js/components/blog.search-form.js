@@ -110,7 +110,14 @@
               draggable: `.${COMPONENT_TYPE}`,
               badgable: false,
               copyable: false,
-              attributes: { class: `.${COMPONENT_TYPE}_button`, },
+              tagName: 'button',
+              attributes: { class: `.${COMPONENT_TYPE}_button`, type: 'submit' },
+              style: {
+                'outline-style': 'none',
+                'border-style': 'none',
+                'background-color': '#ffffff00',
+                color: '#ddddddff',
+              },
               components: {
                 type: 'basic_icon',
                 attributes: { class: 'basic_icon fa-solid fa-magnifying-glass fa-fw', },

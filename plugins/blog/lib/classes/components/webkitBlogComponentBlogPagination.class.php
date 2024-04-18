@@ -44,7 +44,7 @@ class webkitBlogComponentBlogPagination extends webkitEditorComponent
     $result = '<ul class="blog_pagination_container" style="list-style: none">';
     $result .= '{for $p=1 to $pages}';
     $result .= '<li class="blog_pagination_item {if $p eq $page}active{/if}">';
-    $result .= '  <a class="blog_pagination_link {if $p eq $page}active{/if}" href="?page={$p}">{$p}</a>';
+    $result .= '  <a class="blog_pagination_link {if $p eq $page}active{/if}" href="?page={$p}{if $blog_query}&query={urlencode($blog_query)}{/if}">{$p}</a>';
     $result .= '</li>';
     $result .= '{/for}';
     $result .= '</ul>';

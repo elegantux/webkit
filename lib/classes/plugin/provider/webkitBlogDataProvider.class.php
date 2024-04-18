@@ -2,10 +2,12 @@
 
 class webkitBlogDataProvider
 {
+  private $view_helper;
 
   public function __construct()
   {
-    wa('blog');
+    $blog = wa('blog');
+    $this->view_helper = new blogViewHelper($blog);
   }
 
   public function firstPost($blog_id = null) {
@@ -38,6 +40,24 @@ class webkitBlogDataProvider
     $posts = $post_model->prepareView($posts);
 
     return $posts;
+  }
+
+  public function getPage()
+  {
+    $pages = $this->getPages();
+
+    if (!$pages || count($pages) === 0) {
+      return null;
+    }
+
+    $page = array_values($pages)[0];
+
+    return $this->view_helper->page($page['id']);
+  }
+
+  public function getPages()
+  {
+    return $this->view_helper->pages();
   }
 
 }
