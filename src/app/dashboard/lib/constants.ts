@@ -5,6 +5,7 @@ export const TEMPLATE_LOCATION_NAME_MAP: Record<string, string> = {
   // Site
   [TEMPLATE_PROJECT_TEMPLATE_LOCATIONS.SITE_HEADER]: 'Header',
   [TEMPLATE_PROJECT_TEMPLATE_LOCATIONS.SITE_FOOTER]: 'Footer',
+  [TEMPLATE_PROJECT_TEMPLATE_LOCATIONS.SITE_HOME]: 'Home Page',
   [TEMPLATE_PROJECT_TEMPLATE_LOCATIONS.SITE_PAGE]: 'Info Page',
   [TEMPLATE_PROJECT_TEMPLATE_LOCATIONS.SITE_ERROR]: 'Error Page',
   // Blog
@@ -18,6 +19,7 @@ export const TEMPLATE_LOCATION_NAME_MAP: Record<string, string> = {
   [TEMPLATE_PROJECT_TEMPLATE_LOCATIONS.BLOG_ERROR]: 'Empty Error',
 };
 
+// TODO: Replace hardcoded locations with constant
 export const PROJECT_TASKS: Record<
   PROJECT_APP_IDS,
   Array<{ title: string; check: (project: Project, templateList: Template[]) => boolean }>
@@ -32,6 +34,11 @@ export const PROJECT_TASKS: Record<
       title: 'Create Footer',
       check: (_project: Project, templateList: Template[]) =>
         !!templateList.find((temp) => temp.wtp_template_location === 'site_footer'),
+    },
+    {
+      title: 'Create Home Page',
+      check: (_project: Project, templateList: Template[]) =>
+        !!templateList.find((temp) => temp.wtp_template_location === TEMPLATE_PROJECT_TEMPLATE_LOCATIONS.SITE_HOME),
     },
     {
       title: 'Create Info Page',
