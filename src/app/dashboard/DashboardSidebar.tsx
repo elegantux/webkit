@@ -4,7 +4,7 @@ import { BsGridFill } from 'react-icons/bs';
 import { PropsWithChildren } from 'react';
 import { LinkProps, Link as RouterLink } from '@tanstack/react-router';
 
-import { dashboardRoute, projectListRoute, settingsRoute } from '../../routes';
+import { dashboardRoute, mediaRoute, projectListRoute, settingsRoute } from '../../routes';
 import { GreetingSection } from '@ui/atomic/molecules/GreetingSection';
 import { ContactsSection } from '@ui/atomic/molecules/ContactsSection';
 import { appPath } from '@lib/utils.tsx';
@@ -96,8 +96,9 @@ export function DashboardSidebar() {
           Project List
         </SidebarLink>
         <SidebarLink
-          to={settingsRoute.to}
+          to={mediaRoute.to}
           params={{}}
+          opacity="0.5"
         >
           <FaImages size={18} />
           Media Files
@@ -111,6 +112,7 @@ export function DashboardSidebar() {
           to={settingsRoute.to}
           params={{}}
           mb="24px"
+          opacity="0.5"
         >
           <FaScrewdriverWrench size={18} />
           Settings

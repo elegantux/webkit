@@ -3,10 +3,10 @@ import { Text } from '@chakra-ui/react';
 import { ContentSection, PageHeading } from '@app/dashboard/components/PageComponents';
 import { PageContainer } from '@ui/atomic/templates/PageContainer';
 
-export function SettingsPage() {
+export function MediaPage() {
   return (
     <PageContainer>
-      <PageHeading>Settings</PageHeading>
+      <PageHeading>Media Files</PageHeading>
       <ContentSection>
         <Text>This page is under construction.</Text>
       </ContentSection>

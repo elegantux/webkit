@@ -26,7 +26,7 @@ export function GreetingSection(props: ChakraProps) {
         />
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <Link
-          href="https://www.webasyst.ru/store/app/webkit/"
+          href="https://www.webasyst.ru/store/app/webkit/reviews/"
           target="_blank"
           color="dodger.500"
           textDecoration="underline"
