@@ -14,7 +14,12 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
+  InputRightAddon,
+  ListItem,
   RadioProps,
+  Text,
+  Tooltip,
+  UnorderedList,
   useRadio,
   useRadioGroup,
   useToast,
@@ -22,6 +27,7 @@ import {
 import { PropsWithChildren, useEffect } from 'react';
 import { AxiosError } from 'axios';
 import { useNavigate } from '@tanstack/react-router';
+import { FaInfoCircle } from 'react-icons/fa';
 
 import { CreateProjectPayload, PROJECT_APP_IDS, Project, UpdateProjectPayload } from '@lib/models/project';
 import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
@@ -134,6 +140,12 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
           const cleanValue = `${APP_THEME_PREFIX}${value.trim()}`;
 
           if (value.trim().length < 3) {
+            return false;
+          }
+
+          // Underscore only allowed in the middle of the string
+          const regex = /^[a-z]([a-z1-9]*(_[a-z1-9]+)*)?$/;
+          if (!regex.test(value)) {
             return false;
           }
 
@@ -267,6 +279,27 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
             placeholder="blog"
             {...form.register('theme_id')}
           />
+          <InputRightAddon>
+            <Tooltip
+              placement="bottom"
+              label={
+                <UnorderedList mb={0}>
+                  <ListItem>Allowed to use letters (a-z) and digits (1-9)</ListItem>
+                  <ListItem>Must start with a-z</ListItem>
+                  <ListItem>Must end with a-z or 1-9</ListItem>
+                  <ListItem>Allowed to use underscore(_) in the middle of the string</ListItem>
+                </UnorderedList>
+              }
+              borderRadius="4px"
+              fontSize="xs"
+              p="8px 8px 8px 14px"
+              hasArrow
+            >
+              <Text>
+                <FaInfoCircle size={18} />
+              </Text>
+            </Tooltip>
+          </InputRightAddon>
         </InputGroup>
         <FormErrorMessage>{form.formState.errors.theme_id?.message}</FormErrorMessage>
       </FormControl>
