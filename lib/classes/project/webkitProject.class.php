@@ -7,6 +7,7 @@
  * @property string $app_id
  * @property string $theme_id
  * @property string $theme_settings_id
+ * @property array|null $settlement
  * @property string $create_datetime
  * @property string $update_datetime
  */
@@ -37,7 +38,11 @@ class webkitProject
       } elseif (is_array($data)) {
         $this->data = $data + $this->model->getEmptyRow();
       } elseif ($data) {
-        $this->data = $this->model->getById($data);
+        $project = $this->model->getById($data);
+
+        $project_settlement = webkitCrossAppHelper::getWebkitSettlementByThemeId($project['app_id'], $project['theme_id']);
+        $project['settlement'] = $project_settlement;
+        $this->data = $project;
 
         if (is_null($this->getId())) {
           throw new webkitAPIException(_w('Project not found!'), webkitHttp::NOT_FOUND_CODE);

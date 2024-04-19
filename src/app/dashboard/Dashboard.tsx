@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Flex, Heading, useToast } from '@chakra-ui/react';
+import { Box, Flex, Grid, Heading, useToast } from '@chakra-ui/react';
 import { FaArrowRight } from 'react-icons/fa6';
 import { AxiosError } from 'axios';
 import { Link } from '@tanstack/react-router';
@@ -88,14 +88,17 @@ function RecentProjectList() {
               <FaArrowRight />
             </Flex>
           </Flex>
-          <Flex gap="32px">
+          <Grid
+            gridTemplateColumns="repeat(3, 1fr)"
+            gap="32px"
+          >
             {projectList.map((project) => (
               <ProjectProgressCard
                 key={project.id}
                 project={project}
               />
             ))}
-          </Flex>
+          </Grid>
         </>
       )}
     </Box>

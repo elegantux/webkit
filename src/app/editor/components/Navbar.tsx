@@ -1,7 +1,9 @@
 import {
   Button,
+  ButtonGroup,
   Flex,
   IconButton,
+  Link,
   Menu,
   MenuButton,
   MenuGroup,
@@ -22,6 +24,7 @@ import {
   FaLayerGroup,
   FaMagnifyingGlass,
   FaMobileButton,
+  FaShareFromSquare,
   FaTabletButton,
   FaTv,
   FaVectorSquare,
@@ -31,13 +34,14 @@ import { Device } from 'grapesjs';
 
 import { EDITOR_STORE, useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
 import { editorRoute } from '../../../routes';
-import { useTemplate, useTemplateList } from '@lib/state';
+import { useProject, useTemplate, useTemplateList } from '@lib/state';
 import { Modal, ModalProvider, useModal } from '@ui/atomic/organisms/modal';
 import { appUrl } from '@lib/utils.tsx';
 import { Template } from '@lib/models/template';
 import { TemplateLibrary } from '@app/editor/components/TemplateLibrary';
 import { DEVICE_TYPE, DEVICE_TYPE_NAME } from '@app/editor/lib/constant';
 import { useLayerManagerStore } from '@app/editor/components/layer-manager/lib/utils';
+import { WA_BACKEND_URL } from '@lib/constants.ts';
 
 const DEVICE_TYPE_ICON = {
   [DEVICE_TYPE.DESKTOP]: <FaTv size={16} />,
@@ -113,6 +117,9 @@ const SaveProject = memo(() => {
 
   const { templateId } = editorRoute.useParams();
   const { template, isLoading, updateTemplate } = useTemplate(Number(templateId));
+  const { project } = useProject(template.wtp_project_id);
+  const storefrontUrl = `${window.location.protocol}//${project?.settlement?.settlement?.replace('*', '')}`;
+
   // console.log('SaveProject - template', template);
 
   const editor = useEditorStore((state) => state.editor);
@@ -171,16 +178,69 @@ const SaveProject = memo(() => {
   };
 
   return (
-    <Button
+    <ButtonGroup
       colorScheme="malachite"
       size="sm"
-      onClick={handleSave}
-      leftIcon={<FaFloppyDisk size={20} />}
-      isLoading={isLoading}
-      isDisabled={isLoading}
+      isAttached
     >
-      Save
-    </Button>
+      <Button
+        onClick={handleSave}
+        leftIcon={<FaFloppyDisk size={18} />}
+        isLoading={isLoading}
+        isDisabled={isLoading}
+        mr="0"
+        pr="6px"
+      >
+        Save
+      </Button>
+      <Menu>
+        <MenuButton
+          as={IconButton}
+          icon={<FaChevronDown />}
+          mx="0"
+          ml="0 !important"
+        />
+        <MenuList
+          zIndex={2}
+          minW="130px"
+        >
+          {project.settlement ? (
+            <MenuItem
+              variant="ghost"
+              size="sm"
+              colorScheme="grey"
+              as={Link}
+              href={storefrontUrl}
+              target="_blank"
+              icon={<FaShareFromSquare size={14} />}
+              borderRadius="8px"
+              fontSize="14px"
+              fontWeight="600"
+              textDecoration="none"
+              height="32px"
+            >
+              Storefront
+            </MenuItem>
+          ) : (
+            <MenuItem
+              variant="ghost"
+              size="sm"
+              colorScheme="grey"
+              as={Link}
+              href={`${WA_BACKEND_URL}/site/#/routing/`}
+              icon={<FaShareFromSquare size={14} />}
+              borderRadius="8px"
+              fontSize="14px"
+              fontWeight="600"
+              textDecoration="none"
+              height="32px"
+            >
+              Attach to settlement
+            </MenuItem>
+          )}
+        </MenuList>
+      </Menu>
+    </ButtonGroup>
   );
 });
 
