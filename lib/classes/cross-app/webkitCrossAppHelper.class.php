@@ -78,6 +78,20 @@ class webkitCrossAppHelper
 
   /**
    * @param $app_id
+   * @param $theme_id
+   * @return false|int|string
+   * @throws waException
+   */
+  public static function getWebkitSettlementByThemeId($app_id, $theme_id)
+  {
+    $settlements = self::getAppSettlements($app_id);
+    $settlement_index = array_search($theme_id, array_column($settlements, 'theme'));;
+
+    return $settlement_index ? $settlements[$settlement_index] : null;
+  }
+
+  /**
+   * @param $app_id
    * @return array|mixed
    * @throws waException
    */

@@ -4,6 +4,12 @@ export enum PROJECT_APP_IDS {
   SHOP = 'shop',
 }
 
+type ProjectSettlement = {
+  domain: string;
+  settlement: string;
+  theme: string;
+};
+
 export interface Project {
   id: string;
   name: string;
@@ -11,6 +17,7 @@ export interface Project {
   theme_id: string;
   theme_settings_id: string;
   preview_image_url: string;
+  settlement: ProjectSettlement | null;
   create_datetime: string;
   update_datetime: string;
 }

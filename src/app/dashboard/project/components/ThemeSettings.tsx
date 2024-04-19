@@ -96,8 +96,8 @@ function CustomHeadStylesEditor() {
     <Box
       overflow="hidden"
       borderRadius="8px"
-      border="2px solid"
-      borderColor="grey.50"
+      border="1px solid"
+      borderColor="gray.200"
       _dark={{
         borderColor: 'ebony.600',
       }}

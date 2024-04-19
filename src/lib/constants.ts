@@ -9,6 +9,8 @@ export const HOST = `${window.location.protocol}//${window.location.host}`;
 // The backend url can be changed from "webasyst" to anything.
 // Look to getSettingsScript helper in the webkitViewHelper class how it adds settings to the window.webkit object.
 // @ts-ignore
+export const WA_BACKEND_URL = window.webkitBackendUrls.backendUrl;
+// @ts-ignore
 export const WA_APP_URL = window.webkitBackendUrls.backendApiUrl;
 // @ts-ignore
 export const WA_APP_PATH = window.webkitBackendUrls.backendAppStaticUrl;

@@ -8,6 +8,7 @@ import {
   Heading,
   IconButton,
   Image,
+  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -19,7 +20,14 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { MouseEvent, Suspense, useRef } from 'react';
-import { FaChevronDown, FaCirclePlus, FaRegPenToSquare, FaRegTrashCan, FaTriangleExclamation } from 'react-icons/fa6';
+import {
+  FaChevronDown,
+  FaCirclePlus,
+  FaRegPenToSquare,
+  FaRegTrashCan,
+  FaShareFromSquare,
+  FaTriangleExclamation,
+} from 'react-icons/fa6';
 import { AxiosError } from 'axios';
 import { useNavigate } from '@tanstack/react-router';
 
@@ -38,6 +46,7 @@ import { ThemeSettings } from './components/ThemeSettings';
 import { PageContainer } from '@ui/atomic/templates/PageContainer';
 import { TEMPLATE_PROJECT_TEMPLATE_TYPES } from '@lib/models/template';
 import { PROJECT_TASKS } from '@app/dashboard/lib/constants';
+import { WA_BACKEND_URL } from '@lib/constants.ts';
 
 import Ornament82 from '@assets/decorations/ornament-82.svg?react';
 
@@ -49,6 +58,7 @@ function ProjectActionsButton({ project }: { project: Project }) {
   const navigate = useNavigate();
 
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const storefrontUrl = `${window.location.protocol}//${project?.settlement?.settlement?.replace('*', '')}`;
 
   const { deleteProject } = useProjectList();
   const { refetch: refetchWebasystApplicationList } = useWebasystApplicationList();
@@ -116,6 +126,40 @@ function ProjectActionsButton({ project }: { project: Project }) {
             >
               Edit
             </MenuItem>
+            {project.settlement ? (
+              <MenuItem
+                variant="ghost"
+                size="sm"
+                colorScheme="grey"
+                as={Link}
+                href={storefrontUrl}
+                target="_blank"
+                icon={<FaShareFromSquare size={14} />}
+                borderRadius="8px"
+                fontSize="14px"
+                fontWeight="600"
+                textDecoration="none"
+                height="32px"
+              >
+                Storefront
+              </MenuItem>
+            ) : (
+              <MenuItem
+                variant="ghost"
+                size="sm"
+                colorScheme="grey"
+                as={Link}
+                href={`${WA_BACKEND_URL}/site/#/routing/`}
+                icon={<FaShareFromSquare size={14} />}
+                borderRadius="8px"
+                fontSize="14px"
+                fontWeight="600"
+                textDecoration="none"
+                height="32px"
+              >
+                Attach to settlement
+              </MenuItem>
+            )}
             <MenuItem
               as={Button}
               variant="ghost"
