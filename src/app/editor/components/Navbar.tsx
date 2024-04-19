@@ -75,7 +75,7 @@ function TemplateNavigation() {
   const filteredTemplateList = templateList.filter((t) => t.id !== template.id);
 
   const handleTemplateClick = (temp: Template) => {
-    window.location.href = appUrl(`/app/editor/${temp.id}`);
+    window.location.replace(appUrl(`/app/editor/${temp.id}`));
   };
 
   return (
@@ -112,8 +112,8 @@ const SaveProject = memo(() => {
   const toast = useToast();
 
   const { templateId } = editorRoute.useParams();
-  const { template, updateTemplate } = useTemplate(Number(templateId));
-  console.log('SaveProject - template', template);
+  const { template, isLoading, updateTemplate } = useTemplate(Number(templateId));
+  // console.log('SaveProject - template', template);
 
   const editor = useEditorStore((state) => state.editor);
 
@@ -128,11 +128,11 @@ const SaveProject = memo(() => {
     const html = mainComponent?.getInnerHTML().replace(/&lt;/g, '<').replace(/&gt;/g, '>');
     const css = editor.getCss({ component: mainComponent });
     const js = editor.getJs({ component: mainComponent });
-    console.log({
-      html,
-      css,
-      js,
-    });
+    // console.log({
+    //   html,
+    //   css,
+    //   js,
+    // });
 
     const projectComponentTypes = extractTypesFromJson(pages).filter((type: string) => type.includes('_'));
 
@@ -176,6 +176,8 @@ const SaveProject = memo(() => {
       size="sm"
       onClick={handleSave}
       leftIcon={<FaFloppyDisk size={20} />}
+      isLoading={isLoading}
+      isDisabled={isLoading}
     >
       Save
     </Button>

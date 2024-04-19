@@ -10,6 +10,7 @@ export enum TEMPLATE_PROJECT_TEMPLATE_LOCATIONS {
   // Site
   SITE_HEADER = 'site_header',
   SITE_FOOTER = 'site_footer',
+  SITE_HOME = 'site_home',
   SITE_PAGE = 'site_page',
   SITE_ERROR = 'site_error',
   // Blog
