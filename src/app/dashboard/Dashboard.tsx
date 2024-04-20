@@ -3,6 +3,7 @@ import { Box, Flex, Grid, Heading, useToast } from '@chakra-ui/react';
 import { FaArrowRight } from 'react-icons/fa6';
 import { AxiosError } from 'axios';
 import { Link } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -28,6 +29,7 @@ function RecentProjectList() {
   const [projectList, setProjectList] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const { t } = useTranslation();
   const toast = useToast();
 
   const loadRecentProjectList = useCallback(async () => {
@@ -75,7 +77,7 @@ function RecentProjectList() {
               size="md"
               mb={0}
             >
-              Recent Projects
+              {t('Recent Projects')}
             </Heading>
             <Flex
               as={Link}
@@ -84,7 +86,7 @@ function RecentProjectList() {
               alignItems="center"
               gap="8px"
             >
-              See all
+              {t('See all')}
               <FaArrowRight />
             </Flex>
           </Flex>
@@ -109,6 +111,7 @@ function RecentTemplateListTable() {
   const [templateList, setTemplateList] = useState<Template[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const { t } = useTranslation();
   const toast = useToast();
 
   const loadRecentTemplateList = useCallback(async () => {
@@ -156,7 +159,7 @@ function RecentTemplateListTable() {
               size="md"
               mb={0}
             >
-              Recent Templates
+              {t('Recent Templates')}
             </Heading>
           </Flex>
           <ContentSection>
@@ -172,9 +175,10 @@ function RecentTemplateListTable() {
 }
 
 export function Dashboard() {
+  const { t } = useTranslation();
   return (
     <PageContainer>
-      <PageHeading>Dashboard</PageHeading>
+      <PageHeading>{t('Dashboard')}</PageHeading>
       <RecentProjectList />
       <Flex
         my="32px"

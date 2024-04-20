@@ -12,7 +12,7 @@ import {
 } from '@lib/models/template';
 import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models/project';
 import { createFormData } from '@lib/utils';
-import { WebasystApp } from '@lib/models/cross-app';
+import { WebasystApp, WebasystSettings } from '@lib/models/cross-app';
 import { ImageAsset } from '@lib/models/asset';
 import { ThemeSettings, UpdateThemeSettingsPayload } from './models/theme-settings';
 
@@ -134,6 +134,20 @@ const crossApp = {
   async apps() {
     const { data, status } = await axios.get<Response<WebasystApp[]>>(
       `${HOST}${WA_APP_URL}?module=crossApp&action=apps`,
+      {
+        headers: {},
+      }
+    );
+
+    if (status !== 200) {
+      throw new ApiError(data);
+    }
+
+    return data;
+  },
+  async getWebasystSettings() {
+    const { data, status } = await axios.get<Response<WebasystSettings>>(
+      `${HOST}${WA_APP_URL}?module=webasystSettings`,
       {
         headers: {},
       }

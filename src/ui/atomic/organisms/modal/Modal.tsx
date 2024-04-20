@@ -15,6 +15,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import React, { PropsWithChildren, createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useIntersected } from '@lib/utils/utils';
 import { IModal } from '@ui/atomic/organisms/modal/types';
@@ -33,6 +34,8 @@ enum SCROLL_OVERFLOW_INDICATOR_POSITION {
 }
 
 export function Modal(props: PropsWithChildren<IModal>) {
+  const { t } = useTranslation();
+
   const {
     // Modal props
     variant = MODAL_VARIANTS.DEFAULT,
@@ -40,9 +43,9 @@ export function Modal(props: PropsWithChildren<IModal>) {
     titleFontSize = '2xl',
     minWidth = '560px',
     scrollBehavior,
-    primaryButtonLabel = 'Submit',
-    secondaryButtonLabel = 'Cancel',
-    tertiaryButtonLabel = 'Previous',
+    primaryButtonLabel = t('Submit'),
+    secondaryButtonLabel = t('Cancel'),
+    tertiaryButtonLabel = t('Previous'),
     footerAlert = null,
     primaryButtonVariant = 'solid',
     secondaryButtonVariant = 'quiet',

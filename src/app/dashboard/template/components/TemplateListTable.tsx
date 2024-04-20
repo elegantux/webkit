@@ -22,6 +22,7 @@ import {
 import { FaEllipsis, FaRegPenToSquare, FaRegTrashCan, FaTriangleExclamation } from 'react-icons/fa6';
 import { MouseEvent } from 'react';
 import { AxiosError } from 'axios';
+import { useTranslation } from 'react-i18next';
 
 import { Template } from '@lib/models/template';
 import { Modal, ModalProvider, useModal } from '@ui/atomic/organisms/modal';
@@ -36,6 +37,7 @@ function MoreActionsColumn({ template, project }: { template: Template; project:
   const deleteModal = useDisclosure();
   const menu = useDisclosure();
   const toast = useToast();
+  const { t } = useTranslation();
 
   const { deleteTemplate, isLoading } = useTemplateList(template.wtp_project_id);
 
@@ -51,7 +53,7 @@ function MoreActionsColumn({ template, project }: { template: Template; project:
       deleteModal.onClose();
 
       toast({
-        title: 'Template deleted successfully',
+        title: t('Template deleted successfully'),
         status: 'success',
         duration: 3000,
       });
@@ -73,8 +75,8 @@ function MoreActionsColumn({ template, project }: { template: Template; project:
     >
       <ModalProvider {...upsertModal}>
         <Modal
-          title="Update Template"
-          primaryButtonLabel="Update"
+          title={t('Update Template')}
+          primaryButtonLabel={t('Update')}
           showSecondaryButton={false}
           isCentered
           {...upsertModal.modalProps}
@@ -87,9 +89,9 @@ function MoreActionsColumn({ template, project }: { template: Template; project:
         </Modal>
       </ModalProvider>
       <Modal
-        title="Delete Template"
+        title={t('Delete Template')}
         onPrimaryButtonClick={handleDeleteTemplate}
-        primaryButtonLabel="Delete"
+        primaryButtonLabel={t('Delete')}
         showSecondaryButton={false}
         primaryButtonColorScheme="scarlet"
         isPrimaryButtonLoading={isLoading}
@@ -113,9 +115,9 @@ function MoreActionsColumn({ template, project }: { template: Template; project:
             color="grey.900"
             _dark={{ color: 'grey.300' }}
           >
-            By deleting this template, you will lose all assets used in template.
+            {t('By deleting this template, you will lose all assets used in template')}.
           </Heading>
-          <Text>Are you sure?</Text>
+          <Text>{t('Are you sure?')}</Text>
         </Flex>
       </Modal>
       <Menu
@@ -148,7 +150,7 @@ function MoreActionsColumn({ template, project }: { template: Template; project:
             icon={<FaRegPenToSquare size={14} />}
             onClick={upsertModal.modalDisclosure.onOpen}
           >
-            Edit
+            {t('Edit')}
           </MenuItem>
           <MenuItem
             as={Button}
@@ -158,7 +160,7 @@ function MoreActionsColumn({ template, project }: { template: Template; project:
             icon={<FaRegTrashCan size={14} />}
             onClick={deleteModal.onOpen}
           >
-            Delete
+            {t('Delete')}
           </MenuItem>
         </MenuList>
       </Menu>
@@ -175,13 +177,14 @@ export function TemplateListTable({
   project?: Project;
   showActions?: boolean;
 }) {
+  const { t } = useTranslation();
+
   const handleTableRowClick = (template: Template) => {
     window.location.href = appUrl(`/app/editor/${template.id}`);
   };
 
   return (
     <TableContainer
-      // border="1px solid"
       borderColor="grey.200"
       _dark={{ borderColor: 'grey.700' }}
       borderRadius="lg"
@@ -189,10 +192,10 @@ export function TemplateListTable({
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th>Name</Th>
-            <Th>Location</Th>
-            <Th>Status</Th>
-            {showActions && <Th textAlign="right">Actions</Th>}
+            <Th>{t('Name')}</Th>
+            <Th>{t('Location')}</Th>
+            <Th>{t('Status')}</Th>
+            {showActions && <Th textAlign="right">{t('Actions')}</Th>}
           </Tr>
         </Thead>
         <Tbody>
@@ -211,7 +214,7 @@ export function TemplateListTable({
               </Td>
               <Td>
                 <Tag colorScheme={template.wtp_status === '1' ? 'malachite' : 'grey'}>
-                  {template.wtp_status === '1' ? 'Published' : 'Draft'}
+                  {template.wtp_status === '1' ? t('Published') : t('Draft')}
                 </Tag>
               </Td>
               {project && showActions && (

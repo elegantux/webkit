@@ -19,7 +19,7 @@ import { PaginatedResponse, Response, SearchParams } from '@lib/models/response'
 import { api } from '@lib/api';
 import { CreateProjectPayload, Project, UpdateProjectPayload } from '@lib/models/project';
 import { getNextPageParam } from '@lib/utils/state-utils';
-import { WebasystApp } from '@lib/models/cross-app';
+import { WebasystApp, WebasystSettings } from '@lib/models/cross-app';
 import { ImageAsset } from '@lib/models/asset';
 import { ThemeSettings, UpdateThemeSettingsPayload } from './models/theme-settings';
 
@@ -33,6 +33,7 @@ export const STATE_TYPES = {
   PROJECT_LIST: 'project_list',
   THEME_SETTINGS: 'theme_settings',
   WEBASYST_APP_LIST: 'webasyst_app_list',
+  WEBASYST_SETTINGS: 'webasyst_settings',
   IMAGE_ASSET_LIST: 'image_asset_list',
 };
 
@@ -196,6 +197,21 @@ export const useWebasystApplicationList = () => {
   return {
     appList: data?.data ?? [],
     refetch,
+  };
+};
+
+export const useWebasystSettings = () => {
+  const getWebasystSettings = () => api.crossApp.getWebasystSettings();
+  const { data } = useSuspenseQuery<Response<WebasystSettings>>({
+    queryKey: [STATE_TYPES.WEBASYST_SETTINGS],
+    queryFn: getWebasystSettings,
+    notifyOnChangeProps: ['data', 'error'],
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+  });
+
+  return {
+    settings: data?.data!,
   };
 };
 

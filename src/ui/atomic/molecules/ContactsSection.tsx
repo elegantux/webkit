@@ -1,10 +1,13 @@
 import { Box, ChakraProps, Flex, Link, Text } from '@chakra-ui/react';
 import { FaTelegram } from 'react-icons/fa6';
+import { useTranslation } from 'react-i18next';
 
 import { ContentSection } from '@app/dashboard/components/PageComponents';
 import { HELP_LINKS } from '@lib/constants.ts';
 
 export function ContactsSection(props: ChakraProps) {
+  const { t } = useTranslation();
+
   return (
     <ContentSection
       borderRadius="8px"
@@ -19,7 +22,7 @@ export function ContactsSection(props: ChakraProps) {
           color="ebony.800"
           _dark={{ color: 'white' }}
         >
-          Join our Socials:
+          {t('Join our Socials:')}
         </Text>
         <Flex
           as={Link}
@@ -30,7 +33,7 @@ export function ContactsSection(props: ChakraProps) {
           mb="8px"
         >
           <FaTelegram size={20} />
-          <Text fontSize="sm">Our News channel</Text>
+          <Text fontSize="sm">{t('Our News channel')}</Text>
         </Flex>
         <Flex
           as={Link}
@@ -40,7 +43,7 @@ export function ContactsSection(props: ChakraProps) {
           color="dodger.400"
         >
           <FaTelegram size={20} />
-          <Text fontSize="sm">Support group</Text>
+          <Text fontSize="sm">{t('Support group')}</Text>
         </Flex>
       </Box>
     </ContentSection>
