@@ -71,7 +71,6 @@ export function DashboardSidebar() {
         <Flex
           justify="space-between"
           align="center"
-          // direction="column"
           gap="12px"
         >
           <Heading

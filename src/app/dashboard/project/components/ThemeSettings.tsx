@@ -453,10 +453,13 @@ export function ThemeSettings() {
         status="info"
         borderRadius="12px"
         mb="24px"
-        width="max-content"
+        width="full"
+        wordBreak="break-word"
+        flexWrap="wrap"
+        gap="4px"
       >
         <AlertIcon />
-        {t('You can use the following smarties for the url: ')}
+        {t('You can use the following smarties for the url')}:&nbsp;
         <Code
           fontSize="12px"
           // eslint-disable-next-line react/no-children-prop
