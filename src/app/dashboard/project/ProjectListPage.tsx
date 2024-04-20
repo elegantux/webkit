@@ -1,4 +1,5 @@
 import { Flex, Grid, GridItem, Heading, Text } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import { useProjectList } from '@lib/state';
 import { ProjectCard } from '@app/dashboard/project/components/ProjectCard';
@@ -8,6 +9,7 @@ import { PageContainer } from '@ui/atomic/templates/PageContainer';
 
 export function ProjectListPage() {
   const { projectList, isLoading } = useProjectList();
+  const { t } = useTranslation();
 
   return (
     <PageContainer>
@@ -16,10 +18,10 @@ export function ProjectListPage() {
         align="center"
         mb={12}
       >
-        <PageHeading mb={0}>Project List</PageHeading>
+        <PageHeading mb={0}>{t('Project List')}</PageHeading>
         <CreateProjectButton />
       </Flex>
-      {isLoading && 'Loading...'}
+      {isLoading && t('Loading...')}
       {!isLoading && projectList.length === 0 && (
         <Flex
           justify="center"
@@ -29,9 +31,9 @@ export function ProjectListPage() {
             as="h4"
             size="lg"
           >
-            No projects found.
+            {t('No projects found.')}
           </Heading>
-          <Text>Start from creating a project.</Text>
+          <Text>{t('Start from creating a project.')}</Text>
           <CreateProjectButton
             width="max-content"
             mt="12px"

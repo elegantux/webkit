@@ -26,7 +26,7 @@ export function CreateProjectButton(props: ChakraProps) {
         <Modal
           title={t('Create Project')}
           showSecondaryButton={false}
-          primaryButtonLabel="Create"
+          primaryButtonLabel={t('Create')}
           isCentered
           {...modal.modalProps}
           {...modal.modalDisclosure}
@@ -42,6 +42,8 @@ export function CreateProjectButton(props: ChakraProps) {
 
 export function CreateProjectCard(props: ChakraProps) {
   const modal = useModal();
+  const { t } = useTranslation();
+
   return (
     <>
       <Card
@@ -72,14 +74,14 @@ export function CreateProjectCard(props: ChakraProps) {
           mt="42px"
           py={4}
         >
-          Create New Project
+          {t('Create New Project')}
         </Button>
       </Card>
       <ModalProvider {...modal}>
         <Modal
-          title="Create Project"
+          title={t('Create Project')}
           showSecondaryButton={false}
-          primaryButtonLabel="Create"
+          primaryButtonLabel={t('Create')}
           isCentered
           {...modal.modalProps}
           {...modal.modalDisclosure}
