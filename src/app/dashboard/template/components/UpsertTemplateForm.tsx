@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { AxiosError } from 'axios';
+import { useTranslation } from 'react-i18next';
 
 import { TEMPLATE_PROJECT_TEMPLATE_TYPES, Template, UpdateTemplatePayload } from '@lib/models/template';
 import { useModalContext } from '@ui/atomic/organisms/modal';
@@ -42,6 +43,7 @@ export function UpsertTemplateForm({
   const { setModalProps, modalDisclosure } = useModalContext();
 
   const { createTemplate, updateTemplate, isLoading } = useTemplateList(project.id);
+  const { t } = useTranslation();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(
@@ -69,7 +71,7 @@ export function UpsertTemplateForm({
           },
         });
         toast({
-          title: 'Template updated successfully',
+          title: t('Template updated successfully'),
           status: 'success',
           duration: 3000,
         });
@@ -82,7 +84,7 @@ export function UpsertTemplateForm({
           wtp_project_id: project.id,
         });
         toast({
-          title: 'Template created successfully',
+          title: t('Template created successfully'),
           status: 'success',
           duration: 3000,
         });
@@ -115,14 +117,16 @@ export function UpsertTemplateForm({
         mt="52px"
         mb="8px"
       >
-        Basic Info
+        {t('Basic Info')}
       </Heading>
       <Text
         fontSize="sm"
         mb="32px"
       >
-        The <b>Template Name</b> field is an indicator that allows you to differentiate between templates created for
-        the same location.
+        {t(
+          'The "Template Name" field is an indicator that allows you to differentiate between templates created for the same location'
+        )}
+        .
       </Text>
       <Grid
         gridTemplateColumns="1fr"
@@ -130,24 +134,24 @@ export function UpsertTemplateForm({
       >
         <GridItem>
           <FormControl isInvalid={!!form.formState.errors.name}>
-            <FormLabel fontSize="sm">Template Name*</FormLabel>
+            <FormLabel fontSize="sm">{t('Template Name')}*</FormLabel>
             <Input
               placeholder="Template for ..."
               {...form.register('name')}
             />
-            <FormErrorMessage>This field is required</FormErrorMessage>
+            <FormErrorMessage>{t('This field is required')}</FormErrorMessage>
           </FormControl>
         </GridItem>
         <GridItem>
           <FormControl>
-            <FormLabel fontSize="sm">Enable template?</FormLabel>
-            <Flex>
+            <FormLabel fontSize="sm">{t('Enable template')}?</FormLabel>
+            <Flex justify="space-between">
               <FormLabel
                 htmlFor="status"
                 fontSize="sm"
                 fontWeight="400"
               >
-                Should this template be displayed on the website immediately after creation?
+                {t('Display the template on the website')}?
               </FormLabel>
               <Switch
                 id="status"

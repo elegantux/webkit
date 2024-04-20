@@ -20,6 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { ContentSection } from '@app/dashboard/components/PageComponents';
 import { useProject, useThemeSettings } from '@lib/state';
@@ -116,6 +117,7 @@ function StyleScriptLinks() {
   const [isStyleLinksTab, setIsStyleLinksTab] = useState(true);
 
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const styleLinksFieldArray = useFieldArray({
     control: form.control,
@@ -150,7 +152,7 @@ function StyleScriptLinks() {
               size="sm"
               mb="0px"
             >
-              Styles
+              {t('Styles')}
             </Heading>
           </Flex>
           <ButtonSwitch
@@ -168,7 +170,7 @@ function StyleScriptLinks() {
                 align="center"
               >
                 <Text fontSize="62px">🤷‍♂️</Text>
-                <Text fontSize="14px">Not styles yet.</Text>
+                <Text fontSize="14px">{t('No styles yet')}.</Text>
               </Flex>
             )}
             {styleLinksFieldArray.fields.map((item, index) => (
@@ -200,7 +202,7 @@ function StyleScriptLinks() {
                 leftIcon={<FaCirclePlus size={16} />}
                 onClick={() => styleLinksFieldArray.append({ link: '', location: '', attributes: '' })}
               >
-                Add Style Link
+                {t('Add Style Link')}
               </Button>
             </Flex>
           </>
@@ -229,7 +231,7 @@ function StyleScriptLinks() {
               size="sm"
               mb="0px"
             >
-              Scripts
+              {t('Scripts')}
             </Heading>
           </Flex>
         </Flex>
@@ -239,7 +241,7 @@ function StyleScriptLinks() {
             align="center"
           >
             <Text fontSize="62px">🤷‍♂️</Text>
-            <Text fontSize="14px">Not scripts yet.</Text>
+            <Text fontSize="14px">{t('No scripts yet')}.</Text>
           </Flex>
         )}
         {scriptLinksFieldArray.fields.map((item, index) => (
@@ -271,7 +273,7 @@ function StyleScriptLinks() {
             leftIcon={<FaCirclePlus size={16} />}
             onClick={() => scriptLinksFieldArray.append({ link: '', location: '', attributes: '' })}
           >
-            Add Script Link
+            {t('Add Script Link')}
           </Button>
         </Flex>
       </ContentSection>
@@ -293,7 +295,7 @@ function StyleScriptLinks() {
               size="sm"
               mb="0px"
             >
-              Fonts
+              {t('Fonts')}
             </Heading>
           </Flex>
         </Flex>
@@ -303,7 +305,7 @@ function StyleScriptLinks() {
             align="center"
           >
             <Text fontSize="62px">🤷‍♂️</Text>
-            <Text fontSize="14px">Not styles yet.</Text>
+            <Text fontSize="14px">{t('No fonts yet')}.</Text>
           </Flex>
         )}
         {fontLinksFieldArray.fields.map((item, index) => (
@@ -351,7 +353,7 @@ function StyleScriptLinks() {
             leftIcon={<FaCirclePlus size={16} />}
             onClick={() => fontLinksFieldArray.append({ name: '', link: '', location: '', attributes: '' })}
           >
-            Add Font Link
+            {t('Add Font Link')}
           </Button>
         </Flex>
       </ContentSection>
@@ -365,6 +367,7 @@ export function ThemeSettings() {
   const { themeSettings, updateThemeSettings } = useThemeSettings(projectId);
 
   const toast = useToast();
+  const { t } = useTranslation();
 
   const form = useForm<FormValues>({
     mode: 'onChange',
@@ -406,7 +409,7 @@ export function ThemeSettings() {
       };
       await updateThemeSettings({ id: project.theme_settings_id, payload });
       toast({
-        title: 'Theme Settings saved successfully',
+        title: t('Theme Settings saved successfully'),
         status: 'success',
         duration: 3000,
       });
@@ -432,7 +435,7 @@ export function ThemeSettings() {
           size="md"
         >
           <FaBrush />
-          Theme Settings
+          {t('Theme Settings')}
         </Heading>
         <Button
           colorScheme="malachite"
@@ -442,7 +445,7 @@ export function ThemeSettings() {
           isLoading={form.formState.isSubmitting}
           isDisabled={!form.formState.isValid}
         >
-          Save Settings
+          {t('Save Settings')}
         </Button>
       </Flex>
       <Alert
@@ -450,10 +453,13 @@ export function ThemeSettings() {
         status="info"
         borderRadius="12px"
         mb="24px"
-        width="max-content"
+        width="full"
+        wordBreak="break-word"
+        flexWrap="wrap"
+        gap="4px"
       >
         <AlertIcon />
-        You can use the following smarties for the url:&nbsp;
+        {t('You can use the following smarties for the url')}:&nbsp;
         <Code
           fontSize="12px"
           // eslint-disable-next-line react/no-children-prop

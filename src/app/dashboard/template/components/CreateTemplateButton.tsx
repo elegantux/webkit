@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { FaRegSquarePlus } from 'react-icons/fa6';
 import { PropsWithChildren, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Modal, ModalProvider, useModal } from '@ui/atomic/organisms/modal';
 import { FormSkeleton } from '@ui/atomic/molecules';
@@ -63,6 +64,7 @@ export function CreateTemplateTypeButton({ children, ...props }: PropsWithChildr
   const loopTemplateModal = useModal();
   const { projectId } = projectRoute.useParams();
   const { project } = useProject(projectId!);
+  const { t } = useTranslation();
 
   const mode = useColorMode();
   const theme = useTheme();
@@ -96,14 +98,14 @@ export function CreateTemplateTypeButton({ children, ...props }: PropsWithChildr
         {children}
       </Button>
       <Modal
-        title="Choose template type"
+        title={t('Choose template type')}
         showModalFooter={false}
         isCentered
         minWidth="760px"
         {...modal.modalProps}
         {...modal.modalDisclosure}
       >
-        <Text>Choose which type of templates you want to create.</Text>
+        <Text>{t('Choose which type of templates you want to create')}.</Text>
         <Flex
           justify="center"
           gap="62px"
@@ -118,11 +120,11 @@ export function CreateTemplateTypeButton({ children, ...props }: PropsWithChildr
               fontWeight="600"
               mb="8px"
             >
-              Theme Template
+              {t('Theme Template')}
             </Text>
             <Image
               src={appPath(`/img/template-types/default-${mode.colorMode}.svg`)}
-              fallback={<Text>Image Not Found!</Text>}
+              fallback={<Text>{t('Image Not Found')}!</Text>}
               cursor="pointer"
               borderRadius="lg"
               boxShadow={`0 0 12px 4px ${boxShadowColor}`}
@@ -140,11 +142,11 @@ export function CreateTemplateTypeButton({ children, ...props }: PropsWithChildr
               fontWeight="600"
               mb="8px"
             >
-              Loop Template
+              {t('Loop Template')}
             </Text>
             <Image
               src={appPath(`/img/template-types/loop-${mode.colorMode}.svg`)}
-              fallback={<Text>Image Not Found!</Text>}
+              fallback={<Text>{t('Image Not Found')}!</Text>}
               cursor="pointer"
               borderRadius="lg"
               boxShadow={`0 0 12px 4px ${boxShadowColor}`}
@@ -157,7 +159,7 @@ export function CreateTemplateTypeButton({ children, ...props }: PropsWithChildr
       </Modal>
       <ModalProvider {...themeTemplateModal}>
         <Modal
-          title="Create a theme template"
+          title={t('Create a theme template')}
           minWidth="820px"
           scrollBehavior="inside"
           showModalFooter={false}
@@ -172,8 +174,9 @@ export function CreateTemplateTypeButton({ children, ...props }: PropsWithChildr
       </ModalProvider>
       <ModalProvider {...loopTemplateModal}>
         <Modal
-          title="Create a loop template"
+          title={t('Create a loop template')}
           scrollBehavior="inside"
+          showSecondaryButton={false}
           isCentered
           {...loopTemplateModal.modalProps}
           {...loopTemplateModal.modalDisclosure}

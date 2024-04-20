@@ -1,8 +1,10 @@
 import { ChakraProps, Flex, Heading, Text } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import { CreateTemplateButton } from '@app/dashboard/template/components/CreateTemplateButton';
 
 export function TemplateListEmptyState({ showCTA = true, ...props }: ChakraProps & { showCTA?: boolean }) {
+  const { t } = useTranslation();
   return (
     <Flex
       justify="center"
@@ -13,16 +15,16 @@ export function TemplateListEmptyState({ showCTA = true, ...props }: ChakraProps
         as="h4"
         size="lg"
       >
-        You don&apos;t have any templates yet.
+        {t("You don't have any templates yet")}.
       </Heading>
       {showCTA && (
         <>
-          <Text>Start from creating a template.</Text>
+          <Text>{t('Start from creating a template')}.</Text>
           <CreateTemplateButton
             width="max-content"
             mt="12px"
           >
-            Create Template
+            {t('Create Template')}
           </CreateTemplateButton>
         </>
       )}
@@ -31,6 +33,7 @@ export function TemplateListEmptyState({ showCTA = true, ...props }: ChakraProps
 }
 
 export function RecentTemplateListEmptyState(props: ChakraProps) {
+  const { t } = useTranslation();
   return (
     <Flex
       justify="center"
@@ -41,9 +44,9 @@ export function RecentTemplateListEmptyState(props: ChakraProps) {
         as="h4"
         size="lg"
       >
-        You don&apos;t have any templates yet.
+        {t("You don't have any templates yet")}.
       </Heading>
-      <Text>Go to the project page to create a template.</Text>
+      <Text>{t('Go to the project page to create a template')}.</Text>
     </Flex>
   );
 }
