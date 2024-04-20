@@ -30,6 +30,7 @@ import {
 } from 'react-icons/fa6';
 import { AxiosError } from 'axios';
 import { useNavigate } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 
 import { ContentSection, PageHeading } from '@app/dashboard/components/PageComponents';
 import { useProject, useProjectList, useTemplateList, useWebasystApplicationList } from '@lib/state';
@@ -56,6 +57,7 @@ function ProjectActionsButton({ project }: { project: Project }) {
   const modal = useModal();
   const deleteModal = useDisclosure();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const storefrontUrl = `${window.location.protocol}//${project?.settlement?.settlement?.replace('*', '')}`;
@@ -124,7 +126,7 @@ function ProjectActionsButton({ project }: { project: Project }) {
               icon={<FaRegPenToSquare size={14} />}
               onClick={modal.modalDisclosure.onOpen}
             >
-              Edit
+              {t('Edit')}
             </MenuItem>
             {project.settlement ? (
               <MenuItem
@@ -141,7 +143,7 @@ function ProjectActionsButton({ project }: { project: Project }) {
                 textDecoration="none"
                 height="32px"
               >
-                Storefront
+                {t('Storefront')}
               </MenuItem>
             ) : (
               <MenuItem
@@ -157,7 +159,7 @@ function ProjectActionsButton({ project }: { project: Project }) {
                 textDecoration="none"
                 height="32px"
               >
-                Attach to settlement
+                {t('Attach to settlement')}
               </MenuItem>
             )}
             <MenuItem
@@ -168,15 +170,15 @@ function ProjectActionsButton({ project }: { project: Project }) {
               icon={<FaRegTrashCan size={14} />}
               onClick={deleteModal.onOpen}
             >
-              Delete
+              {t('Delete')}
             </MenuItem>
           </MenuList>
         </Menu>
       </Box>
       <Modal
-        title="Delete Project"
+        title={t('Delete Project')}
         onPrimaryButtonClick={handleDeleteProject}
-        primaryButtonLabel="Delete"
+        primaryButtonLabel={t('Delete')}
         showSecondaryButton={false}
         primaryButtonColorScheme="scarlet"
         isCentered
@@ -199,16 +201,16 @@ function ProjectActionsButton({ project }: { project: Project }) {
             color="grey.900"
             _dark={{ color: 'grey.300' }}
           >
-            By deleting this project, you will lose all templates and assets used in this project.
+            {t('By deleting this project, you will lose all templates and assets used in this project')}.
           </Heading>
-          <Text>Are you sure?</Text>
+          <Text>{t('Are you sure')}?</Text>
         </Flex>
       </Modal>
       <ModalProvider {...modal}>
         <Modal
-          title="Edit Project"
+          title={t('Edit Project')}
           showSecondaryButton={false}
-          primaryButtonLabel="Save"
+          primaryButtonLabel={t('Save')}
           isCentered
           {...modal.modalProps}
           {...modal.modalDisclosure}
@@ -253,6 +255,7 @@ export function ProjectPageHeader() {
   const { projectId } = projectRoute.useParams();
   const { project } = useProject(projectId!);
   const { appList } = useWebasystApplicationList();
+  const { t } = useTranslation();
 
   const projectApp = appList.find((app) => app.app_id === project.app_id)!;
 
@@ -295,7 +298,7 @@ export function ProjectPageHeader() {
         py={0}
         leftIcon={<FaCirclePlus size={18} />}
       >
-        Create Template
+        {t('Create Template')}
       </CreateTemplateTypeButton>
     </Flex>
   );
@@ -305,6 +308,7 @@ function ProjectTasks() {
   const { projectId } = projectRoute.useParams();
   const { project } = useProject(projectId!);
   const { templateList } = useTemplateList(projectId!);
+  const { t } = useTranslation();
 
   return (
     <ContentSection
@@ -315,7 +319,7 @@ function ProjectTasks() {
         as="h5"
         size="sm"
       >
-        Project Tasks:
+        {t('Project Tasks:')}
       </Heading>
       <Flex
         direction="column"
@@ -344,6 +348,7 @@ export function ProjectPage() {
   const { projectId } = projectRoute.useParams();
   const { templateType } = projectRoute.useSearch();
   const navigate = useNavigate({ from: projectRoute.fullPath });
+  const { t } = useTranslation();
 
   const activeColor = useColorModeValue('dodger.500', 'dodger.200');
 
@@ -386,7 +391,7 @@ export function ProjectPage() {
                       }
                     : {})}
                 >
-                  Theme Templates
+                  {t('Theme Templates')}
                 </Button>
                 <Button
                   variant="link"
@@ -410,7 +415,7 @@ export function ProjectPage() {
                       }
                     : {})}
                 >
-                  Loop Templates
+                  {t('Loop Templates')}
                 </Button>
                 <Button
                   variant="link"
@@ -434,7 +439,7 @@ export function ProjectPage() {
                       }
                     : {})}
                 >
-                  Info Pages
+                  {t('Info Pages')}
                 </Button>
               </Flex>
             </Flex>

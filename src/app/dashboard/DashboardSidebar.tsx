@@ -68,7 +68,32 @@ export function DashboardSidebar() {
           src={appPath('/img/webkit.png')}
           width="32px"
         />
-        <Heading size="sm">WebKit</Heading>
+        <Flex
+          justify="space-between"
+          align="center"
+          // direction="column"
+          gap="12px"
+        >
+          <Heading
+            size="md"
+            mb={0}
+          >
+            WebKit
+          </Heading>
+          <Box
+            as="span"
+            width="max-content"
+            px="6px"
+            py="1px"
+            borderRadius="12px"
+            bgColor="dodger.600"
+            color="grey.50"
+            fontSize="11px"
+            fontWeight="600"
+          >
+            Alpha v0.1
+          </Box>
+        </Flex>
       </Flex>
       <Box
         width="100%"

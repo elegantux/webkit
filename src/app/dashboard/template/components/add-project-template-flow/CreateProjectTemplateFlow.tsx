@@ -40,6 +40,8 @@ import { useCallback, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AxiosError } from 'axios';
 import { FaArrowLeft, FaArrowRight, FaCircleCheck } from 'react-icons/fa6';
+import i18next from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 import { Project } from '@lib/models/project';
 import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
@@ -57,9 +59,9 @@ import { TEMPLATE_PROJECT_TEMPLATE_TYPES } from '@lib/models/template';
 import { prepareTemplateImageUrl } from '@app/dashboard/lib/utils';
 
 const stepList = [
-  { title: 'Location', description: 'Template Location' },
-  { title: 'Info', description: 'Basic template info' },
-  { title: 'Review', description: 'Create template' },
+  { title: i18next.t('Location'), description: i18next.t('Template Location') },
+  { title: i18next.t('Info'), description: i18next.t('Basic template info') },
+  { title: i18next.t('Review'), description: i18next.t('Create Template') },
 ];
 
 function FromStepper({
@@ -119,6 +121,7 @@ function TemplateLocationStep({
   const mode = useColorMode();
 
   const { appList } = useWebasystApplicationList();
+  const { t } = useTranslation();
 
   const templateLocationOptionList: SelectOptionProps[] = appList
     .find((app) => app.app_id === project.app_id)!
@@ -140,14 +143,15 @@ function TemplateLocationStep({
         mt="52px"
         mb="8px"
       >
-        Select Template Location
+        {t('Select Template Location')}
       </Heading>
       <Text
         fontSize="sm"
         mb="32px"
       >
-        Select the type of template you want to create. For example, if you want to create a header for your website,
-        select a <b>Header</b> template type.
+        {t(
+          'Select the type of template you want to create. For example, if you want to create a header for your website, select a "Header" template type.'
+        )}
       </Text>
       <Grid
         gridTemplateColumns="1fr 1fr 1fr"
@@ -179,7 +183,7 @@ function TemplateLocationStep({
             <Box width="full">
               <Image
                 src={prepareTemplateImageUrl(option.value as string, mode.colorMode)}
-                fallback={<Text>Image Not Found!</Text>}
+                fallback={<Text>{t('Image Not Found')}!</Text>}
                 borderRadius="lg"
                 boxShadow={`0 0 12px 4px ${boxShadowColor}`}
                 border="1px solid"
@@ -204,7 +208,7 @@ function TemplateLocationStep({
           isDisabled={!selectedLocation}
           onClick={handleContinueButtonClick}
         >
-          Continue
+          {t('Continue')}
         </Button>
       </Flex>
     </>
@@ -229,6 +233,7 @@ function BasicInfoStep({
   const mode = useColorMode();
 
   const { appList } = useWebasystApplicationList();
+  const { t } = useTranslation();
 
   const templateLocationOptionList: SelectOptionProps[] = appList
     .find((app) => app.app_id === project.app_id)!
@@ -284,7 +289,7 @@ function BasicInfoStep({
           <Box width="full">
             <Image
               src={prepareTemplateImageUrl(selectedOption.value as string, mode.colorMode)}
-              fallback={<Text>Image Not Found!</Text>}
+              fallback={<Text>{t('Image Not Found')}!</Text>}
               borderRadius="lg"
               boxShadow={`0 0 12px 4px ${boxShadowColor}`}
               border="1px solid"
@@ -299,15 +304,17 @@ function BasicInfoStep({
             mt="52px"
             mb="8px"
           >
-            Basic Info
+            {t('Basic Info')}
           </Heading>
           <Text
             fontSize="sm"
             mb="32px"
             color="ebony.100"
           >
-            The <b>Template Name</b> field is an indicator that allows you to differentiate between templates created
-            for the same location.
+            {t(
+              'The "Template Name" field is an indicator that allows you to differentiate between templates created for the same location'
+            )}
+            .
           </Text>
           <Grid
             gridTemplateColumns="1fr"
@@ -315,24 +322,24 @@ function BasicInfoStep({
           >
             <GridItem>
               <FormControl isInvalid={!!form.formState.errors.name}>
-                <FormLabel fontSize="sm">Template Name*</FormLabel>
+                <FormLabel fontSize="sm">{t('Template Name')}*</FormLabel>
                 <Input
                   placeholder="Site Header Template"
                   {...form.register('name')}
                 />
-                <FormErrorMessage>This field is required</FormErrorMessage>
+                <FormErrorMessage>{t('This field is required')}</FormErrorMessage>
               </FormControl>
             </GridItem>
             <GridItem>
               <FormControl>
-                <FormLabel fontSize="sm">Enable template?</FormLabel>
-                <Flex>
+                <FormLabel fontSize="sm">{t('Enable template')}?</FormLabel>
+                <Flex justify="space-between">
                   <FormLabel
                     htmlFor="status"
                     fontSize="sm"
                     fontWeight="400"
                   >
-                    Should this template be displayed on the website immediately after creation?
+                    {t('Display the template on the website')}?
                   </FormLabel>
                   <Switch
                     id="status"
@@ -357,7 +364,7 @@ function BasicInfoStep({
               leftIcon={<FaArrowLeft />}
               onClick={() => onPrevious()}
             >
-              Previous
+              {t('Previous')}
             </Button>
             <Button
               variant={form.formState.isValid ? 'solid' : 'outline'}
@@ -365,7 +372,7 @@ function BasicInfoStep({
               onClick={form.handleSubmit(handleFromSubmit)}
               isDisabled={!form.formState.isValid}
             >
-              Continue
+              {t('Continue')}
             </Button>
           </Flex>
         </Box>
@@ -390,6 +397,7 @@ function ReviewStep({
   const mode = useColorMode();
 
   const { appList } = useWebasystApplicationList();
+  const { t } = useTranslation();
 
   const templateLocationOptionList: SelectOptionProps[] = appList
     .find((app) => app.app_id === project.app_id)!
@@ -425,7 +433,7 @@ function ReviewStep({
         <Box width="full">
           <Image
             src={prepareTemplateImageUrl(selectedOption.value as string, mode.colorMode)}
-            fallback={<Text>Image Not Found!</Text>}
+            fallback={<Text>{t('Image Not Found')}!</Text>}
             borderRadius="lg"
             boxShadow={`0 0 12px 4px ${boxShadowColor}`}
             border="1px solid"
@@ -439,14 +447,14 @@ function ReviewStep({
           size="md"
           mb="8px"
         >
-          Review
+          {t('Review')}
         </Heading>
         <Text
           fontSize="sm"
           mb="32px"
           color="ebony.100"
         >
-          Confirm the template information before creating.
+          {t('Confirm the template information before creating')}.
         </Text>
         <TableContainer
           border="1px solid"
@@ -457,14 +465,14 @@ function ReviewStep({
           <Table variant="simple">
             <Tbody>
               <Tr>
-                <Td>Template Name</Td>
+                <Td>{t('Template Name')}</Td>
                 <Td>{stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.name}</Td>
               </Tr>
               <Tr>
-                <Td>Status</Td>
+                <Td>{t('Status')}</Td>
                 <Td>
                   <Tag colorScheme={stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.status ? 'malachite' : 'grey'}>
-                    {stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.status ? 'Public' : 'Draft'}
+                    {stepperState[ADD_TEMPLATE_STEPS.BASIC_INFO]?.status ? t('Public') : t('Draft')}
                   </Tag>
                 </Td>
               </Tr>
@@ -484,13 +492,13 @@ function ReviewStep({
             leftIcon={<FaArrowLeft />}
             onClick={() => onPrevious()}
           >
-            Previous
+            {t('Previous')}
           </Button>
           <Button
             variant="solid"
             onClick={() => onSubmit()}
           >
-            Create Template
+            {t('Create Template')}
           </Button>
         </Flex>
       </Box>
@@ -499,6 +507,7 @@ function ReviewStep({
 }
 
 function ProcessingStep() {
+  const { t } = useTranslation();
   return (
     <Flex
       direction="column"
@@ -509,7 +518,7 @@ function ProcessingStep() {
       mx="auto"
     >
       <Spinner size="lg" />
-      <Heading>One moment....</Heading>
+      <Heading>{t('One moment....')}</Heading>
     </Flex>
   );
 }
@@ -521,7 +530,7 @@ export function CreateProjectTemplateFlow({ project }: { project: Project }) {
   const { modalDisclosure } = useModalContext();
 
   const { createTemplate } = useTemplateList(project.id);
-
+  const { t } = useTranslation();
   const createTemplateHandler = async () => {
     stepper.setStep(ADD_TEMPLATE_STEPS.PROCESSING);
 
@@ -537,7 +546,7 @@ export function CreateProjectTemplateFlow({ project }: { project: Project }) {
       modalDisclosure.onClose();
 
       toast({
-        title: 'Template created successfully',
+        title: t('Template created successfully'),
         status: 'success',
         duration: 3000,
       });
