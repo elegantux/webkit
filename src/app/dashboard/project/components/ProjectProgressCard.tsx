@@ -1,6 +1,7 @@
 import { Box, Card, Flex, Heading, Image, Progress, Text } from '@chakra-ui/react';
 import { Link } from '@tanstack/react-router';
 import { FaArrowRight } from 'react-icons/fa6';
+import { useTranslation } from 'react-i18next';
 
 import { Project } from '@lib/models/project';
 import { useTemplateList, useWebasystApplicationList } from '@lib/state.ts';
@@ -12,6 +13,7 @@ import { appPath } from '@lib/utils.tsx';
 export function ProjectProgressCard({ project }: { project: Project }) {
   const { templateList } = useTemplateList(project.id);
   const { appList } = useWebasystApplicationList();
+  const { t } = useTranslation();
 
   const projectApp = appList.find((app) => app.app_id === project.app_id)!;
 
@@ -109,7 +111,7 @@ export function ProjectProgressCard({ project }: { project: Project }) {
           mb="12px"
           opacity={0.6}
         >
-          {completedTasksCount}/{PROJECT_TASKS[project.app_id].length} tasks | {progress}%
+          {completedTasksCount}/{PROJECT_TASKS[project.app_id].length} {t('tasks')} | {progress}%
         </Text>
         <Progress
           value={progress === 0 ? 5 : progress}

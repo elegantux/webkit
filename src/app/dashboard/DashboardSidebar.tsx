@@ -3,6 +3,7 @@ import { FaHouse, FaImages, FaScrewdriverWrench } from 'react-icons/fa6';
 import { BsGridFill } from 'react-icons/bs';
 import { PropsWithChildren } from 'react';
 import { LinkProps, Link as RouterLink } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 
 import { dashboardRoute, mediaRoute, projectListRoute, settingsRoute } from '../../routes';
 import { GreetingSection } from '@ui/atomic/molecules/GreetingSection';
@@ -49,6 +50,8 @@ function SidebarLink(props: PropsWithChildren<ChakraProps & LinkProps>) {
 }
 
 export function DashboardSidebar() {
+  const { t } = useTranslation();
+
   return (
     <Flex
       direction="column"
@@ -86,14 +89,14 @@ export function DashboardSidebar() {
           activeOptions={{ exact: true }}
         >
           <FaHouse size={18} />
-          Home
+          {t('Dashboard')}
         </SidebarLink>
         <SidebarLink
           to={projectListRoute.to}
           params={{}}
         >
           <BsGridFill size={18} />
-          Project List
+          {t('Projects')}
         </SidebarLink>
         <SidebarLink
           to={mediaRoute.to}
@@ -101,7 +104,7 @@ export function DashboardSidebar() {
           opacity="0.5"
         >
           <FaImages size={18} />
-          Media Files
+          {t('Media Files')}
         </SidebarLink>
       </Flex>
       <Flex
@@ -115,7 +118,7 @@ export function DashboardSidebar() {
           opacity="0.5"
         >
           <FaScrewdriverWrench size={18} />
-          Settings
+          {t('Settings')}
         </SidebarLink>
         <GreetingSection
           mx="12px"

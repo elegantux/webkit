@@ -1,6 +1,7 @@
 import { Button, Card, ChakraProps } from '@chakra-ui/react';
 import { FaCirclePlus, FaRegSquarePlus } from 'react-icons/fa6';
 import { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Modal, ModalProvider, useModal } from '@ui/atomic/organisms/modal';
 import { FormSkeleton } from '@ui/atomic/molecules';
@@ -8,6 +9,8 @@ import { UpsertProjectForm } from '@app/dashboard/project/components/UpsertProje
 
 export function CreateProjectButton(props: ChakraProps) {
   const modal = useModal();
+  const { t } = useTranslation();
+
   return (
     <>
       <Button
@@ -17,11 +20,11 @@ export function CreateProjectButton(props: ChakraProps) {
         onClick={modal.modalDisclosure.onOpen}
         {...props}
       >
-        Create Project
+        {t('Create Project')}
       </Button>
       <ModalProvider {...modal}>
         <Modal
-          title="Create Project"
+          title={t('Create Project')}
           showSecondaryButton={false}
           primaryButtonLabel="Create"
           isCentered

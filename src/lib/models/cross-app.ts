@@ -4,3 +4,7 @@ export interface WebasystApp {
   theme_id_list: string[];
   template_locations: string[];
 }
+
+export interface WebasystSettings {
+  locale: string;
+}

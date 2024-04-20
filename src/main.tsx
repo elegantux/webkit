@@ -2,6 +2,9 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { ColorModeScript } from '@chakra-ui/react';
 
+// eslint-disable-next-line import/extensions
+import '../i18n';
+
 import theme from '@ui/theme/theme';
 import { APP_ROOT_ELEMENT_ID } from '@lib/constants';
 import { appUrl } from '@lib/utils';

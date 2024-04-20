@@ -1,8 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { ChakraProps, Image, Link, Text } from '@chakra-ui/react';
 
 import { ContentSection } from '@app/dashboard/components/PageComponents';
 
 export function GreetingSection(props: ChakraProps) {
+  const { t } = useTranslation();
+
   return (
     <ContentSection
       borderRadius="8px"
@@ -16,7 +19,7 @@ export function GreetingSection(props: ChakraProps) {
         color="ebony.800"
         _dark={{ color: 'white' }}
       >
-        Hey There 👋. Hope you enjoy the app. Consider supporting our app with your comment on &nbsp;
+        {t('Hey There 👋. Hope you enjoy the app. Consider supporting our app with your comment on ')}
         <Image
           src="/wa-apps/installer/img/installer.svg"
           width="24px"
