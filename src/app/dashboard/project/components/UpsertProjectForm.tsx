@@ -28,6 +28,7 @@ import { PropsWithChildren, useEffect } from 'react';
 import { AxiosError } from 'axios';
 import { useNavigate } from '@tanstack/react-router';
 import { FaInfoCircle } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 import { CreateProjectPayload, PROJECT_APP_IDS, Project, UpdateProjectPayload } from '@lib/models/project';
 import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
@@ -121,6 +122,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
   const { setModalProps, modalDisclosure } = useModalContext();
   const navigate = useNavigate();
   const toast = useToast();
+  const { t } = useTranslation();
 
   const { appList, refetch: refetchWebasystApplicationList } = useWebasystApplicationList();
   const { createProject, updateProject, isMutating } = useProjectList();
@@ -150,7 +152,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
           }
 
           return !appList.find((app) => app.theme_id_list.includes(cleanValue));
-        }, 'Theme name invalid or already exists'),
+        }, t('Theme name invalid or already exists')),
       })
     ),
     mode: 'onChange',
@@ -200,7 +202,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
       }
 
       toast({
-        title: 'Project saved successfully',
+        title: t('Project saved successfully'),
         status: 'success',
         duration: 3000,
       });
@@ -234,7 +236,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
           fontSize="sm"
           mb={4}
         >
-          Select an application for the project:
+          {t('Select an application for the project')}:
         </FormLabel>
         <Grid
           gridTemplateColumns={`repeat(${appSelectOptions.length}, 1fr)`}
@@ -259,12 +261,12 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
       </FormControl>
       <Divider />
       <FormControl isInvalid={!!form.formState.errors.name}>
-        <FormLabel fontSize="sm">Name of the project*</FormLabel>
+        <FormLabel fontSize="sm">{t('Name of the project')}*</FormLabel>
         <Input
           placeholder="Blog - News"
           {...form.register('name')}
         />
-        <FormErrorMessage>This field is required</FormErrorMessage>
+        <FormErrorMessage>{t('This field is required')}</FormErrorMessage>
       </FormControl>
       <FormControl
         mt="24px"
@@ -272,7 +274,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
         isDisabled={!!project}
         opacity={project ? 0.5 : 1}
       >
-        <FormLabel fontSize="sm">Name of new theme*</FormLabel>
+        <FormLabel fontSize="sm">{t('Name of new theme')}*</FormLabel>
         <InputGroup>
           {!project && <InputLeftAddon>webkit_</InputLeftAddon>}
           <Input
@@ -284,10 +286,10 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
               placement="bottom"
               label={
                 <UnorderedList mb={0}>
-                  <ListItem>Allowed to use letters (a-z) and digits (1-9)</ListItem>
-                  <ListItem>Must start with a-z</ListItem>
-                  <ListItem>Must end with a-z or 1-9</ListItem>
-                  <ListItem>Allowed to use underscore(_) in the middle of the string</ListItem>
+                  <ListItem>{t('Allowed to use letters (a-z) and digits (1-9)')}</ListItem>
+                  <ListItem>{t('Must start with a-z')}</ListItem>
+                  <ListItem>{t('Must end with a-z or 1-9')}</ListItem>
+                  <ListItem>{t('Allowed to use underscore(_) in the middle of the string')}</ListItem>
                 </UnorderedList>
               }
               borderRadius="4px"
