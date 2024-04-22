@@ -2,8 +2,6 @@ import { Grid, GridItem } from '@chakra-ui/react';
 import { useEffectOnce } from 'usehooks-ts';
 import { Editor as EditorInterface } from 'grapesjs';
 import 'grapesjs/dist/css/grapes.min.css';
-// @ts-ignore
-import ru from 'grapesjs/locale/ru';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { PluginDependencies } from '@lib/models/plugin';
@@ -145,7 +143,6 @@ const initEditor = async (
       locale: webasystSettings.locale,
       localeFallback: 'en',
       detectLocale: false,
-      // messages: { ru },
       messagesAdd: {
         ru: {
           styleManager: styleManagerRu,
