@@ -458,7 +458,7 @@ export function ThemeSettings() {
         flexWrap="wrap"
         gap="4px"
       >
-        <AlertIcon />
+        <AlertIcon mr="4px" />
         {t('You can use the following smarties for the url')}:&nbsp;
         <Code
           fontSize="12px"

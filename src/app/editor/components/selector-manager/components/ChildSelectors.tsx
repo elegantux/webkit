@@ -19,6 +19,7 @@ import { FaMobileButton, FaRegTrashCan, FaTabletButton, FaTv, FaXmark } from 're
 import { Device, State } from 'grapesjs';
 import { create } from 'zustand';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { useSelectorManagerStore } from '@app/editor/components/selector-manager/lib/utils';
@@ -171,6 +172,7 @@ function StateSelect() {
   const isStateSelected = !!selectedChildSelectorState;
 
   const activeBgColor = useColorModeValue('grey.50', 'grey.700');
+  const { t } = useTranslation();
 
   const onStateChange = (item?: State) => {
     if (item) {
@@ -189,7 +191,7 @@ function StateSelect() {
       alignItems="center"
       gap="4px"
     >
-      <Text fontSize="sm">State:</Text>
+      <Text fontSize="sm">{t('State')}:</Text>
       <Menu>
         <MenuButton
           as={Button}
@@ -293,6 +295,7 @@ function SelectedChildSelector() {
   const theme = useTheme();
   const selectorListBgColor = useColorModeValue(theme.colors.grey['200'], theme.colors.ebony['400']);
   const selectorListActiveBgColor = useColorModeValue(theme.colors.malachite['200'], theme.colors.malachite['900']);
+  const { t } = useTranslation();
 
   const handleDeviceButtonClick = (device: string) => {
     editor.setDevice(device);
@@ -349,7 +352,7 @@ function SelectedChildSelector() {
           alignItems="center"
           gap="6px"
         >
-          <Text fontSize="sm">Selector:</Text>
+          <Text fontSize="sm">{t('Selector')}:</Text>
           <Code
             fontSize="xs"
             wordBreak="break-all"
@@ -362,7 +365,7 @@ function SelectedChildSelector() {
         <Tooltip
           placement="bottom"
           borderRadius="4px"
-          label="Clear all selector styles"
+          label={t('Clear all selector styles')}
           hasArrow
         >
           <IconButton

@@ -1,6 +1,7 @@
 import { Box, Button, Collapse, Flex, Text, useColorModeValue, useDisclosure, useTheme } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa6';
+import { useTranslation } from 'react-i18next';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { hexOpacity } from '@ui/theme/utils';
@@ -25,6 +26,7 @@ export function SelectorManager() {
     hexOpacity(theme.colors.green[100], 1),
     hexOpacity(theme.colors.green[900], 1)
   );
+  const { t } = useTranslation();
 
   const handleSelectorChange = () => {
     const lSelectors = editor.SelectorManager.getSelected();
@@ -117,7 +119,7 @@ export function SelectorManager() {
                     />
                   </Box>
                 )}
-                <Text as="span">{selectorsDisclosure.isOpen ? 'Parent Selectors' : 'Child Selectors'}</Text>
+                <Text as="span">{selectorsDisclosure.isOpen ? t('Parent Selectors') : t('Child Selectors')}</Text>
                 {selectorsDisclosure.isOpen && (
                   <Box>
                     <FaChevronDown

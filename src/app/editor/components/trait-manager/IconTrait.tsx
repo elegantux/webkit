@@ -17,6 +17,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { FixedSizeGrid, GridChildComponentProps } from 'react-window';
 import { create } from 'zustand';
 import { FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
+import { useTranslation } from 'react-i18next';
 
 import { Modal, useModal } from '@ui/atomic/organisms/modal';
 import { PropertyHeader } from '@app/editor/components/style-manager/components/PropertyHeader';
@@ -103,6 +104,7 @@ function IconList() {
   const [filteredIconList, setFilteredIconList] = useState<Array<FontAwesomeIcon>>(iconList);
   const [iconType, setIconType] = useState<ICON_TYPE>(ICON_TYPE.ALL);
   const [searchText, setSearchText] = useState<string>('');
+  const { t } = useTranslation();
 
   const gridRowCount = +(filteredIconList.length / GRID_COLS).toFixed() + 1;
   const gridColumnWidth = +(GRID_CONTAINER_WITH / GRID_COLS).toFixed();
@@ -197,7 +199,7 @@ function IconList() {
             size="lg"
             as="p"
           >
-            Icon not found: &quot;{searchText}&quot;
+            {t('Icon not found')}: &quot;{searchText}&quot;
           </Heading>
         </Flex>
       ) : (
@@ -234,6 +236,7 @@ function IconTraitContent({ trait }: { trait: Trait }) {
   const bgImageColor = useColorModeValue(theme.colors.grey[300], theme.colors.ebony[400]);
   const bgColor = useColorModeValue('grey.100', 'ebony.500');
   const bgImage = `linear-gradient(45deg,${bgImageColor} 25%,transparent 0,transparent 75%,${bgImageColor} 0,${bgImageColor}),linear-gradient(45deg,${bgImageColor} 25%,transparent 0,transparent 75%,${bgImageColor} 0,${bgImageColor})`;
+  const { t } = useTranslation();
 
   const handleModalClose = () => {
     setActiveIcon(undefined);
@@ -318,15 +321,15 @@ function IconTraitContent({ trait }: { trait: Trait }) {
           _hover={{ top: 'unset', bottom: 0 }}
           _active={{ top: 'unset', bottom: 0 }}
         >
-          Select Icon
+          {t('Select Icon')}
         </Button>
       </Box>
       <Modal
-        title="Select Icon"
+        title={t('Select Icon')}
         scrollBehavior="inside"
         isCentered
         minWidth="800px"
-        primaryButtonLabel="Insert"
+        primaryButtonLabel={t('Insert')}
         onPrimaryButtonClick={handlePrimaryButtonClick}
         primaryButtonEnabled={!!activeIcon}
         showSecondaryButton={false}
@@ -345,6 +348,8 @@ export function IconTrait({ trait }: { trait: Trait }) {
   const iconList = useIconTraitStore((store) => store.iconList);
   const setIconList = useIconTraitStore((store) => store.setIconList);
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     // Function to lazy load JSON data
     const loadJSONData = async () => {
@@ -361,7 +366,7 @@ export function IconTrait({ trait }: { trait: Trait }) {
   }, []);
 
   if (iconList.length === 0) {
-    return 'Loading Icons...';
+    return t('Loading Icons...');
   }
 
   return <IconTraitContent trait={trait} />;

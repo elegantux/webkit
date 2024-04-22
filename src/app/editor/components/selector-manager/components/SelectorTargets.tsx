@@ -14,6 +14,7 @@ import {
 import { Selector } from 'grapesjs';
 import { FaRegTrashCan, FaSquare, FaSquareCheck } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { checkSync, syncStyle } from '@app/editor/lib/utils';
@@ -32,6 +33,7 @@ export function SelectorTargets() {
 
   const theme = useTheme();
   const selectorListBgColor = useColorModeValue(theme.colors.grey['200'], theme.colors.ebony['400']);
+  const { t } = useTranslation();
 
   const onRemoveSelector = (selector: Selector) => {
     editor.SelectorManager.removeSelected(selector);
@@ -101,7 +103,7 @@ export function SelectorTargets() {
             fontSize="xs"
             opacity="0.6"
           >
-            Selector:
+            {t('Selector')}:
           </Text>
           <Code
             fontSize="xs"
@@ -115,7 +117,7 @@ export function SelectorTargets() {
             <Tooltip
               placement="bottom"
               borderRadius="4px"
-              label="Move styles from the id to classes"
+              label={t('Move styles from the id to classes')}
               fontSize="xs"
               hasArrow
             >
@@ -132,7 +134,7 @@ export function SelectorTargets() {
         <Tooltip
           placement="bottom"
           borderRadius="4px"
-          label="Clear all selector styles"
+          label={t('Clear all selector styles')}
           hasArrow
         >
           <IconButton

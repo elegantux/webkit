@@ -393,7 +393,7 @@ export const typographySector = {
       property: 'white-space',
       default: '',
       options: [
-        { label: 'Pointer', value: 'break-spaces' },
+        { label: 'Break Spaces', value: 'break-spaces' },
         { label: 'Normal', value: 'normal' },
         { label: 'Nowrap', value: 'nowrap' },
         { label: 'Pre', value: 'pre' },
