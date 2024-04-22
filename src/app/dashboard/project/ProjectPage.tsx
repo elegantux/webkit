@@ -355,7 +355,7 @@ export function ProjectPage() {
   return (
     <PageContainer>
       <Grid
-        gridTemplateColumns="1fr 320px"
+        gridTemplateColumns="1fr minmax(200px, 260px)"
         gap="24px"
       >
         <GridItem>

@@ -31,6 +31,7 @@ import {
 } from 'react-icons/fa6';
 import { AxiosError } from 'axios';
 import { Device } from 'grapesjs';
+import { useTranslation } from 'react-i18next';
 
 import { EDITOR_STORE, useBlockListDisclosure, useEditorStore } from '@app/editor/lib/store';
 import { editorRoute } from '../../../routes';
@@ -76,7 +77,9 @@ function TemplateNavigation() {
   const { templateId } = editorRoute.useParams();
   const { template } = useTemplate(Number(templateId));
   const { templateList } = useTemplateList(template.wtp_project_id);
-  const filteredTemplateList = templateList.filter((t) => t.id !== template.id);
+  const { t } = useTranslation();
+
+  const filteredTemplateList = templateList.filter((temp) => temp.id !== template.id);
 
   const handleTemplateClick = (temp: Template) => {
     window.location.replace(appUrl(`/app/editor/${temp.id}`));
@@ -95,7 +98,7 @@ function TemplateNavigation() {
       </MenuButton>
       <Portal>
         <MenuList>
-          <MenuGroup title="Project templates:">
+          <MenuGroup title={`${t('Project templates')}:`}>
             {filteredTemplateList.map((item) => (
               <MenuItem
                 key={item.id}
@@ -104,7 +107,7 @@ function TemplateNavigation() {
                 {item.name}
               </MenuItem>
             ))}
-            {filteredTemplateList.length === 0 && <MenuItem>🤷 No templates</MenuItem>}
+            {filteredTemplateList.length === 0 && <MenuItem>🤷 {t('No templates')}</MenuItem>}
           </MenuGroup>
         </MenuList>
       </Portal>
@@ -114,6 +117,7 @@ function TemplateNavigation() {
 
 const SaveProject = memo(() => {
   const toast = useToast();
+  const { t } = useTranslation();
 
   const { templateId } = editorRoute.useParams();
   const { template, isLoading, updateTemplate } = useTemplate(Number(templateId));
@@ -164,7 +168,7 @@ const SaveProject = memo(() => {
         },
       });
       toast({
-        title: 'Project saved successfully',
+        title: t('Project saved successfully'),
         status: 'success',
         duration: 3000,
       });
@@ -191,7 +195,7 @@ const SaveProject = memo(() => {
         mr="0"
         pr="6px"
       >
-        Save
+        {t('Save')}
       </Button>
       <Menu>
         <MenuButton
@@ -219,7 +223,7 @@ const SaveProject = memo(() => {
               textDecoration="none"
               height="32px"
             >
-              Storefront
+              {t('Storefront')}
             </MenuItem>
           ) : (
             <MenuItem
@@ -235,7 +239,7 @@ const SaveProject = memo(() => {
               textDecoration="none"
               height="32px"
             >
-              Attach to settlement
+              {t('Attach to settlement')}
             </MenuItem>
           )}
         </MenuList>
@@ -252,6 +256,8 @@ function ResponsiveButtons() {
 
   const [selectedDevice, setSelectedDevice] = useState<string>(DEVICE_TYPE.DESKTOP);
   const [swVisibility, setSwVisibility] = useState(false);
+
+  const { t } = useTranslation();
 
   const handleUpdateDevice = (device: Device) => {
     setSelectedDevice(device.id as string);
@@ -302,7 +308,7 @@ function ResponsiveButtons() {
       <Tooltip
         placement="bottom"
         borderRadius="4px"
-        label="Toggle components visibility"
+        label={t('Toggle components visibility')}
         hasArrow
       >
         <IconButton
@@ -317,7 +323,7 @@ function ResponsiveButtons() {
       <Tooltip
         placement="bottom"
         borderRadius="4px"
-        label="Toggle Layer Manager"
+        label={t('Toggle Layer Manager')}
         hasArrow
       >
         <IconButton
@@ -338,6 +344,7 @@ export function Navbar() {
   const navigate = useNavigate();
   const router = useRouter();
   const openBlockListSidebar = useBlockListDisclosure((state) => state.onOpen);
+  const { t } = useTranslation();
 
   const handleBackButtonClick = () => {
     try {
@@ -367,7 +374,7 @@ export function Navbar() {
           _hover={{ textDecoration: 'none' }}
           onClick={handleBackButtonClick}
         >
-          Back
+          {t('Back')}
         </Button>
         <Button
           colorScheme="dodger"
@@ -376,7 +383,7 @@ export function Navbar() {
           iconSpacing="6px"
           onClick={openBlockListSidebar}
         >
-          Add Block
+          {t('Add Block')}
         </Button>
       </Flex>
       <Flex gap="14px">
@@ -388,7 +395,7 @@ export function Navbar() {
           onClick={templatesModal.modalDisclosure.onOpen}
           leftIcon={<FaMagnifyingGlass size={16} />}
         >
-          Templates
+          {t('Templates')}
         </Button>
         <ResponsiveButtons />
       </Flex>
@@ -396,7 +403,7 @@ export function Navbar() {
       <ModalProvider {...templatesModal}>
         <Modal
           scrollBehavior="inside"
-          title="Template Library"
+          title={t('Template Library')}
           showModalFooter={false}
           modalContentProps={{
             width: '100vw',

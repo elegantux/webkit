@@ -1,7 +1,7 @@
 ((webkit) => {
   async function plugin(editor) {
     const COMPONENT_TYPE = "basic_html";
-    const COMPONENT_NAME = "HTML";
+    const COMPONENT_NAME = "HTML Code";
     const DATA_KEY = "data-wk-type";
     const CATEGORY = "Basic";
     const ICON = `<svg width="100%" height="42px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

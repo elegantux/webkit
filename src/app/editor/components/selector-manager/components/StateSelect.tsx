@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { State } from 'grapesjs';
 import { FaXmark } from 'react-icons/fa6';
+import { useTranslation } from 'react-i18next';
 
 import { useSelectorManagerStore } from '@app/editor/components/selector-manager/lib/utils';
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
@@ -22,6 +23,7 @@ export function StateSelect() {
   const isStateSelected = selectorManagerState.state && selectorManagerState.state.getName().length > 0;
 
   const activeBgColor = useColorModeValue('grey.50', 'grey.700');
+  const { t } = useTranslation();
 
   const onStateChange = (item?: State) => {
     if (item) {
@@ -36,7 +38,7 @@ export function StateSelect() {
       alignItems="center"
       gap="4px"
     >
-      <Text fontSize="sm">State:</Text>
+      <Text fontSize="sm">{t('State')}:</Text>
       <Menu>
         <MenuButton
           as={Button}

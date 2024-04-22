@@ -18,6 +18,7 @@ import {
 import { useEffect, useState } from 'react';
 import { FaComputerMouse as ComputerMouseIcon, FaCirclePlus } from 'react-icons/fa6';
 import { Component } from 'grapesjs';
+import { useTranslation } from 'react-i18next';
 
 import { TraitManager } from '@app/editor/components/trait-manager/TraitManager';
 import { BlockManager } from '@app/editor/components/manager/BlockManager';
@@ -32,6 +33,7 @@ export function Sidebar() {
   const disclosure = useBlockListDisclosure((state) => state);
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const showTabs = !!selectedComponent && selectedComponent?.get('type') !== 'wrapper';
 
@@ -93,7 +95,7 @@ export function Sidebar() {
                 color: theme.colors.dodger[600],
               }}
             >
-              Styles
+              {t('Styles')}
             </Tab>
             <Tab
               as={Button}
@@ -111,7 +113,7 @@ export function Sidebar() {
                 color: theme.colors.dodger[600],
               }}
             >
-              Settings
+              {t('Settings')}
             </Tab>
           </TabList>
           <TabPanels>
@@ -145,7 +147,7 @@ export function Sidebar() {
               fontWeight="bold"
               textAlign="center"
             >
-              Select component
+              {t('Select component')}
             </Text>
             <ComputerMouseIcon size={42} />
           </Flex>
@@ -160,7 +162,7 @@ export function Sidebar() {
               top="0"
               borderRadius={4}
             >
-              or
+              {t('or')}
             </AbsoluteCenter>
           </Box>
           <Button
@@ -170,7 +172,7 @@ export function Sidebar() {
             leftIcon={<FaCirclePlus size={20} />}
             iconSpacing="6px"
           >
-            Add Block
+            {t('Add Block')}
           </Button>
         </Flex>
       )}

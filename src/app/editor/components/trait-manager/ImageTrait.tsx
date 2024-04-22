@@ -23,6 +23,7 @@ import { create } from 'zustand';
 import { FaMagnifyingGlass, FaTrash, FaUpload, FaXmark } from 'react-icons/fa6';
 import { useDropzone } from 'react-dropzone';
 import { AxiosError } from 'axios';
+import { useTranslation } from 'react-i18next';
 
 import { Modal, useModal } from '@ui/atomic/organisms/modal';
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
@@ -228,6 +229,7 @@ function ImageList() {
 
   const [filteredImageList, setFilteredImageList] = useState<ImageAsset[]>(imageList);
   const [searchText, setSearchText] = useState<string>('');
+  const { t } = useTranslation();
 
   const updateImageList = (value: string) => {
     let filteredList: ImageAsset[] = imageList;
@@ -290,7 +292,7 @@ function ImageList() {
             )}
           </InputGroup>
         </FormControl>
-        <UploadFileButton />
+        <UploadFileButton buttonText={t('Upload Images')} />
       </Flex>
       {imageList.length === 0 && (
         <Flex
@@ -304,9 +306,9 @@ function ImageList() {
             size="lg"
             as="p"
           >
-            Start uploading images
+            {t('Start uploading images')}
           </Heading>
-          <UploadFileButton buttonText="Upload" />
+          <UploadFileButton buttonText={t('Upload')} />
         </Flex>
       )}
       {filteredImageList.length === 0 && imageList.length > 0 ? (
@@ -318,7 +320,7 @@ function ImageList() {
             size="lg"
             as="p"
           >
-            Image not found: &quot;{searchText}&quot;
+            {t('Image not found')}: &quot;{searchText}&quot;
           </Heading>
         </Flex>
       ) : (
@@ -350,6 +352,7 @@ function ImageTraitContent({ trait }: { trait: Trait }) {
   const setActiveImage = useImageTraitStore((store) => store.setActiveImage);
 
   const editor = useEditorStore(EDITOR_STORE.EDITOR);
+  const { t } = useTranslation();
 
   const hasValue = !!value;
 
@@ -446,15 +449,15 @@ function ImageTraitContent({ trait }: { trait: Trait }) {
           _hover={{ top: 'unset' }}
           _active={{ top: 'unset' }}
         >
-          Select Image
+          {t('Select Image')}
         </Button>
       </Box>
       <Modal
-        title="Select Image"
+        title={t('Select Image')}
         scrollBehavior="inside"
         isCentered
         minWidth="800px"
-        primaryButtonLabel="Insert"
+        primaryButtonLabel={t('Insert')}
         onPrimaryButtonClick={handlePrimaryButtonClick}
         primaryButtonEnabled={!!activeImage}
         showSecondaryButton={false}

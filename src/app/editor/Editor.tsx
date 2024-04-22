@@ -1,11 +1,11 @@
 import { Grid, GridItem } from '@chakra-ui/react';
-import { Editor as EditorInterface } from 'grapesjs';
 import { useEffectOnce } from 'usehooks-ts';
+import { Editor as EditorInterface } from 'grapesjs';
 import 'grapesjs/dist/css/grapes.min.css';
 
 import { EDITOR_STORE, useEditorStore } from '@app/editor/lib/store';
 import { PluginDependencies } from '@lib/models/plugin';
-import { useTemplate, useThemeSettings } from '@lib/state';
+import { useTemplate, useThemeSettings, useWebasystSettings } from '@lib/state';
 import { usePluginsDependencies } from '@app/editor/lib/state';
 import { Template } from '@lib/models/template';
 import { Navbar } from '@app/editor/components/Navbar';
@@ -18,6 +18,9 @@ import { Breadcrumbs } from '@app/editor/components/Breadcrumbs';
 import { LayerManager } from '@app/editor/components/layer-manager/LayerManager';
 import { useLayerManagerStore } from '@app/editor/components/layer-manager/lib/utils';
 import { ThemeSettings } from '@lib/models/theme-settings';
+import { WebasystSettings } from '@lib/models/cross-app';
+// Editor Locales
+import styleManagerRu from '@app/editor/locale/styleManagerRu';
 
 const loadPlugins = async (
   editor: EditorInterface,
@@ -55,7 +58,8 @@ const loadPlugins = async (
 const initEditor = async (
   template: Template,
   themeSettings: ThemeSettings,
-  pluginsDependencies: PluginDependencies
+  pluginsDependencies: PluginDependencies,
+  webasystSettings: WebasystSettings
 ) => {
   // eslint-disable-next-line prefer-destructuring
   const init = useEditorStore.getState().init;
@@ -135,6 +139,16 @@ const initEditor = async (
     clearStyles: true,
 
     styleManager: styleManagerConfig,
+    i18n: {
+      locale: webasystSettings.locale,
+      localeFallback: 'en',
+      detectLocale: false,
+      messagesAdd: {
+        ru: {
+          styleManager: styleManagerRu,
+        },
+      },
+    },
     blockManager: { custom: true },
     traitManager: { custom: true },
     layerManager: {
@@ -217,6 +231,7 @@ export function Editor() {
   const { templateId } = editorRoute.useParams();
   const { template } = useTemplate(Number(templateId));
   const { pluginsDependencies } = usePluginsDependencies(Number(templateId));
+  const { settings: webasystSettings } = useWebasystSettings();
 
   /**
    * Prefetching Theme Settings before rendering the Style Manager
@@ -230,7 +245,7 @@ export function Editor() {
 
   const init = async () => {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const _editor = await initEditor(template, themeSettings, pluginsDependencies);
+    const _editor = await initEditor(template, themeSettings, pluginsDependencies, webasystSettings);
     initCommands(_editor);
   };
 
