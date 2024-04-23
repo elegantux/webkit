@@ -2,7 +2,6 @@
 
 Webasyst Webkit application is a visual theme editor. It allows you to create projects (themes), templates and pages through a simple and intuitive interface.
 
----
 # System Requirements
 
 * Web Server
@@ -12,8 +11,6 @@ Webasyst Webkit application is a visual theme editor. It allows you to create pr
 * Npm 8.19.3+
 * Typescript 5.2.2
 
----
-
 # Steps to run the project
 1. Install Webasyst Framework (required first!) - https://developers.webasyst.com/download/
 2. Install Webkit App
@@ -22,7 +19,7 @@ Webasyst Webkit application is a visual theme editor. It allows you to create pr
 > mkdir webkit
 > git clone git://github.com/elegantux/webkit.git ./
 ```
-3. Add the following line into the wa-config/apps.php file (this file lists all installed apps):
+3. Add the following line into the ```wa-config/apps.php``` file (this file lists all installed apps):
 ```
 'tasks' => true,
 ```
@@ -35,8 +32,6 @@ Webasyst Webkit application is a visual theme editor. It allows you to create pr
 > npm run dev
 ```
 6. Done 🎉.
-
----
 
 # Generate Locales
 ```SHELl
