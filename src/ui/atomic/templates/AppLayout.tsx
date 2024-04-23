@@ -36,7 +36,7 @@ export function AppLayout() {
               key={project.id}
               status="error"
               variant="solid"
-              zIndex={1}
+              zIndex={2}
               position="fixed"
               bottom="0px"
               left="0px"

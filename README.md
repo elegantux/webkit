@@ -1,39 +1,45 @@
-# Locale
-https://stackoverflow.com/questions/3600436/how-to-convert-po-to-mo-files-on-mac
+# Webasyst Webkit App
+
+Webasyst Webkit application is a visual theme editor. It allows you to create projects (themes), templates and pages through a simple and intuitive interface.
+
+---
+# System Requirements
+
+* Web Server
+* PHP 7.2+
+* MySQL
+* NodeJS v16.19.1 (use nvm)
+* Npm 8.19.3+
+* Typescript 5.2.2
+
+---
+
+# Steps to run the project
+1. Install Webasyst Framework (required first!) - https://developers.webasyst.com/download/
+2. Install Webkit App
+```SHELL
+> cd /PATH_TO_WEBASYST/wa-apps/
+> mkdir webkit
+> git clone git://github.com/elegantux/webkit.git ./
+```
+3. Add the following line into the wa-config/apps.php file (this file lists all installed apps):
+```
+'tasks' => true,
+```
+4. Install project dependencies
+```SHELL
+> npm ci
+```
+5. Run the project
+``` 
+> npm run dev
+```
+6. Done 🎉.
+
+---
+
+# Generate Locales
 ```SHELl
 > brew install gettext
 > msgfmt inputfile.po -o outputfile.mo
 ```
-
----
-
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list

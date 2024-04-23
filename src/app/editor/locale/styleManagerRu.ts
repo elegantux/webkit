@@ -41,11 +41,11 @@ export default {
     'white-space': 'Пустота',
     // Spacing
     'padding-top': 'Внутр. верх',
-    'padding-bottom': 'Внутр. них',
+    'padding-bottom': 'Внутр. низ',
     'padding-left': 'Внутр. лево',
     'padding-right': 'Внутр. право',
     'margin-top': 'Внеш. верх',
-    'margin-bottom': 'Внеш. них',
+    'margin-bottom': 'Внеш. низ',
     'margin-left': 'Внеш. лево',
     'margin-right': 'Внеш. право',
     // Border
@@ -57,8 +57,8 @@ export default {
     'border-left-width': 'Левая Ширина',
     'border-top-left-radius': 'Верх-Лево Радиус',
     'border-top-right-radius': 'Верх-Право Радиус',
-    'border-bottom-left-radius': 'Них-Лево Радиус',
-    'border-bottom-right-radius': 'Них-Право Радиус',
+    'border-bottom-left-radius': 'Низ-Лево Радиус',
+    'border-bottom-right-radius': 'Низ-Право Радиус',
     'outline-style': 'Стиль Контура',
     'outline-width': 'Ширина Контура',
     'outline-color': 'Цвет Контура',
@@ -67,12 +67,12 @@ export default {
     top: 'Верх',
     right: 'Право',
     left: 'Лево',
-    bottom: 'Них',
+    bottom: 'Низ',
     'z-index': 'z-index',
     // Background
     'background-color': 'Цвет фона',
     // Other
-    'object-fit': 'Заполнение',
+    'object-fit': 'Заполнение объекта',
     opacity: 'Непрозрачность',
   },
   options: {
