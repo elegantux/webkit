@@ -20,7 +20,7 @@ Webasyst Webkit application is a visual theme editor. It allows you to create pr
 > git clone git://github.com/elegantux/webkit.git ./
 ```
 3. Add the following line into the ```wa-config/apps.php``` file (this file lists all installed apps):
-```
+```php
 'tasks' => true,
 ```
 4. Install project dependencies
@@ -28,7 +28,7 @@ Webasyst Webkit application is a visual theme editor. It allows you to create pr
 > npm ci
 ```
 5. Run the project
-``` 
+```SHELL
 > npm run dev
 ```
 6. Done 🎉.
