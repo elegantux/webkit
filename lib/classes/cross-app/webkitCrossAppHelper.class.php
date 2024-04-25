@@ -85,9 +85,16 @@ class webkitCrossAppHelper
   public static function getWebkitSettlementByThemeId($app_id, $theme_id)
   {
     $settlements = self::getAppSettlements($app_id);
-    $settlement_index = array_search($theme_id, array_column($settlements, 'theme'));;
+    $theme_settlement = null;
 
-    return $settlement_index ? $settlements[$settlement_index] : null;
+    foreach ($settlements as $settlement) {
+      if (isset($settlement['theme']) && $settlement['theme'] === $theme_id) {
+        $theme_settlement = $settlement;
+        break;
+      }
+    }
+
+    return $theme_settlement;
   }
 
   /**
