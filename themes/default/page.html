@@ -1,0 +1,9 @@
+{if $wa->currentUrl() == $wa_app_url}
+  <!-- [WebKit] Site Home Page - Start -->
+  {$wa->webkit->template($wa_active_theme_path, 'site_home')}
+  <!-- [WebKit] Site Home Page - End -->
+{else}
+  <!-- [WebKit] Post Content - Start -->
+  {$wa->webkit->template($wa_active_theme_url, 'site_page')}
+  <!-- [WebKit] Post Content - End -->
+{/if}

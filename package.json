@@ -9,8 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "i18n:parse": "i18next -c i18next-parser.config.ts --fail-on-warnings",
-    "prepare-archive:macos": "cp -r dist img js lib locale plugins templates themes webkit",
-    "archive:macos": "rm -rf webkit/.DS_Store & COPYFILE_DISABLE=1 tar -cvzf webkit/webkit.tar.gz webkit"
+    "prepare-archive:macos": "cp -r dist i18n img js lib locale plugins templates themes webkit",
+    "archive:macos": "find webkit -name .DS_Store -delete && COPYFILE_DISABLE=1 tar -cvzf webkit/webkit.tar.gz webkit"
   },
   "dependencies": {
     "@chakra-ui/react": "2.8.2",

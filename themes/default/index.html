@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+{if $wa->shop}
+    {$_cart_url = $wa->getUrl('shop/frontend/order')}
+{/if}
+
+<html lang="{if $wa->locale() == 'ru_RU'}ru{else}en{/if}">
+
+{$_head_prefix = $wa->globals("headPrefix")}
+
+<head {if !empty($_head_prefix)}prefix="{$_head_prefix}"{/if}>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1{if $wa->isMobile()}, maximum-scale=1, user-scalable=0{/if}">
+
+    <title>{$wa->title()|escape}</title>
+    <meta name="keywords" content="{$wa->meta('keywords')|escape}">
+    <meta name="description" content="{$wa->meta('description')|escape}">
+
+    {if !empty($canonical)}
+        <link rel="canonical" href="{$canonical}">
+    {/if}
+    <link rel="icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- css -->
+    {$wa->css()} {* links active plugins CSS *}
+
+    <!-- js -->
+    <script src="{$wa_static_url}wa-content/js/jquery/jquery-1.11.1.min.js?v={$wa->version(true)}"></script>
+    <script src="{$wa_static_url}wa-content/js/jquery/jquery-migrate-1.2.1.min.js?v={$wa->version(true)}"></script>
+    <script src="{$wa_theme_url}js/waTheme.js?v={$wa_theme_version}"></script>
+
+    {$wa->js()} {* links active plugins JS *}
+
+    {include file="`$wa_active_theme_path`/head.html" inline}
+
+    {$wa->head()} {* links Google Analytics tracking code, site's custom JS (defined in Site app settings), and metadata such as Open Graph data *}
+</head>
+<body>
+    <!-- APP HEADER -->
+    {include file="`$wa_active_theme_path`/header.html" inline}
+
+    <!-- APP CONTENT -->
+    {include file="`$wa_active_theme_path`/main.html" inline}
+
+    <!-- APP FOOTER -->
+    {include file="`$wa_active_theme_path`/footer.html" inline}
+
+    <script>
+        jQuery.browser = { };
+        (function () {
+            jQuery.browser.msie = false;
+            jQuery.browser.version = 0;
+            if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+                jQuery.browser.msie = true;
+                jQuery.browser.version = RegExp.$1;
+            }
+        })();
+    </script>
+</body>
+</html>

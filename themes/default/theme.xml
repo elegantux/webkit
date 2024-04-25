@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE theme PUBLIC "wa-app-theme" "http://www.webasyst.com/wa-content/xml/wa-app-theme.dtd">
+<theme id="webkit_site" system="0" vendor="1275846" author="webkit" app="webkit" version="0.0.1">
+  <name locale="en_US">WebKit Light 0.1</name>
+  <name locale="ru_RU">WebKit Light 0.1</name>
+  <description locale="en_US">Description...</description>
+  <description locale="ru_RU">Описание...</description>
+  <support locale="en_US">https://elegantux.com</support>
+  <support locale="ru_RU">https://elegantux.com</support>
+  <files>
+    <file path="index.html" custom="0">
+      <description locale="en_US">Core layout of Default 4.0 theme family</description>
+      <description locale="ru_RU">Основной макет тем дизайна семейства «Дефолт 4.0»</description>
+    </file>
+    <file path="default.css" custom="0">
+      <description locale="en_US">Core CSS of the Default 4.0 theme family</description>
+      <description locale="ru_RU">Основной файл CSS-стилей семейства тем дизайна «Дефолт 4.0»</description>
+    </file>
+    <file path="default.js" custom="0">
+    </file>
+    <file path="head.html" custom="0">
+      <description locale="en_US">Site app's &lt;head&gt; instructions</description>
+      <description locale="ru_RU">Блок &lt;head&gt; приложения «Сайт»</description>
+    </file>
+    <file path="header.html" custom="0">
+      <description locale="en_US">App specific header content</description>
+      <description locale="ru_RU">Содержимое «шапки» приложения</description>
+    </file>
+    <file path="main.html" custom="0">
+      <description locale="en_US">Main layout for Site app content</description>
+      <description locale="ru_RU">Основной вывод приложения «Сайт»</description>
+    </file>
+    <file path="footer.html" custom="0">
+      <description locale="en_US">App specific footer content</description>
+      <description locale="ru_RU">Содержимое футера приложения</description>
+    </file>
+    <file path="page.html" custom="0">
+      <description locale="en_US">Static page content and navigation</description>
+      <description locale="ru_RU">Содержимое открытой страницы и навигация по страницам</description>
+    </file>
+    <file path="login.html" custom="0">
+      <description locale="en_US">Login page</description>
+      <description locale="ru_RU">Страница входа для пользователей</description>
+    </file>
+    <file path="signup.html" custom="0">
+      <description locale="en_US">Sign up page</description>
+      <description locale="ru_RU">Страница регистрации пользователей</description>
+    </file>
+    <file path="forgotpassword.html" custom="0">
+      <description locale="en_US">Forgot password page</description>
+      <description locale="ru_RU">Страница сброса пароля</description>
+    </file>
+    <file path="my.profile.html">
+      <description locale="en_US">My profile: contact info editing form</description>
+      <description locale="ru_RU">Личный кабинет: редактирование контактной информации</description>
+    </file>
+    <file path="my.nav.html">
+      <description locale="en_US">My profile navigation</description>
+      <description locale="ru_RU">Навигационное меню внутри личного кабинета</description>
+    </file>
+    <file path="error.html" custom="0">
+      <description locale="en_US">404 and other errors</description>
+      <description locale="ru_RU">404 и другие ошибки</description>
+    </file>
+  </files>
+  <about locale="en_US">
+    &lt;p&gt;&lt;b&gt;WebKit Light&lt;/b&gt; — is a starting website theme template containing the basic structure of the site. Visual customization of this theme must be done through the &lt;a href="/webasyst/webkit"&gt;WebKit&lt;/a&gt; application.&lt;/p&gt;
+  </about>
+  <about locale="ru_RU">
+    &lt;p&gt;&lt;b&gt;WebKit Light&lt;/b&gt; — это стартовый шаблон темы сайта содержащий базобую структуру стайта. Визуальные настройка данной темы необходимо производить через приложение &lt;a href="/webasyst/webkit"&gt;WebKit&lt;/a&gt;.&lt;/p&gt;
+  </about>
+  <locales>
+    <locale>
+      <msgid>Follow us</msgid>
+      <msgstr locale="ru_RU">Подписаться на новости</msgstr>
+    </locale>
+    <locale>
+      <msgid>Subscribe to our email newsletter</msgid>
+      <msgstr locale="ru_RU">Подписаться на рассылку</msgstr>
+    </locale>
+    <locale>
+      <msgid>Or follow us on Facebook and Twitter</msgid>
+      <msgstr locale="ru_RU">Или подписывайтесь в соцсетях</msgstr>
+    </locale>
+    <locale>
+      <msgid>Settings have been saved</msgid>
+      <msgstr locale="ru_RU">Настройки сохранены</msgstr>
+    </locale>
+    <locale>
+      <msgid>Powered by &lt;a href="https://www.webasyst.com"&gt;Webasyst&lt;/a&gt;</msgid>
+      <msgstr locale="ru_RU">Работает на основе &lt;a href="https://www.webasyst.ru"&gt;Webasyst&lt;/a&gt;</msgstr>
+    </locale>
+  </locales>
+</theme>

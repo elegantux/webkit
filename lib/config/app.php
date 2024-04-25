@@ -18,4 +18,5 @@ return array(
   'ui'          => '2.0',
   'csrf'        => true,
   'plugins'     => true,
+  'themes'      => true,
 );
