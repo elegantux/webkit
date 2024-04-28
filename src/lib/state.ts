@@ -190,7 +190,6 @@ export const useWebasystApplicationList = () => {
     notifyOnChangeProps: ['data', 'error'],
     refetchOnWindowFocus: false,
     staleTime: Infinity,
-    // throwOnError: true,
   });
 
   return {
@@ -227,7 +226,6 @@ export const useProjectList = (filters: SearchParams = {}) => {
     notifyOnChangeProps: ['data', 'error'],
     refetchOnWindowFocus: false,
     staleTime: Infinity,
-    // throwOnError: true,
   });
 
   // https://tanstack.com/query/latest/docs/react/guides/optimistic-updates

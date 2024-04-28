@@ -126,7 +126,6 @@ function RadioCard(props: PropsWithChildren<RadioProps & { label: string; imageU
 }
 
 function DomainSelector() {
-  // const [value, setValue] = useState<SelectOptionProps | null>(null);
   const [options, setOptions] = useState<SelectOptionProps[]>([]);
   const { t } = useTranslation();
   const form = useFormContext<FormValues>();
@@ -254,7 +253,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
       } else {
         createdProject = await createProject(payload);
 
-        // Create settlement for the project
+        // Create a settlement for the project
         if (shouldCreateSettlement) {
           await api.site.createSettlement({
             app: createdProject.data.app_id,
@@ -345,7 +344,6 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
           <FormErrorMessage>{t('This field is required')}</FormErrorMessage>
         </FormControl>
         <FormControl
-          // mt="24px"
           isInvalid={!!form.formState.errors.theme_id}
           isDisabled={!!project}
           opacity={project ? 0.5 : 1}
