@@ -451,7 +451,6 @@ export function ThemeSettings() {
       <Alert
         fontSize="14px"
         status="info"
-        borderRadius="12px"
         mb="24px"
         width="full"
         wordBreak="break-word"

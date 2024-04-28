@@ -1,4 +1,4 @@
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import {
@@ -17,6 +17,7 @@ import {
   InputRightAddon,
   ListItem,
   RadioProps,
+  Switch,
   Text,
   Tooltip,
   UnorderedList,
@@ -24,21 +25,27 @@ import {
   useRadioGroup,
   useToast,
 } from '@chakra-ui/react';
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { useNavigate } from '@tanstack/react-router';
 import { FaInfoCircle } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 
 import { CreateProjectPayload, PROJECT_APP_IDS, Project, UpdateProjectPayload } from '@lib/models/project';
-import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
-import { useProjectList, useWebasystApplicationList } from '@lib/state';
+import { Select, SelectOptionProps } from '@ui/atomic/molecules/select/Select';
+import { useProjectList, useWebasystApplicationList, useWebasystSettings } from '@lib/state';
 import { WebasystApp } from '@lib/models/cross-app';
 import { useModalContext } from '@ui/atomic/organisms/modal';
 import { APP_THEME_PREFIX } from '@lib/constants';
 import { projectRoute } from '../../../../routes';
+import { api } from '@lib/api.ts';
 
-type FormValues = Pick<Project, 'name' | 'app_id' | 'theme_id'>;
+type SettlementValues = {
+  domain?: SelectOptionProps;
+  private?: boolean;
+};
+
+type FormValues = Pick<Project, 'name' | 'app_id' | 'theme_id'> & SettlementValues;
 
 const appListToOptions = (appList: WebasystApp[]): SelectOptionProps[] => {
   return appList.map((app) => ({
@@ -118,13 +125,64 @@ function RadioCard(props: PropsWithChildren<RadioProps & { label: string; imageU
   );
 }
 
+function DomainSelector() {
+  const [options, setOptions] = useState<SelectOptionProps[]>([]);
+  const { t } = useTranslation();
+  const form = useFormContext<FormValues>();
+  const value = form.watch('domain');
+
+  const onChange = (option: SelectOptionProps[] | any) => {
+    form.setValue('domain', option);
+  };
+
+  const fetchDomains = async () => {
+    const { data: domains } = await api.crossApp.getDomains();
+
+    const result: SelectOptionProps[] = domains.map((domain) => ({
+      label: domain.name,
+      value: domain.id,
+      payload: domain,
+    }));
+
+    setOptions(result);
+    if (result[0]) {
+      form.setValue('domain', result[0]);
+    }
+  };
+
+  useEffect(() => {
+    fetchDomains();
+  }, []);
+
+  return (
+    <FormControl mt="24px">
+      <FormLabel
+        htmlFor="status"
+        fontSize="sm"
+        fontWeight="400"
+      >
+        {t('Select Domain')}*
+      </FormLabel>
+      <Select
+        menuPosition="fixed"
+        menuPlacement="bottom"
+        value={value}
+        options={options}
+        onChange={onChange}
+      />
+    </FormControl>
+  );
+}
+
 export function UpsertProjectForm({ project }: { project?: Project }) {
+  const [shouldCreateSettlement, setShouldCreateSettlement] = useState(!project);
   const { setModalProps, modalDisclosure } = useModalContext();
   const navigate = useNavigate();
   const toast = useToast();
   const { t } = useTranslation();
 
   const { appList, refetch: refetchWebasystApplicationList } = useWebasystApplicationList();
+  const { settings: webasystSettings } = useWebasystSettings();
   const { createProject, updateProject, isMutating } = useProjectList();
 
   const form = useForm<FormValues>({
@@ -153,6 +211,8 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
 
           return !appList.find((app) => app.theme_id_list.includes(cleanValue));
         }, t('Theme name invalid or already exists')),
+        domain: z.any().optional(),
+        private: z.boolean().optional(),
       })
     ),
     mode: 'onChange',
@@ -160,6 +220,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
       name: project?.name ?? '',
       app_id: project?.app_id,
       theme_id: project?.theme_id ?? '',
+      private: true,
     },
   });
 
@@ -191,6 +252,19 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
         await updateProject({ id: project.id, payload });
       } else {
         createdProject = await createProject(payload);
+
+        // Create a settlement for the project
+        if (shouldCreateSettlement) {
+          await api.site.createSettlement({
+            app: createdProject.data.app_id,
+            name: createdProject.data.name,
+            theme: createdProject.data.theme_id,
+            url: `${createdProject.data.theme_id}/*`,
+            locale: webasystSettings.locale === 'ru' ? 'ru_RU' : 'en_US',
+            private: !!formValues.private,
+            domain_id: formValues.domain?.payload.id,
+          });
+        }
       }
 
       await refetchWebasystApplicationList();
@@ -222,7 +296,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
       isPrimaryButtonLoading: isMutating,
       onPrimaryButtonClick: form.handleSubmit(onSubmit),
     }));
-  }, [form.formState.isValid, form.handleSubmit, isMutating]);
+  }, [form.formState.isValid, form.handleSubmit, isMutating, shouldCreateSettlement]);
 
   return (
     <FormProvider {...form}>
@@ -260,51 +334,88 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
         </Grid>
       </FormControl>
       <Divider />
-      <FormControl isInvalid={!!form.formState.errors.name}>
-        <FormLabel fontSize="sm">{t('Name of the project')}*</FormLabel>
-        <Input
-          placeholder="Blog - News"
-          {...form.register('name')}
-        />
-        <FormErrorMessage>{t('This field is required')}</FormErrorMessage>
-      </FormControl>
-      <FormControl
-        mt="24px"
-        isInvalid={!!form.formState.errors.theme_id}
-        isDisabled={!!project}
-        opacity={project ? 0.5 : 1}
-      >
-        <FormLabel fontSize="sm">{t('Name of new theme')}*</FormLabel>
-        <InputGroup>
-          {!project && <InputLeftAddon>webkit_</InputLeftAddon>}
+      <Flex gap="24px">
+        <FormControl isInvalid={!!form.formState.errors.name}>
+          <FormLabel fontSize="sm">{t('Name of the project')}*</FormLabel>
           <Input
-            placeholder="blog"
-            {...form.register('theme_id')}
+            placeholder="Blog - News"
+            {...form.register('name')}
           />
-          <InputRightAddon>
-            <Tooltip
-              placement="bottom"
-              label={
-                <UnorderedList mb={0}>
-                  <ListItem>{t('Allowed to use letters (a-z) and digits (1-9)')}</ListItem>
-                  <ListItem>{t('Must start with a-z')}</ListItem>
-                  <ListItem>{t('Must end with a-z or 1-9')}</ListItem>
-                  <ListItem>{t('Allowed to use underscore(_) in the middle of the string')}</ListItem>
-                </UnorderedList>
-              }
-              borderRadius="4px"
-              fontSize="xs"
-              p="8px 8px 8px 14px"
-              hasArrow
+          <FormErrorMessage>{t('This field is required')}</FormErrorMessage>
+        </FormControl>
+        <FormControl
+          isInvalid={!!form.formState.errors.theme_id}
+          isDisabled={!!project}
+          opacity={project ? 0.5 : 1}
+        >
+          <FormLabel fontSize="sm">{t('Name of new theme')}*</FormLabel>
+          <InputGroup>
+            {!project && <InputLeftAddon px="8px">webkit_</InputLeftAddon>}
+            <Input
+              placeholder="blog"
+              {...form.register('theme_id')}
+            />
+            <InputRightAddon>
+              <Tooltip
+                placement="bottom"
+                label={
+                  <UnorderedList mb={0}>
+                    <ListItem>{t('Allowed to use letters (a-z) and digits (1-9)')}</ListItem>
+                    <ListItem>{t('Must start with a-z')}</ListItem>
+                    <ListItem>{t('Must end with a-z or 1-9')}</ListItem>
+                    <ListItem>{t('Allowed to use underscore(_) in the middle of the string')}</ListItem>
+                  </UnorderedList>
+                }
+                borderRadius="4px"
+                fontSize="xs"
+                p="8px 8px 8px 14px"
+                hasArrow
+              >
+                <Text>
+                  <FaInfoCircle size={18} />
+                </Text>
+              </Tooltip>
+            </InputRightAddon>
+          </InputGroup>
+          <FormErrorMessage>{form.formState.errors.theme_id?.message}</FormErrorMessage>
+        </FormControl>
+      </Flex>
+      {!project && (
+        <FormControl mt="24px">
+          <Flex justify="space-between">
+            <FormLabel
+              htmlFor="create_settlement"
+              fontSize="sm"
+              fontWeight="400"
             >
-              <Text>
-                <FaInfoCircle size={18} />
-              </Text>
-            </Tooltip>
-          </InputRightAddon>
-        </InputGroup>
-        <FormErrorMessage>{form.formState.errors.theme_id?.message}</FormErrorMessage>
-      </FormControl>
+              {t('Create a settlement for this project')}?
+            </FormLabel>
+            <Switch
+              id="create_settlement"
+              isChecked={shouldCreateSettlement}
+              onChange={() => setShouldCreateSettlement((prevState) => !prevState)}
+            />
+          </Flex>
+        </FormControl>
+      )}
+      {shouldCreateSettlement && (
+        <FormControl>
+          <Flex justify="space-between">
+            <FormLabel
+              htmlFor="private"
+              fontSize="sm"
+              fontWeight="400"
+            >
+              {t('Make this settlement private until the project is completed')}?
+            </FormLabel>
+            <Switch
+              id="private"
+              {...form.register('private')}
+            />
+          </Flex>
+        </FormControl>
+      )}
+      {shouldCreateSettlement && <DomainSelector />}
     </FormProvider>
   );
 }
