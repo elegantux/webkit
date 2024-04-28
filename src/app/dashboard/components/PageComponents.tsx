@@ -15,7 +15,7 @@ export function PageHeading(props: PropsWithChildren<ChakraProps>) {
 export function ContentSection(props: PropsWithChildren<ChakraProps>) {
   return (
     <Box
-      borderRadius="24px"
+      borderRadius="8px"
       bgColor="white"
       _dark={{ bgColor: 'ebony.800' }}
       padding="24px"

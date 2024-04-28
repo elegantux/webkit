@@ -91,7 +91,7 @@ function RecentProjectList() {
             </Flex>
           </Flex>
           <Grid
-            gridTemplateColumns="repeat(3, 1fr)"
+            gridTemplateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)', xl: 'repeat(3, 1fr)' }}
             gap="32px"
           >
             {projectList.map((project) => (

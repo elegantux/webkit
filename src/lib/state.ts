@@ -1,5 +1,4 @@
 import {
-  useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
@@ -185,13 +184,13 @@ export const useRecentTemplateList = () => {
 
 export const useWebasystApplicationList = () => {
   const getAppList = () => api.crossApp.apps();
-  const { data, refetch } = useQuery<Response<WebasystApp[]>>({
+  const { data, refetch } = useSuspenseQuery<Response<WebasystApp[]>>({
     queryKey: [STATE_TYPES.WEBASYST_APP_LIST],
     queryFn: getAppList,
     notifyOnChangeProps: ['data', 'error'],
     refetchOnWindowFocus: false,
     staleTime: Infinity,
-    throwOnError: true,
+    // throwOnError: true,
   });
 
   return {
@@ -218,7 +217,7 @@ export const useWebasystSettings = () => {
 export const useProjectList = (filters: SearchParams = {}) => {
   const queryClient = useQueryClient();
   const getProjectList = () => api.project.getProjectList(filters);
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useInfiniteQuery<
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useSuspenseInfiniteQuery<
     PaginatedResponse<Project>
   >({
     queryKey: [STATE_TYPES.PROJECT_LIST],
@@ -228,7 +227,7 @@ export const useProjectList = (filters: SearchParams = {}) => {
     notifyOnChangeProps: ['data', 'error'],
     refetchOnWindowFocus: false,
     staleTime: Infinity,
-    throwOnError: true,
+    // throwOnError: true,
   });
 
   // https://tanstack.com/query/latest/docs/react/guides/optimistic-updates

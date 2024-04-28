@@ -77,6 +77,7 @@ class webkitCrossAppHelper
   }
 
   /**
+   * TODO: What if the theme used in multiple settlements 🤔🙂? Currently, the first found settlement will be returned.
    * @param $app_id
    * @param $theme_id
    * @return false|int|string

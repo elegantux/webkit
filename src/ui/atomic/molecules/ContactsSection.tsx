@@ -10,7 +10,7 @@ export function ContactsSection(props: ChakraProps) {
 
   return (
     <ContentSection
-      borderRadius="8px"
+      borderRadius="6px"
       bgGradient="linear(to-r, #e8f5ff, #f3f5f7)"
       _dark={{ bgGradient: 'linear(to-r, #504d65, #24213f)' }}
       {...props}

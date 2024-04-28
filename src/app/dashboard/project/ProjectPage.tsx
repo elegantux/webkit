@@ -1,7 +1,8 @@
 import {
+  Alert,
+  AlertDescription,
   Box,
   Button,
-  Checkbox,
   Flex,
   Grid,
   GridItem,
@@ -41,12 +42,12 @@ import { CreateTemplateTypeButton } from '@app/dashboard/template/components/Cre
 import { Modal, ModalProvider, useModal } from '@ui/atomic/organisms/modal';
 import { FormSkeleton } from '@ui/atomic/molecules';
 import { UpsertProjectForm } from '@app/dashboard/project/components/UpsertProjectForm';
-import { PROJECT_APP_IDS, Project } from '@lib/models/project';
+import { Project } from '@lib/models/project';
 import { TemplateListEmptyState } from '@app/dashboard/template/components/TemplateListEmptyState';
 import { ThemeSettings } from './components/ThemeSettings';
 import { PageContainer } from '@ui/atomic/templates/PageContainer';
+import { ProjectSidebar } from '@app/dashboard/project/components/ProjectSidebar';
 import { TEMPLATE_PROJECT_TEMPLATE_TYPES } from '@lib/models/template';
-import { PROJECT_TASKS } from '@app/dashboard/lib/constants';
 import { WA_BACKEND_URL } from '@lib/constants.ts';
 
 import Ornament82 from '@assets/decorations/ornament-82.svg?react';
@@ -203,6 +204,24 @@ function ProjectActionsButton({ project }: { project: Project }) {
           >
             {t('By deleting this project, you will lose all templates and assets used in this project')}.
           </Heading>
+          {project?.settlement && (
+            <Alert
+              size="sm"
+              status="warning"
+              variant="left-accent"
+            >
+              <AlertDescription
+                dangerouslySetInnerHTML={{
+                  __html: t(
+                    'This project is attached to the <code>{{settlement}}</code> settlement. If this settlement was used only for this project, then it should be deleted along with the project.',
+                    {
+                      settlement: project.settlement.settlement,
+                    }
+                  ),
+                }}
+              />
+            </Alert>
+          )}
           <Text>{t('Are you sure')}?</Text>
         </Flex>
       </Modal>
@@ -258,6 +277,7 @@ export function ProjectPageHeader() {
   const { t } = useTranslation();
 
   const projectApp = appList.find((app) => app.app_id === project.app_id)!;
+  const storefrontUrl = `${window.location.protocol}//${project?.settlement?.settlement?.replace('*', '')}`;
 
   if (appList.length === 0) {
     return null;
@@ -293,54 +313,75 @@ export function ProjectPageHeader() {
         </Text>
         <ProjectActionsButton project={project} />
       </Flex>
-      <CreateTemplateTypeButton
-        size="sm"
-        py={0}
-        leftIcon={<FaCirclePlus size={18} />}
+      <Flex
+        align="center"
+        gap="24px"
       >
-        {t('Create Template')}
-      </CreateTemplateTypeButton>
+        {project.settlement && (
+          <Link
+            href={storefrontUrl}
+            target="_blank"
+            display="inline-flex"
+            alignItems="center"
+            gap="4px"
+            fontSize="14px"
+            fontWeight="600"
+            textDecoration="none"
+            color="dodger.500"
+            _dark={{
+              color: 'dodger.300',
+            }}
+          >
+            <FaShareFromSquare size={14} />
+            {t('Storefront')}
+          </Link>
+        )}
+        <CreateTemplateTypeButton
+          size="sm"
+          py={0}
+          leftIcon={<FaCirclePlus size={18} />}
+        >
+          {t('Create Template')}
+        </CreateTemplateTypeButton>
+      </Flex>
     </Flex>
   );
 }
 
-function ProjectTasks() {
+function ProjectSettlementAlert() {
   const { projectId } = projectRoute.useParams();
   const { project } = useProject(projectId!);
-  const { templateList } = useTemplateList(projectId!);
   const { t } = useTranslation();
 
+  if (project.settlement) {
+    return null;
+  }
+
   return (
-    <ContentSection
-      position="sticky"
-      top="12px"
+    <Alert
+      status="warning"
+      variant="left-accent"
+      size="sm"
+      mb="24px"
     >
-      <Heading
-        as="h5"
-        size="sm"
-      >
-        {t('Project Tasks:')}
-      </Heading>
-      <Flex
-        direction="column"
-        gap="8px"
-      >
-        {PROJECT_TASKS[project.app_id as PROJECT_APP_IDS].map((task) => (
-          <Flex
-            key={task.title}
-            alignItems="center"
-            gap="8px"
-          >
-            <Checkbox
-              colorScheme="malachite"
-              size="sm"
-              isChecked={task.check(project, templateList)}
-            />
-            <Text fontSize="sm">{task.title}</Text>
-          </Flex>
-        ))}
-      </Flex>
-    </ContentSection>
+      <AlertDescription>
+        {t(
+          'The project is not yet tied to any settlement. To see a project on the live site, you need to attach it to a settlement.'
+        )}
+        &nbsp;
+        <Link
+          href={`${WA_BACKEND_URL}/site/#/routing/`}
+          target="_blank"
+          display="inline-flex"
+          alignItems="center"
+          gap="4px"
+          textDecoration="underline"
+        >
+          <FaShareFromSquare size={14} />
+          {t('Attach to settlement')}?
+        </Link>
+      </AlertDescription>
+    </Alert>
   );
 }
 
@@ -360,6 +401,16 @@ export function ProjectPage() {
       >
         <GridItem>
           <ProjectPageHeader />
+          <Suspense
+            fallback={
+              <AppLoadingState
+                height="auto"
+                mt="200px"
+              />
+            }
+          >
+            <ProjectSettlementAlert />
+          </Suspense>
           <Flex
             alignItems="center"
             justify="space-between"
@@ -494,7 +545,7 @@ export function ProjectPage() {
               />
             }
           >
-            <ProjectTasks />
+            <ProjectSidebar />
           </Suspense>
         </GridItem>
       </Grid>
