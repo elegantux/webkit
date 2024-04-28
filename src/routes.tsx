@@ -8,6 +8,7 @@ import { ProjectPage } from '@app/dashboard/project/ProjectPage';
 import { Editor } from '@app/editor/Editor';
 import { SettingsPage } from '@app/dashboard/settings/SettingsPage';
 import { MediaPage } from '@app/dashboard/media/MediaPage';
+import { PluginsPage } from '@app/dashboard/marketplace/PluginsPage';
 import { PageError } from '@ui/atomic/templates/PageError';
 import { TEMPLATE_PROJECT_TEMPLATE_TYPES } from '@lib/models/template';
 
@@ -63,9 +64,32 @@ const mediaRoute = createRoute({
   component: MediaPage,
 });
 
+const pluginsRoute = createRoute({
+  getParentRoute: () => dashboardLayout,
+  path: 'app/dashboard/plugins',
+  component: PluginsPage,
+});
+
 const routeTree = rootRoute.addChildren([
   editorRoute,
-  dashboardLayout.addChildren([dashboardRoute, projectListRoute, projectRoute, settingsRoute, mediaRoute]),
+  dashboardLayout.addChildren([
+    dashboardRoute,
+    projectListRoute,
+    projectRoute,
+    settingsRoute,
+    mediaRoute,
+    pluginsRoute,
+  ]),
 ]);
 
-export { routeTree, rootRoute, editorRoute, dashboardRoute, projectListRoute, projectRoute, settingsRoute, mediaRoute };
+export {
+  routeTree,
+  rootRoute,
+  editorRoute,
+  dashboardRoute,
+  projectListRoute,
+  projectRoute,
+  settingsRoute,
+  mediaRoute,
+  pluginsRoute,
+};

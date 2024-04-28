@@ -1,23 +1,27 @@
-import { Box, ChakraProps, Flex, Heading, Image, Link, useColorModeValue } from '@chakra-ui/react';
-import { FaHouse, FaImages, FaScrewdriverWrench } from 'react-icons/fa6';
+import { Box, ChakraProps, Flex, Heading, Image, Link, useColorModeValue, useTheme } from '@chakra-ui/react';
+import { FaBrush, FaHouse, FaImages, FaPlug, FaScrewdriverWrench } from 'react-icons/fa6';
 import { BsGridFill } from 'react-icons/bs';
 import { PropsWithChildren } from 'react';
 import { LinkProps, Link as RouterLink } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 
-import { dashboardRoute, mediaRoute, projectListRoute, settingsRoute } from '../../routes';
+import { dashboardRoute, mediaRoute, pluginsRoute, projectListRoute, settingsRoute } from '../../routes';
 import { GreetingSection } from '@ui/atomic/molecules/GreetingSection';
 import { ContactsSection } from '@ui/atomic/molecules/ContactsSection';
 import { appPath } from '@lib/utils.tsx';
+import { hexOpacity } from '@ui/theme/utils';
 
 function SidebarLink(props: PropsWithChildren<ChakraProps & LinkProps>) {
+  const theme = useTheme();
+  const color = useColorModeValue('grey.900', 'grey.100');
   const activeColor = useColorModeValue('dodger.600', 'dodger.200');
-  const activeBgColor = useColorModeValue('grey.50', 'ebony.600');
+  const activeBgColor = useColorModeValue('grey.50', hexOpacity(theme.colors.ebony[400], 0.3));
 
   const { to } = props;
 
   const hoverStyle = {
-    color: activeColor,
+    color,
+    background: activeBgColor,
   };
   const activeStyle = {
     background: activeBgColor,
@@ -34,12 +38,10 @@ function SidebarLink(props: PropsWithChildren<ChakraProps & LinkProps>) {
       display="flex"
       alignItems="center"
       gap="12px"
-      px={3}
+      px="30px"
       py={2}
-      mx={3}
       bg="transparent"
       transition="background 0.5s ease, color 0.2s ease"
-      borderRadius="lg"
       _hover={hoverStyle}
       sx={{
         '&.active': activeStyle,
@@ -57,6 +59,9 @@ export function DashboardSidebar() {
       direction="column"
       py={6}
       height="full"
+      borderRight="1px solid"
+      borderColor="grey.50"
+      _dark={{ borderColor: 'ebony.500' }}
     >
       <Flex
         alignItems="center"
@@ -129,6 +134,22 @@ export function DashboardSidebar() {
         >
           <FaImages size={18} />
           {t('Media Files')}
+        </SidebarLink>
+        <SidebarLink
+          to={pluginsRoute.to}
+          params={{}}
+          activeOptions={{ exact: true }}
+        >
+          <FaPlug size={18} />
+          {t('Plugins')}
+        </SidebarLink>
+        <SidebarLink
+          to={dashboardRoute.to}
+          params={{}}
+          activeOptions={{ exact: true }}
+        >
+          <FaBrush size={18} />
+          {t('Themes')}
         </SidebarLink>
       </Flex>
       <Flex

@@ -1,5 +1,6 @@
 import {
   Button,
+  Code,
   Flex,
   Heading,
   IconButton,
@@ -23,6 +24,7 @@ import { FaEllipsis, FaRegPenToSquare, FaRegTrashCan, FaTriangleExclamation } fr
 import { MouseEvent } from 'react';
 import { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
 
 import { Template } from '@lib/models/template';
 import { Modal, ModalProvider, useModal } from '@ui/atomic/organisms/modal';
@@ -192,9 +194,15 @@ export function TemplateListTable({
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th>{t('Name')}</Th>
-            <Th>{t('Location')}</Th>
-            <Th>{t('Status')}</Th>
+            <Th px="12px">{t('Name')}</Th>
+            <Th px="12px">{t('Location')}</Th>
+            <Th px="12px">{t('Status')}</Th>
+            <Th
+              px="12px"
+              whiteSpace="nowrap"
+            >
+              {t('Updated At')}
+            </Th>
             {showActions && <Th textAlign="right">{t('Actions')}</Th>}
           </Tr>
         </Thead>
@@ -206,16 +214,27 @@ export function TemplateListTable({
               onClick={() => handleTableRowClick(template)}
               _last={{ '& td': { border: 'none' } }}
             >
-              <Td>{template.name}</Td>
-              <Td>
-                {template.wtp_template_location && TEMPLATE_LOCATION_NAME_MAP[template.wtp_template_location]
-                  ? TEMPLATE_LOCATION_NAME_MAP[template.wtp_template_location]
-                  : 'Dynamic'}
+              <Td px="12px">{template.name}</Td>
+              <Td px="12px">
+                {/* {template.wtp_template_location && TEMPLATE_LOCATION_NAME_MAP[template.wtp_template_location] */}
+                {/*  ? TEMPLATE_LOCATION_NAME_MAP[template.wtp_template_location] */}
+                {/*  : 'Dynamic'} */}
+                <Code
+                  fontSize="12px"
+                  px="8px"
+                >
+                  {template.wtp_template_location && TEMPLATE_LOCATION_NAME_MAP[template.wtp_template_location]
+                    ? template.wtp_template_location
+                    : 'dynamic'}
+                </Code>
               </Td>
-              <Td>
+              <Td px="12px">
                 <Tag colorScheme={template.wtp_status === '1' ? 'malachite' : 'grey'}>
                   {template.wtp_status === '1' ? t('Published') : t('Draft')}
                 </Tag>
+              </Td>
+              <Td px="12px">
+                <Text fontSize="14px">{dayjs(template.update_datetime).format('DD MMM, HH:MM')}</Text>
               </Td>
               {project && showActions && (
                 <MoreActionsColumn

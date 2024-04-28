@@ -26,6 +26,7 @@
     "@types/react-window": "1.8.8",
     "@uiw/react-color-sketch": "2.0.6",
     "axios": "1.6.2",
+    "dayjs": "1.11.11",
     "framer-motion": "10.16.16",
     "grapesjs": "0.21.9",
     "i18next": "23.11.2",
