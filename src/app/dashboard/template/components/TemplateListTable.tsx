@@ -216,9 +216,6 @@ export function TemplateListTable({
             >
               <Td px="12px">{template.name}</Td>
               <Td px="12px">
-                {/* {template.wtp_template_location && TEMPLATE_LOCATION_NAME_MAP[template.wtp_template_location] */}
-                {/*  ? TEMPLATE_LOCATION_NAME_MAP[template.wtp_template_location] */}
-                {/*  : 'Dynamic'} */}
                 <Code
                   fontSize="12px"
                   px="8px"
