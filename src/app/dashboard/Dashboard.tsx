@@ -181,7 +181,6 @@ export function Dashboard() {
       <PageHeading>{t('Dashboard')}</PageHeading>
       <RecentProjectList />
       <Flex
-        my="32px"
         opacity="1"
         color="grey.100"
         _dark={{ color: 'ebony.700' }}
