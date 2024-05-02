@@ -11,10 +11,13 @@ import { MediaPage } from '@app/dashboard/media/MediaPage';
 import { PluginsPage } from '@app/dashboard/marketplace/PluginsPage';
 import { PageError } from '@ui/atomic/templates/PageError';
 import { TEMPLATE_PROJECT_TEMPLATE_TYPES } from '@lib/models/template';
+import { ThemesPage } from '@app/dashboard/marketplace/ThemesPage';
+import { PageNotFound } from '@ui/atomic/templates/PageNotFound';
 
 const rootRoute = createRootRoute({
   component: Root,
   errorComponent: PageError,
+  notFoundComponent: PageNotFound,
 });
 
 const dashboardLayout = createRoute({
@@ -70,6 +73,12 @@ const pluginsRoute = createRoute({
   component: PluginsPage,
 });
 
+const themesRoute = createRoute({
+  getParentRoute: () => dashboardLayout,
+  path: 'app/dashboard/themes',
+  component: ThemesPage,
+});
+
 const routeTree = rootRoute.addChildren([
   editorRoute,
   dashboardLayout.addChildren([
@@ -79,6 +88,7 @@ const routeTree = rootRoute.addChildren([
     settingsRoute,
     mediaRoute,
     pluginsRoute,
+    themesRoute,
   ]),
 ]);
 
@@ -92,4 +102,5 @@ export {
   settingsRoute,
   mediaRoute,
   pluginsRoute,
+  themesRoute,
 };
