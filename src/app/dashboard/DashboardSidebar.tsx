@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 import { LinkProps, Link as RouterLink } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 
-import { dashboardRoute, mediaRoute, pluginsRoute, projectListRoute, settingsRoute } from '../../routes';
+import { dashboardRoute, mediaRoute, pluginsRoute, projectListRoute, settingsRoute, themesRoute } from '../../routes';
 import { GreetingSection } from '@ui/atomic/molecules/GreetingSection';
 import { ContactsSection } from '@ui/atomic/molecules/ContactsSection';
 import { appPath } from '@lib/utils.tsx';
@@ -13,15 +13,17 @@ import { hexOpacity } from '@ui/theme/utils';
 
 function SidebarLink(props: PropsWithChildren<ChakraProps & LinkProps>) {
   const theme = useTheme();
-  const color = useColorModeValue('grey.900', 'grey.100');
-  const activeColor = useColorModeValue('dodger.600', 'dodger.200');
+  const color = useColorModeValue('grey.700', 'grey.300');
+  const iconColor = useColorModeValue('grey.300', 'grey.700');
+  const activeColor = useColorModeValue('grey.900', 'dodger.200');
   const activeBgColor = useColorModeValue('grey.50', hexOpacity(theme.colors.ebony[400], 0.3));
+  const hoverBgColor = useColorModeValue('grey.50', hexOpacity(theme.colors.ebony[400], 0.2));
 
   const { to } = props;
 
   const hoverStyle = {
     color,
-    background: activeBgColor,
+    background: hoverBgColor,
   };
   const activeStyle = {
     background: activeBgColor,
@@ -38,13 +40,17 @@ function SidebarLink(props: PropsWithChildren<ChakraProps & LinkProps>) {
       display="flex"
       alignItems="center"
       gap="12px"
-      px="30px"
+      px="20px"
       py={2}
+      fontWeight="600"
+      color={color}
       bg="transparent"
-      transition="background 0.5s ease, color 0.2s ease"
+      transition="background 0.1s ease, color 0.1s ease"
       _hover={hoverStyle}
       sx={{
         '&.active': activeStyle,
+        '&.active > svg': { color: activeColor },
+        '& > svg': { color: iconColor },
       }}
       {...props}
     />
@@ -110,7 +116,7 @@ export function DashboardSidebar() {
       />
       <Flex
         direction="column"
-        gap="14px"
+        // gap="14px"
       >
         <SidebarLink
           to={dashboardRoute.to}
@@ -144,7 +150,7 @@ export function DashboardSidebar() {
           {t('Plugins')}
         </SidebarLink>
         <SidebarLink
-          to={dashboardRoute.to}
+          to={themesRoute.to}
           params={{}}
           activeOptions={{ exact: true }}
         >

@@ -101,7 +101,7 @@ export function ProjectProgressCard({ project }: { project: Project }) {
       </Flex>
       <Heading
         as="h4"
-        size="lg"
+        size="md"
       >
         {project.name}
       </Heading>

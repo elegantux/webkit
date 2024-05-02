@@ -20,6 +20,7 @@ import {
   FaAngleLeft,
   FaChevronDown,
   FaCirclePlus,
+  FaEye,
   FaFloppyDisk,
   FaLayerGroup,
   FaMagnifyingGlass,
@@ -116,8 +117,10 @@ function TemplateNavigation() {
 }
 
 const SaveProject = memo(() => {
+  const [swVisibility, setSwVisibility] = useState(false);
   const toast = useToast();
   const { t } = useTranslation();
+  const layerManagerStore = useLayerManagerStore((store) => store);
 
   const { templateId } = editorRoute.useParams();
   const { template, isLoading, updateTemplate } = useTemplate(Number(templateId));
@@ -127,6 +130,7 @@ const SaveProject = memo(() => {
   // console.log('SaveProject - template', template);
 
   const editor = useEditorStore((state) => state.editor);
+  const commands = editor.Commands;
 
   const handleSave = async () => {
     const { assets, pages, styles } = editor.getProjectData();
@@ -181,88 +185,6 @@ const SaveProject = memo(() => {
     }
   };
 
-  return (
-    <ButtonGroup
-      colorScheme="malachite"
-      size="sm"
-      isAttached
-    >
-      <Button
-        onClick={handleSave}
-        leftIcon={<FaFloppyDisk size={18} />}
-        isLoading={isLoading}
-        isDisabled={isLoading}
-        mr="0"
-        pr="6px"
-      >
-        {t('Save')}
-      </Button>
-      <Menu>
-        <MenuButton
-          as={IconButton}
-          icon={<FaChevronDown />}
-          mx="0"
-          ml="0 !important"
-        />
-        <MenuList
-          zIndex={2}
-          minW="130px"
-        >
-          {project.settlement ? (
-            <MenuItem
-              variant="ghost"
-              size="sm"
-              colorScheme="grey"
-              as={Link}
-              href={storefrontUrl}
-              target="_blank"
-              icon={<FaShareFromSquare size={14} />}
-              borderRadius="8px"
-              fontSize="14px"
-              fontWeight="600"
-              textDecoration="none"
-              height="32px"
-            >
-              {t('Storefront')}
-            </MenuItem>
-          ) : (
-            <MenuItem
-              variant="ghost"
-              size="sm"
-              colorScheme="grey"
-              as={Link}
-              href={`${WA_BACKEND_URL}/site/#/routing/`}
-              icon={<FaShareFromSquare size={14} />}
-              borderRadius="8px"
-              fontSize="14px"
-              fontWeight="600"
-              textDecoration="none"
-              height="32px"
-            >
-              {t('Attach to settlement')}
-            </MenuItem>
-          )}
-        </MenuList>
-      </Menu>
-    </ButtonGroup>
-  );
-});
-
-function ResponsiveButtons() {
-  const editor = useEditorStore(EDITOR_STORE.EDITOR);
-  const layerManagerStore = useLayerManagerStore((store) => store);
-
-  const commands = editor.Commands;
-
-  const [selectedDevice, setSelectedDevice] = useState<string>(DEVICE_TYPE.DESKTOP);
-  const [swVisibility, setSwVisibility] = useState(false);
-
-  const { t } = useTranslation();
-
-  const handleUpdateDevice = (device: Device) => {
-    setSelectedDevice(device.id as string);
-  };
-
   const toggleComponentsBorderHandler = () => {
     const isBordersVisible = commands.isActive('sw-visibility');
     if (isBordersVisible) {
@@ -272,6 +194,138 @@ function ResponsiveButtons() {
     }
 
     setSwVisibility(commands.isActive('sw-visibility'));
+  };
+
+  return (
+    <Flex gap="14px">
+      <Flex gap="4px">
+        <Tooltip
+          placement="bottom"
+          borderRadius="4px"
+          label={t('Toggle components visibility')}
+          hasArrow
+        >
+          <IconButton
+            variant="ghost"
+            size="sm"
+            colorScheme={swVisibility ? 'dodger' : 'grey'}
+            aria-label="Toggle components visibility"
+            mr={0}
+            icon={<FaVectorSquare size={16} />}
+            onClick={() => toggleComponentsBorderHandler()}
+          />
+        </Tooltip>
+        <Tooltip
+          placement="bottom"
+          borderRadius="4px"
+          label={t('Toggle Layer Manager')}
+          hasArrow
+        >
+          <IconButton
+            aria-label="Open Layer Manager"
+            variant="ghost"
+            size="sm"
+            colorScheme={layerManagerStore.isOpen ? 'dodger' : 'grey'}
+            mr={0}
+            icon={<FaLayerGroup size={18} />}
+            onClick={() => layerManagerStore.onToggle()}
+          />
+        </Tooltip>
+        {project.settlement && (
+          <Tooltip
+            label={t('Preview')}
+            placement="bottom"
+            borderRadius="4px"
+            hasArrow
+          >
+            <IconButton
+              as={Link}
+              href={storefrontUrl}
+              target="_blank"
+              size="sm"
+              variant="ghost"
+              colorScheme="grey"
+              aria-label="Preview"
+              mr={0}
+              icon={<FaEye size={18} />}
+              onClick={handleSave}
+            />
+          </Tooltip>
+        )}
+      </Flex>
+      <ButtonGroup
+        colorScheme="malachite"
+        size="sm"
+        isAttached
+      >
+        <Button
+          onClick={handleSave}
+          leftIcon={<FaFloppyDisk size={18} />}
+          isLoading={isLoading}
+          isDisabled={isLoading}
+          mr="0"
+          pr="6px"
+        >
+          {t('Save')}
+        </Button>
+        <Menu>
+          <MenuButton
+            as={IconButton}
+            icon={<FaChevronDown />}
+            mx="0"
+            ml="0 !important"
+          />
+          <MenuList
+            zIndex={2}
+            minW="130px"
+          >
+            {project.settlement ? (
+              <MenuItem
+                variant="ghost"
+                size="sm"
+                colorScheme="grey"
+                as={Link}
+                href={storefrontUrl}
+                target="_blank"
+                icon={<FaShareFromSquare size={14} />}
+                borderRadius="8px"
+                fontSize="14px"
+                fontWeight="600"
+                textDecoration="none"
+                height="32px"
+              >
+                {t('Storefront')}
+              </MenuItem>
+            ) : (
+              <MenuItem
+                variant="ghost"
+                size="sm"
+                colorScheme="grey"
+                as={Link}
+                href={`${WA_BACKEND_URL}/site/#/routing/`}
+                icon={<FaShareFromSquare size={14} />}
+                borderRadius="8px"
+                fontSize="14px"
+                fontWeight="600"
+                textDecoration="none"
+                height="32px"
+              >
+                {t('Attach to settlement')}
+              </MenuItem>
+            )}
+          </MenuList>
+        </Menu>
+      </ButtonGroup>
+    </Flex>
+  );
+});
+
+function ResponsiveButtons() {
+  const editor = useEditorStore(EDITOR_STORE.EDITOR);
+  const [selectedDevice, setSelectedDevice] = useState<string>(DEVICE_TYPE.DESKTOP);
+
+  const handleUpdateDevice = (device: Device) => {
+    setSelectedDevice(device.id as string);
   };
 
   // Listen to device:select event to be aware if the device changes from somewhere else.
@@ -285,7 +339,16 @@ function ResponsiveButtons() {
   }, []);
 
   return (
-    <Flex>
+    <Flex
+      alignItems="center"
+      borderLeft="1px solid"
+      borderRight="1px solid"
+      borderColor="grey.100"
+      height="full"
+      px="12px"
+      gap="4px"
+      _dark={{ borderColor: 'ebony.500' }}
+    >
       {Object.values(DEVICE_TYPE).map((device) => (
         <Tooltip
           key={device}
@@ -298,6 +361,7 @@ function ResponsiveButtons() {
             variant="ghost"
             size="sm"
             colorScheme={selectedDevice === device ? 'dodger' : 'grey'}
+            marginRight="0px"
             aria-label={DEVICE_TYPE_NAME[device]}
             icon={DEVICE_TYPE_ICON[device]}
             {...(device === DEVICE_TYPE.MOBILE_LANDSCAPE ? { transform: 'rotate(90deg)' } : {})}
@@ -305,36 +369,6 @@ function ResponsiveButtons() {
           />
         </Tooltip>
       ))}
-      <Tooltip
-        placement="bottom"
-        borderRadius="4px"
-        label={t('Toggle components visibility')}
-        hasArrow
-      >
-        <IconButton
-          variant="ghost"
-          size="sm"
-          colorScheme={swVisibility ? 'dodger' : 'grey'}
-          aria-label="Toggle components visibility"
-          icon={<FaVectorSquare size={16} />}
-          onClick={() => toggleComponentsBorderHandler()}
-        />
-      </Tooltip>
-      <Tooltip
-        placement="bottom"
-        borderRadius="4px"
-        label={t('Toggle Layer Manager')}
-        hasArrow
-      >
-        <IconButton
-          aria-label="Open Layer Manager"
-          variant="ghost"
-          size="sm"
-          colorScheme={layerManagerStore.isOpen ? 'dodger' : 'grey'}
-          icon={<FaLayerGroup size={18} />}
-          onClick={() => layerManagerStore.onToggle()}
-        />
-      </Tooltip>
     </Flex>
   );
 }
@@ -386,7 +420,11 @@ export function Navbar() {
           {t('Add Block')}
         </Button>
       </Flex>
-      <Flex gap="14px">
+      <Flex
+        gap="14px"
+        height="full"
+        alignItems="center"
+      >
         <TemplateNavigation />
         <Button
           colorScheme="grey"

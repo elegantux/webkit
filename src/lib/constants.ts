@@ -14,6 +14,7 @@ export const WA_BACKEND_URL = window.webkitBackendUrls.backendUrl;
 export const WA_APP_URL = window.webkitBackendUrls.backendApiUrl;
 // @ts-ignore
 export const WA_APP_PATH = window.webkitBackendUrls.backendAppStaticUrl;
+export const WA_APP_FULL_URL = `${HOST}${WA_APP_URL}`;
 
 export const WA_THEME_MODE_LS_KEY = 'wa_theme_user_mode';
 export const WA_THEME_MODE_CHANGE_EVENT_NAME = 'wa-theme-change';

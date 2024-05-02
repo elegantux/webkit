@@ -88,7 +88,7 @@ export function ProjectCard({ project }: { project: Project }) {
             />
             <Heading
               as="span"
-              size="sm"
+              size="md"
               lineHeight={1.5}
             >
               {project.name}
