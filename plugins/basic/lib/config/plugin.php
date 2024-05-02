@@ -2,7 +2,7 @@
 
 return array(
   'name'            => 'Basic Components',
-  'description'     => 'Description',
+  'description'     => 'A collection of components for you site',
   'img'             => 'img/plugin.png',
   'vendor'          => '1275846',
   'version'         => '0.0.1',
