@@ -248,7 +248,6 @@ const SaveProject = memo(() => {
               aria-label="Preview"
               mr={0}
               icon={<FaEye size={18} />}
-              onClick={handleSave}
             />
           </Tooltip>
         )}
