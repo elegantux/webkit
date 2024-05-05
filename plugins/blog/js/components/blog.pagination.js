@@ -146,6 +146,8 @@
             return;
           }
 
+          // Stop tracking changes, we don't need to push the following changes to the UndoManager
+          editor.UndoManager.stop();
           // Clear components to make sure that there is nothing in there.
           this.model.components(null);
 
@@ -155,6 +157,8 @@
           // Use the "content" property instead of "components" to prevent formatting
           // of smarties used in html element attributes.
           this.model.set('content', responseBody.data.model);
+          // Continue tracking changes
+          editor.UndoManager.start();
 
           // Update the widget view in the canvas
           this.updateInnerHtml(responseBody.data.view);

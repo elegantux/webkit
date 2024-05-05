@@ -154,6 +154,9 @@ const initEditor = async (
     layerManager: {
       appendTo: '#webkit-layer-manager',
     },
+    undoManager: {
+      trackSelection: false,
+    },
     selectorManager: {
       componentFirst: true,
       custom: true,

@@ -137,14 +137,6 @@ export function DashboardSidebar() {
           {t('Projects')}
         </SidebarLink>
         <SidebarLink
-          to={mediaRoute.to}
-          params={{}}
-          opacity="0.5"
-        >
-          <FaImages size={18} />
-          {t('Media Files')}
-        </SidebarLink>
-        <SidebarLink
           to={pluginsRoute.to}
           params={{}}
           activeOptions={{ exact: true }}
@@ -165,6 +157,14 @@ export function DashboardSidebar() {
         direction="column"
         mt="auto"
       >
+        <SidebarLink
+          to={mediaRoute.to}
+          params={{}}
+          opacity="0.5"
+        >
+          <FaImages size={18} />
+          {t('Media Files')}
+        </SidebarLink>
         <SidebarLink
           to={settingsRoute.to}
           params={{}}
