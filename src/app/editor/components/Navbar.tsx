@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   ButtonGroup,
   Flex,
@@ -15,7 +16,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { Suspense, memo, useEffect, useState } from 'react';
-import { useNavigate, useRouter } from '@tanstack/react-router';
+import { useBlocker, useNavigate, useRouter } from '@tanstack/react-router';
 import {
   FaAngleLeft,
   FaChevronDown,
@@ -23,7 +24,7 @@ import {
   FaEye,
   FaFloppyDisk,
   FaLayerGroup,
-  FaMagnifyingGlass,
+  // FaMagnifyingGlass,
   FaMobileButton,
   FaShareFromSquare,
   FaTabletButton,
@@ -116,6 +117,47 @@ function TemplateNavigation() {
   );
 }
 
+function UndoIndicator() {
+  const editor = useEditorStore((state) => state.editor);
+  const [hasUndo, setHasUndo] = useState(false);
+  const { t } = useTranslation();
+
+  const onUndoRedo = () => {
+    setHasUndo(editor.UndoManager.hasUndo());
+  };
+
+  useBlocker(() => window.confirm(t('You have unsaved changes. Are you sure you want to leave?')), hasUndo);
+
+  useEffect(() => {
+    editor.UndoManager.clear();
+    onUndoRedo();
+
+    editor.on('change:changesCount', onUndoRedo);
+
+    return () => {
+      editor.off('change:changesCount', onUndoRedo);
+    };
+  }, []);
+
+  if (!hasUndo) {
+    return null;
+  }
+
+  return (
+    <Box
+      position="absolute"
+      top="-4px"
+      left="-4px"
+      width="10px"
+      height="10px"
+      borderRadius="full"
+      bgColor="orange"
+      pointerEvents="none"
+      boxShadow="sm"
+    />
+  );
+}
+
 const SaveProject = memo(() => {
   const [swVisibility, setSwVisibility] = useState(false);
   const toast = useToast();
@@ -172,7 +214,7 @@ const SaveProject = memo(() => {
         },
       });
       toast({
-        title: t('Project saved successfully'),
+        title: t('Template saved successfully'),
         status: 'success',
         duration: 3000,
       });
@@ -258,6 +300,7 @@ const SaveProject = memo(() => {
         isAttached
       >
         <Button
+          position="relative"
           onClick={handleSave}
           leftIcon={<FaFloppyDisk size={18} />}
           isLoading={isLoading}
@@ -266,6 +309,7 @@ const SaveProject = memo(() => {
           pr="6px"
         >
           {t('Save')}
+          <UndoIndicator />
         </Button>
         <Menu>
           <MenuButton
@@ -425,15 +469,15 @@ export function Navbar() {
         alignItems="center"
       >
         <TemplateNavigation />
-        <Button
-          colorScheme="grey"
-          variant="ghost"
-          size="sm"
-          onClick={templatesModal.modalDisclosure.onOpen}
-          leftIcon={<FaMagnifyingGlass size={16} />}
-        >
-          {t('Templates')}
-        </Button>
+        {/* <Button */}
+        {/*  colorScheme="grey" */}
+        {/*  variant="ghost" */}
+        {/*  size="sm" */}
+        {/*  onClick={templatesModal.modalDisclosure.onOpen} */}
+        {/*  leftIcon={<FaMagnifyingGlass size={16} />} */}
+        {/* > */}
+        {/*  {t('Templates')} */}
+        {/* </Button> */}
         <ResponsiveButtons />
       </Flex>
       <SaveProject />

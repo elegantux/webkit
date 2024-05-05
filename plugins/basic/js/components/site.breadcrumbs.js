@@ -217,8 +217,12 @@
 
           const responseBody = await response.json();
 
+          // Stop tracking changes, we don't need to push the following changes to the UndoManager
+          editor.UndoManager.stop();
           // Update content
           this.model.components(responseBody.data.model);
+          // Continue tracking changes
+          editor.UndoManager.start();
 
           editor.runCommand('trait-manager:update-property-list');
 
