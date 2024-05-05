@@ -43,7 +43,6 @@ export const NumberPropertyType = memo(({ property }: { property: ExtendedProper
         propertyLabel={propertyLabel}
         hasInheritedValue={hasInheritedValue}
         hasValue={!!value}
-        // onClear={clearProperty}
       />
       <InputGroup
         variant="style-text"

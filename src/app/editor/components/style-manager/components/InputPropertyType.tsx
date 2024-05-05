@@ -295,7 +295,6 @@ export const InputProperty = memo(
                     key={option.value}
                     onClick={() => handleMenuChange(option)}
                     fontSize="sm"
-                    // bgColor={value.includes(String(option.value)) ? 'red' : 'transparent'}
                     className={value.includes(String(option.value)) ? 'active' : ''}
                   >
                     {option.label}
@@ -333,7 +332,6 @@ export const InputPropertyType = memo(({ property }: { property: ExtendedPropert
           propertyLabel={propertyLabel}
           hasInheritedValue={hasInheritedValue}
           hasValue={!!value}
-          // onClear={clearProperty}
         />
       )}
       <InputProperty

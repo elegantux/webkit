@@ -120,6 +120,7 @@
   "Select component": "Выберите компонент",
   "or": "или",
   "Add Components": "Добавить Компоненты",
+  "The value of this property is derived from the CSS rules or selectors related to this component": "Значение этого свойства получено из CSS правил или селекторов, связанных с этим компонентом",
   "Icon not found": "Иконка не найдена",
   "Select Icon": "Выберите Иконку",
   "Insert": "Вставить",

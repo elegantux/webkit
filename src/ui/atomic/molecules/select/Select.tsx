@@ -142,7 +142,6 @@ export const SELECT_LIGHT_STYLES: StylesConfig = {
     ...base,
     gap: '2px',
     alignItems: 'center',
-    // padding: 0,
     margin: '0 8px 0 0',
     backgroundColor: 'transparent',
     '& > .MultiValueGeneric2': {
@@ -418,14 +417,11 @@ const SELECT_LIGHT_STYLE_MANAGER_VARIANT: StylesConfig = {
     ...SELECT_LIGHT_STYLES.input!(base, props),
     fontSize: '14px',
     fontWeight: '500',
-    // color: colors.grey[900],
-    // margin: 0,
   }),
   singleValue: (base, props) => ({
     ...SELECT_LIGHT_STYLES.singleValue!(base, props),
     fontSize: '14px',
     fontWeight: '500',
-    // color: colors.grey[900],
   }),
   indicatorsContainer: (base, props) => ({
     ...SELECT_LIGHT_STYLES.indicatorsContainer!(base, props),

@@ -84,17 +84,8 @@ export const ColorPropertyType = memo(({ property }: { property: ExtendedPropert
         propertyLabel={propertyLabel}
         hasInheritedValue={hasInheritedValue}
         hasValue={!!value}
-        // onClear={handleClearButton}
       />
       <Flex>
-        {/* <Input */}
-        {/*  type="text" */}
-        {/*  textAlign="left" */}
-        {/*  variant="filled" */}
-        {/*  size="sm" */}
-        {/*  value={value} */}
-        {/*  isDisabled */}
-        {/* /> */}
         <InputGroup
           variant="style-text"
           size="sm"

@@ -49,7 +49,6 @@ export const FontFamilyProperty = memo(({ property }: { property: ExtendedProper
         propertyLabel={propertyLabel}
         hasInheritedValue={hasInheritedValue}
         hasValue={hasValue}
-        // onClear={clearProperty}
       />
       {propertyOptions ? (
         <SelectProperty

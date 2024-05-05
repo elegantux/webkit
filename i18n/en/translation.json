@@ -120,6 +120,7 @@
   "Select component": "Select component",
   "or": "or",
   "Add Components": "Add Components",
+  "The value of this property is derived from the CSS rules or selectors related to this component": "The value of this property is derived from the CSS rules or selectors related to this component",
   "Icon not found": "Icon not found",
   "Select Icon": "Select Icon",
   "Insert": "Insert",

@@ -37,7 +37,6 @@ export const RadioPropertyType = memo(({ property }: { property: ExtendedPropert
         propertyLabel={propertyLabel}
         hasInheritedValue={hasInheritedValue}
         hasValue={!!value}
-        // onClear={clearProperty}
       />
       {propertyOptions ? (
         <ButtonGroup
@@ -80,7 +79,6 @@ export const RadioPropertyType = memo(({ property }: { property: ExtendedPropert
                 flex={1}
                 borderColor="transparent"
                 rounded="4px"
-                // backgroundColor={value === option.value ? activeBgColor : bgColor}
                 _groupHover={{ borderColor: value === option.value ? focusedBorderColor : borderColor }}
               />
             </Tooltip>

@@ -16,15 +16,12 @@ export function PropertyHeader({
   onClear?: () => void;
 }) {
   const theme = useTheme();
-  // const activeLabelColor = useColorModeValue('dodger.500', 'dodger.200');
   const activeLabelWithParentValueColor = useColorModeValue(theme.colors.green[500], theme.colors.green[200]);
   const { t } = useTranslation();
 
   let labelColor: string = 'grey.600';
   if (hasInheritedValue) {
     labelColor = activeLabelWithParentValueColor;
-  } else if (hasValue) {
-    // labelColor = activeLabelColor;
   }
 
   return (
@@ -43,7 +40,7 @@ export function PropertyHeader({
       {hasValue && !hasInheritedValue && onClear && <ClearValueButton onClick={onClear} />}
       {hasValue && hasInheritedValue && (
         <Tooltip
-          label={t('The value of this property is derived from the CSS rules related to this component.')}
+          label={t('The value of this property is derived from the CSS rules or selectors related to this component')}
           fontSize="12px"
           borderRadius="4px"
           hasArrow
