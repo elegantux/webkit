@@ -15,9 +15,12 @@ function SidebarLink(props: PropsWithChildren<ChakraProps & LinkProps>) {
   const theme = useTheme();
   const color = useColorModeValue('grey.700', 'grey.300');
   const iconColor = useColorModeValue('grey.300', 'grey.700');
-  const activeColor = useColorModeValue('grey.900', 'dodger.200');
+  const activeColor = useColorModeValue('grey.900', 'grey.50');
   const activeBgColor = useColorModeValue('grey.50', hexOpacity(theme.colors.ebony[400], 0.3));
-  const hoverBgColor = useColorModeValue('grey.50', hexOpacity(theme.colors.ebony[400], 0.2));
+  const hoverBgColor = useColorModeValue(
+    hexOpacity(theme.colors.grey[50], 0.6),
+    hexOpacity(theme.colors.ebony[400], 0.2)
+  );
 
   const { to } = props;
 

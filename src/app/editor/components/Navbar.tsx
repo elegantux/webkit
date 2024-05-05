@@ -416,7 +416,7 @@ export function Navbar() {
           iconSpacing="6px"
           onClick={openBlockListSidebar}
         >
-          {t('Add Block')}
+          {t('Components')}
         </Button>
       </Flex>
       <Flex

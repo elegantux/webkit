@@ -172,7 +172,7 @@ export function Sidebar() {
             leftIcon={<FaCirclePlus size={20} />}
             iconSpacing="6px"
           >
-            {t('Add Block')}
+            {t('Add Components')}
           </Button>
         </Flex>
       )}

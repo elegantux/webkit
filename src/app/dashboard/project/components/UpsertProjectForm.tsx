@@ -310,7 +310,7 @@ export function UpsertProjectForm({ project }: { project?: Project }) {
           fontSize="sm"
           mb={4}
         >
-          {t('Select an application for the project')}:
+          {t('Select an application for the project')}*
         </FormLabel>
         <Grid
           gridTemplateColumns={`repeat(${appSelectOptions.length}, 1fr)`}

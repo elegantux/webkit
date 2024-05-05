@@ -1,7 +1,7 @@
 import { FaXmark as XIcon } from 'react-icons/fa6';
-import { IconButton } from '@chakra-ui/react';
+import { IconButton, IconButtonProps } from '@chakra-ui/react';
 
-export function ClearValueButton({ onClick }: { onClick?: Function }) {
+export function ClearValueButton(props: Omit<IconButtonProps, 'aria-label'>) {
   return (
     <IconButton
       variant="ghost"
@@ -10,7 +10,7 @@ export function ClearValueButton({ onClick }: { onClick?: Function }) {
       minW="auto"
       height="auto"
       icon={<XIcon />}
-      onClick={() => onClick?.()}
+      {...props}
     />
   );
 }

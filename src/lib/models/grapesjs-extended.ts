@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { Block, Property } from 'grapesjs';
 
 import { SelectOptionProps } from '@ui/atomic/molecules/select/Select';
@@ -7,6 +8,8 @@ export type ExtendedProperty = Property<{
   units?: string[];
   colSpan?: number;
   visible?: boolean;
+  leftAddon?: ReactNode; // InputGroup left addon
+  hideLabel?: boolean;
 }>;
 
 export type ExtendedBlock = Block & {

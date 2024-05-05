@@ -1,16 +1,20 @@
 import {
   Flex,
+  InputGroup,
+  InputLeftAddon,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Tooltip,
 } from '@chakra-ui/react';
 import { memo } from 'react';
 
 import { ExtendedProperty } from '@lib/models/grapesjs-extended';
 import { PropertyHeader } from '@app/editor/components/style-manager/components/PropertyHeader';
-import { useStyleProperty } from '@app/editor/components/style-manager/lib/utils';
+import { useDraggableValue, useStyleProperty } from '@app/editor/components/style-manager/lib/utils';
+import { ClearValueButton } from '@app/editor/components/style-manager/components/ClearValueButton';
 
 type GridTemplateColumnsObject = {
   columns: number;
@@ -38,7 +42,7 @@ const objectToGridTemplateColumns = (obj: GridTemplateColumnsObject): string => 
 };
 
 export const GridTemplateColumnsType = memo(({ property }: { property: ExtendedProperty }) => {
-  const { value, hasInheritedValue, clearProperty, propertyLabel } = useStyleProperty(property, {
+  const { value, hasInheritedValue, leftAddon, clearProperty, propertyLabel } = useStyleProperty(property, {
     validateValue: (propertyValue) => {
       const columns = parseGridTemplateColumns(propertyValue);
       return columns ? String(columns.columns) : '';
@@ -49,25 +53,62 @@ export const GridTemplateColumnsType = memo(({ property }: { property: ExtendedP
     property.upValue(objectToGridTemplateColumns({ columns: Number(valueAsString), width: '1fr' }));
   };
 
+  const { ref: draggableRef } = useDraggableValue({
+    value: Number(value),
+    onChange: (v) => handleInputChange(String(v)),
+  });
+
   return (
     <Flex direction="column">
       <PropertyHeader
         propertyLabel={propertyLabel}
         hasInheritedValue={hasInheritedValue}
         hasValue={!!value}
-        onClear={clearProperty}
       />
-      <NumberInput
+      <InputGroup
+        variant="style-text"
         size="sm"
-        value={value}
-        onChange={handleInputChange}
+        {...(value ? { className: `active ${hasInheritedValue ? 'inherit' : ''}` } : {})}
       >
-        <NumberInputField />
-        <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
-        </NumberInputStepper>
-      </NumberInput>
+        {leftAddon && (
+          <Tooltip
+            label={propertyLabel}
+            hasArrow
+          >
+            <InputLeftAddon ref={draggableRef}>{leftAddon}</InputLeftAddon>
+          </Tooltip>
+        )}
+        <NumberInput
+          size="sm"
+          variant="style-number"
+          value={value}
+          onChange={handleInputChange}
+          {...(value.length > 0 ? { className: `active ${hasInheritedValue ? 'inherit' : ''}` } : {})}
+        >
+          <NumberInputField value={value} />
+          <Flex
+            position="absolute"
+            top={0}
+            right={0}
+            height="full"
+            gap="2px"
+            align="center"
+          >
+            <NumberInputStepper position="relative">
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+            {!!value && (
+              <ClearValueButton
+                variant="unit"
+                color="grey.400"
+                onClick={clearProperty}
+                mr="3px !important"
+              />
+            )}
+          </Flex>
+        </NumberInput>
+      </InputGroup>
     </Flex>
   );
 });

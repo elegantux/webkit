@@ -28,6 +28,7 @@ const baseStyle = definePartsStyle({
     color: 'grey.900',
     bgColor: 'transparent',
     boxShadow: 'none',
+    borderRadius: '4px',
     transitionDuration: '0.1s',
     py: '6px',
     _hover: {
@@ -48,6 +49,12 @@ const baseStyle = definePartsStyle({
       _focus: {
         bg: hexOpacity(colors.grey['50'], 0.1),
       },
+      '&.active': {
+        bg: hexOpacity(colors.grey['50'], 0.2),
+      },
+    },
+    '&.active': {
+      bg: hexOpacity(colors.grey['100'], 0.5),
     },
   },
   groupTitle: {
