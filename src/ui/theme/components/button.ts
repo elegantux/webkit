@@ -164,7 +164,7 @@ const variantUnit = (props: StyleFunctionProps) => {
     margin: 0,
     borderRadius: 4,
     color: resolveThemeColor(props, 'grey.50', 'grey.200'),
-    bgColor: resolveThemeColor(props, 'grey.300', 'grey.900'),
+    bgColor: resolveThemeColor(props, 'grey.400', 'grey.900'),
     _hover: {
       textDecoration: 'none',
       ...styles._hover,

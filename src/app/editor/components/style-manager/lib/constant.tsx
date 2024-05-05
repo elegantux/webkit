@@ -6,6 +6,23 @@ import {
   FaArrowsUpDown as ArrowsUpDownIcon,
   FaA as AutoIcon,
   FaBan as BanIcon,
+  FaAlignCenter,
+  FaAlignJustify,
+  FaAlignLeft,
+  FaAlignRight,
+  FaArrowDown19,
+  FaArrowDown91,
+  FaArrowsLeftRightToLine,
+  FaFont,
+  FaHandPointer,
+  FaI,
+  FaICursor,
+  FaItalic,
+  FaQuestion,
+  FaStrikethrough,
+  FaTextHeight,
+  FaTextWidth,
+  FaUnderline,
   FaEyeSlash as HiddenIcon,
   FaArrowsLeftRight as HorizontalArrowsLeftRight,
   FaArrowsLeftRightToLine as HorizontalStretchIcon,
@@ -21,6 +38,31 @@ import {
   BsAlignStart as FlexAlignStart,
   BsAlignTop as FlexAlignTop,
 } from 'react-icons/bs';
+import {
+  LuArrowDownFromLine,
+  LuArrowDownToLine,
+  LuArrowLeftFromLine,
+  LuArrowLeftToLine,
+  LuArrowRightFromLine,
+  LuArrowRightToLine,
+  LuArrowUpFromLine,
+  LuArrowUpToLine,
+  LuCaseLower,
+  LuCaseSensitive,
+  LuCaseUpper,
+  LuColumns,
+} from 'react-icons/lu';
+import { ChakraProps, Text } from '@chakra-ui/react';
+import { PropsWithChildren } from 'react';
+
+import BorderTopIcon from '@assets/icons/style-manager/border-top-icon.svg?react';
+import BorderLeftIcon from '@assets/icons/style-manager/border-left-icon.svg?react';
+import BorderBottomIcon from '@assets/icons/style-manager/border-bottom-icon.svg?react';
+import BorderRightIcon from '@assets/icons/style-manager/border-right-icon.svg?react';
+import TopLeftRadiusIcon from '@assets/icons/style-manager/top-left-radius-icon.svg?react';
+import TopRightRadiusIcon from '@assets/icons/style-manager/top-right-radius-icon.svg?react';
+import BottomLeftRadiusIcon from '@assets/icons/style-manager/bottom-left-radius-icon.svg?react';
+import BottomRightRadiusIcon from '@assets/icons/style-manager/bottom-right-radius-icon.svg?react';
 
 export const UNIT_TYPES: Record<string, string> = {
   PX: 'px',
@@ -129,8 +171,8 @@ export const DISPLAY_FLEX_PROPERTIES = [
     default: '',
     colSpan: 2,
     options: [
-      { value: 'column', label: 'Column', icon: ArrowDownIcon },
-      { value: 'column-reverse', label: 'Column Reverse', icon: ArrowUpIcon },
+      { value: 'column', label: 'Column', icon: FaArrowDown19 },
+      { value: 'column-reverse', label: 'Column Reverse', icon: FaArrowDown91 },
       { value: 'row', label: 'Row', icon: ArrowRightIcon },
       { value: 'row-reverse', label: 'Row Reverse', icon: ArrowLeftIcon },
     ],
@@ -151,6 +193,7 @@ export const DISPLAY_GRID_PROPERTIES = [
     type: STYLE_TYPES.INPUT,
     default: '',
     min: 0,
+    leftAddon: <LuColumns size={24} />,
   },
   // {
   //   label: 'Grid Rows',
@@ -182,6 +225,7 @@ export const DISPLAY_COMMON_PROPERTIES = [
     default: '',
     units: ['px', 'vw'],
     min: 0,
+    leftAddon: <FaArrowsLeftRightToLine size={18} />,
   },
 ];
 
@@ -219,9 +263,10 @@ export const typographySector = {
       type: STYLE_TYPES.INPUT,
       label: 'Font Size',
       property: 'font-size',
-      default: '16',
+      default: '',
       units: ['px', 'rem'],
       min: 0,
+      leftAddon: <FaFont size={14} />,
     },
     {
       type: STYLE_TYPES.COLOR,
@@ -233,7 +278,6 @@ export const typographySector = {
       label: 'Font Family',
       property: 'font-family',
       default: '',
-      // options: fontFamilyNames.map(font => ({ label: font, value: font }))
       options: [
         // sans-serif
         {
@@ -277,7 +321,7 @@ export const typographySector = {
     },
     {
       // Default options
-      type: STYLE_TYPES.SELECT,
+      type: STYLE_TYPES.RADIO,
       label: 'Text Align',
       property: 'text-align',
       default: '',
@@ -285,18 +329,22 @@ export const typographySector = {
         {
           label: 'Left',
           value: 'left',
+          icon: FaAlignLeft,
         },
         {
           label: 'Center',
           value: 'center',
+          icon: FaAlignCenter,
         },
         {
           label: 'Right',
           value: 'right',
+          icon: FaAlignRight,
         },
         {
           label: 'Justify',
           value: 'justify',
+          icon: FaAlignJustify,
         },
       ],
     },
@@ -311,29 +359,57 @@ export const typographySector = {
       ],
     },
     {
-      type: STYLE_TYPES.SELECT,
+      type: STYLE_TYPES.RADIO,
       label: 'Transform',
       property: 'text-transform',
       default: '',
       options: [
-        { label: 'None', value: 'none' },
-        { label: 'Uppercase', value: 'uppercase' },
-        { label: 'Lowercase', value: 'lowercase' },
-        { label: 'Capitalize', value: 'capitalize' },
+        {
+          label: 'Lowercase',
+          value: 'lowercase',
+          icon: (props: any) => (
+            <LuCaseLower
+              {...props}
+              size={24}
+            />
+          ),
+        },
+        {
+          label: 'Capitalize',
+          value: 'capitalize',
+          icon: (props: any) => (
+            <LuCaseSensitive
+              {...props}
+              size={24}
+            />
+          ),
+        },
+        {
+          label: 'Uppercase',
+          value: 'uppercase',
+          icon: (props: any) => (
+            <LuCaseUpper
+              {...props}
+              size={24}
+            />
+          ),
+        },
       ],
     },
     {
       type: STYLE_TYPES.NUMBER,
       label: 'Line Height',
       property: 'line-height',
+      leftAddon: <FaTextHeight size={18} />,
       // default: '',
     },
     {
       type: STYLE_TYPES.INPUT,
-      units: [UNIT_TYPES.PX, UNIT_TYPES.REM, UNIT_TYPES.PERCENT],
+      units: [UNIT_TYPES.PX, UNIT_TYPES.REM],
       label: 'Letter Spacing',
       property: 'letter-spacing',
-      // default: '',
+      default: '',
+      leftAddon: <FaTextWidth size={14} />,
     },
     {
       type: STYLE_TYPES.SELECT,
@@ -351,40 +427,40 @@ export const typographySector = {
       ],
     },
     {
-      type: STYLE_TYPES.SELECT,
+      type: STYLE_TYPES.RADIO,
       label: 'Text Decoration',
       property: 'text-decoration',
       default: '',
       options: [
-        { label: 'None', value: 'none' },
-        { label: 'Line Through', value: 'line-through' },
-        { label: 'Overline', value: 'overline' },
-        { label: 'Underline', value: 'underline' },
+        { label: 'None', value: 'none', icon: BanIcon },
+        { label: 'Line Through', value: 'line-through', icon: FaStrikethrough },
+        { label: 'Underline', value: 'underline', icon: FaUnderline },
+        // { label: 'Overline', value: 'overline' },
       ],
     },
     {
-      type: STYLE_TYPES.SELECT,
+      type: STYLE_TYPES.RADIO,
       label: 'Font Style',
       property: 'font-style',
       default: '',
       options: [
-        { label: 'Inherit', value: 'inherit' },
-        { label: 'Italic', value: 'italic' },
-        { label: 'Oblique', value: 'oblique' },
-        { label: 'Normal', value: 'normal' },
+        { label: 'Normal', value: 'normal', icon: FaI },
+        { label: 'Italic', value: 'italic', icon: FaItalic },
+        // { label: 'Inherit', value: 'inherit' },
+        // { label: 'Oblique', value: 'oblique' },
       ],
     },
     {
-      type: STYLE_TYPES.SELECT,
+      type: STYLE_TYPES.RADIO,
       label: 'Cursor',
       property: 'cursor',
       default: '',
       options: [
-        { label: 'Pointer', value: 'pointer' },
-        { label: 'Help', value: 'help' },
-        { label: 'Text', value: 'text' },
-        { label: 'Move', value: 'move' },
-        { label: 'Not Allowed', value: 'not-allowed' },
+        { label: 'Pointer', value: 'pointer', icon: FaHandPointer },
+        { label: 'Help', value: 'help', icon: FaQuestion },
+        { label: 'Text', value: 'text', icon: FaICursor },
+        { label: 'Not Allowed', value: 'not-allowed', icon: BanIcon },
+        // { label: 'Move', value: 'move' },
       ],
     },
     {
@@ -394,28 +470,34 @@ export const typographySector = {
       default: '',
       options: [
         { label: 'Break Spaces', value: 'break-spaces' },
-        { label: 'Normal', value: 'normal' },
         { label: 'Nowrap', value: 'nowrap' },
         { label: 'Pre', value: 'pre' },
         { label: 'Pre Line', value: 'pre-line' },
         { label: 'Pre Wrap', value: 'pre-wrap' },
-        { label: 'Inherit', value: 'inherit' },
-        { label: 'Initial', value: 'initial' },
-        { label: 'Revert', value: 'revert' },
-        { label: 'Revert Layer', value: 'revert-layer' },
         { label: 'Unset', value: 'unset' },
       ],
     },
   ],
 };
 
+function WithAddonLabel(props: PropsWithChildren<ChakraProps>) {
+  return (
+    <Text
+      fontWeight="600"
+      w="22px"
+      fontSize="11px"
+      textTransform="uppercase"
+      textAlign="center"
+      {...props}
+    />
+  );
+}
 const sizingProps = {
   default: '',
   options: [
     { label: 'auto', value: 'auto' },
     { label: 'max-content', value: 'max-content' },
     { label: 'min-content', value: 'min-content' },
-    // { label: 'fit-content', value: 'fit-content' },
   ],
 };
 const sizingSector = {
@@ -427,6 +509,7 @@ const sizingSector = {
       label: 'Width',
       property: 'width',
       units: Object.values(WIDTH_UNITS),
+      leftAddon: <WithAddonLabel>W</WithAddonLabel>,
       ...sizingProps,
     },
     {
@@ -434,6 +517,7 @@ const sizingSector = {
       label: 'Height',
       property: 'height',
       units: Object.values(HEIGHT_UNITS),
+      leftAddon: <WithAddonLabel>H</WithAddonLabel>,
       ...sizingProps,
     },
     {
@@ -441,6 +525,8 @@ const sizingSector = {
       label: 'Max Width',
       property: 'max-width',
       units: Object.values(WIDTH_UNITS),
+      leftAddon: <WithAddonLabel>Max</WithAddonLabel>,
+      hideLabel: true,
       ...sizingProps,
     },
     {
@@ -448,6 +534,8 @@ const sizingSector = {
       label: 'Max Height',
       property: 'max-height',
       units: Object.values(HEIGHT_UNITS),
+      leftAddon: <WithAddonLabel>Max</WithAddonLabel>,
+      hideLabel: true,
       ...sizingProps,
     },
     {
@@ -455,6 +543,8 @@ const sizingSector = {
       label: 'Min Width',
       property: 'min-width',
       units: Object.values(WIDTH_UNITS),
+      leftAddon: <WithAddonLabel>Min</WithAddonLabel>,
+      hideLabel: true,
       ...sizingProps,
     },
     {
@@ -462,6 +552,8 @@ const sizingSector = {
       label: 'Min Height',
       property: 'min-height',
       units: Object.values(HEIGHT_UNITS),
+      leftAddon: <WithAddonLabel>Min</WithAddonLabel>,
+      hideLabel: true,
       ...sizingProps,
     },
   ],
@@ -478,14 +570,18 @@ const spacingSector = {
     {
       type: STYLE_TYPES.INPUT,
       property: 'padding-top',
+      label: 'Paddings',
       default: '',
       units: [UNIT_TYPES.PX, UNIT_TYPES.REM, UNIT_TYPES.PERCENT],
+      leftAddon: <LuArrowDownFromLine size={18} />,
     },
     {
       type: STYLE_TYPES.INPUT,
       property: 'margin-top',
+      label: 'Margins',
       units: [UNIT_TYPES.PX, UNIT_TYPES.REM, UNIT_TYPES.PERCENT],
       allowNegativeNumber: true,
+      leftAddon: <LuArrowDownToLine size={18} />,
       ...spacingProps,
     },
     {
@@ -493,12 +589,16 @@ const spacingSector = {
       property: 'padding-bottom',
       default: '',
       units: [UNIT_TYPES.PX, UNIT_TYPES.REM, UNIT_TYPES.PERCENT],
+      leftAddon: <LuArrowUpFromLine size={18} />,
+      hideLabel: true,
     },
     {
       type: STYLE_TYPES.INPUT,
       property: 'margin-bottom',
       units: [UNIT_TYPES.PX, UNIT_TYPES.REM, UNIT_TYPES.PERCENT],
       allowNegativeNumber: true,
+      leftAddon: <LuArrowUpToLine size={18} />,
+      hideLabel: true,
       ...spacingProps,
     },
     {
@@ -506,12 +606,16 @@ const spacingSector = {
       property: 'padding-left',
       default: '',
       units: [UNIT_TYPES.PX, UNIT_TYPES.REM, UNIT_TYPES.PERCENT],
+      leftAddon: <LuArrowRightFromLine size={18} />,
+      hideLabel: true,
     },
     {
       type: STYLE_TYPES.INPUT,
       property: 'margin-left',
       units: [UNIT_TYPES.PX, UNIT_TYPES.REM, UNIT_TYPES.PERCENT],
       allowNegativeNumber: true,
+      leftAddon: <LuArrowRightToLine size={18} />,
+      hideLabel: true,
       ...spacingProps,
     },
     {
@@ -519,12 +623,16 @@ const spacingSector = {
       property: 'padding-right',
       default: '',
       units: [UNIT_TYPES.PX, UNIT_TYPES.REM, UNIT_TYPES.PERCENT],
+      leftAddon: <LuArrowLeftFromLine size={18} />,
+      hideLabel: true,
     },
     {
       type: STYLE_TYPES.INPUT,
       property: 'margin-right',
       units: [UNIT_TYPES.PX, UNIT_TYPES.REM, UNIT_TYPES.PERCENT],
       allowNegativeNumber: true,
+      leftAddon: <LuArrowLeftToLine size={18} />,
+      hideLabel: true,
       ...spacingProps,
     },
   ],
@@ -555,11 +663,6 @@ const borderSector = {
         { label: 'Solid', value: 'solid' },
         { label: 'Dotted', value: 'dotted' },
         { label: 'Dashed', value: 'dashed' },
-        { label: 'Double', value: 'double' },
-        { label: 'Groove', value: 'groove' },
-        { label: 'Ridge', value: 'ridge' },
-        { label: 'Inset', value: 'inset' },
-        { label: 'Outset', value: 'outset' },
       ],
     },
     {
@@ -570,43 +673,92 @@ const borderSector = {
     {
       label: 'Top Width',
       property: 'border-top-width',
+      leftAddon: (
+        <BorderTopIcon
+          width="14px"
+          height="14px"
+        />
+      ),
       ...borderWidthProps,
     },
     {
       label: 'Right Width',
       property: 'border-right-width',
+      leftAddon: (
+        <BorderRightIcon
+          width="14px"
+          height="14px"
+        />
+      ),
       ...borderWidthProps,
     },
     {
       label: 'Bottom Width',
       property: 'border-bottom-width',
+      leftAddon: (
+        <BorderBottomIcon
+          width="14px"
+          height="14px"
+        />
+      ),
       ...borderWidthProps,
     },
     {
       label: 'Left Width',
       property: 'border-left-width',
+      leftAddon: (
+        <BorderLeftIcon
+          width="14px"
+          height="14px"
+        />
+      ),
       ...borderWidthProps,
     },
     {
       label: 'Top-Left Radius',
       property: 'border-top-left-radius',
+      leftAddon: (
+        <TopLeftRadiusIcon
+          width="14px"
+          height="14px"
+        />
+      ),
       ...borderRadiusProps,
     },
     {
       label: 'Top-Right Radius',
       property: 'border-top-right-radius',
+      leftAddon: (
+        <TopRightRadiusIcon
+          width="14px"
+          height="14px"
+        />
+      ),
       ...borderRadiusProps,
     },
     {
       label: 'Bottom-Left Radius',
       property: 'border-bottom-left-radius',
+      leftAddon: (
+        <BottomLeftRadiusIcon
+          width="14px"
+          height="14px"
+        />
+      ),
       ...borderRadiusProps,
     },
     {
       label: 'Bottom-Right Radius',
       property: 'border-bottom-right-radius',
+      leftAddon: (
+        <BottomRightRadiusIcon
+          width="14px"
+          height="14px"
+        />
+      ),
       ...borderRadiusProps,
     },
+    /*
     {
       type: STYLE_TYPES.SELECT,
       label: 'Outline Style',
@@ -617,16 +769,17 @@ const borderSector = {
         { label: 'Solid', value: 'solid' },
         { label: 'Dotted', value: 'dotted' },
         { label: 'Dashed', value: 'dashed' },
-        { label: 'Double', value: 'double' },
-        { label: 'Groove', value: 'groove' },
-        { label: 'Ridge', value: 'ridge' },
-        { label: 'Inset', value: 'inset' },
-        { label: 'Outset', value: 'outset' },
+        // { label: 'Double', value: 'double' },
+        // { label: 'Groove', value: 'groove' },
+        // { label: 'Ridge', value: 'ridge' },
+        // { label: 'Inset', value: 'inset' },
+        // { label: 'Outset', value: 'outset' },
       ],
     },
     {
       label: 'Outline Width',
       property: 'outline-width',
+      leftAddon: <FaRegSquare size={18} />,
       ...borderRadiusProps,
     },
     {
@@ -635,6 +788,7 @@ const borderSector = {
       default: '',
       property: 'outline-color',
     },
+    */
   ],
 };
 
@@ -672,7 +826,7 @@ const positioningSector = {
       type: STYLE_TYPES.RADIO,
       label: 'Position',
       property: 'position',
-      default: 'left',
+      default: '',
       colSpan: 2,
       options: [
         {
@@ -804,7 +958,7 @@ const otherSector = {
       type: STYLE_TYPES.RADIO,
       label: 'Object Fit',
       property: 'object-fit',
-      default: 'contain',
+      default: '',
       colSpan: 2,
       options: [
         { label: 'contain', value: 'contain' },
@@ -817,7 +971,7 @@ const otherSector = {
       type: STYLE_TYPES.NUMBER,
       label: 'Opacity',
       property: 'opacity',
-      default: '1',
+      default: '',
       min: 0,
       max: 1,
       step: 0.01,
@@ -834,8 +988,8 @@ export const styleManagerConfig = {
     spacingSector,
     borderSector,
     // boxShadowSector,
-    positioningSector,
     backgroundSector,
+    positioningSector,
     otherSector,
   ],
 };

@@ -13,13 +13,8 @@ export const RadioPropertyType = memo(({ property }: { property: ExtendedPropert
   const { value, hasInheritedValue, clearProperty, propertyLabel, propertyOptions } = useStyleProperty(property);
 
   const theme = useTheme();
-  const color = useColorModeValue('grey.900', 'grey.300');
-  const activeColor = useColorModeValue('dodger.500', 'dodger.200');
-  const bgColor = useColorModeValue(
-    hexOpacity(theme.colors.stratos[500], 0.05),
-    hexOpacity(theme.colors.grey[50], 0.1)
-  );
-  const activeBgColor = useColorModeValue(theme.colors.dodger[100], hexOpacity(theme.colors.dodger[50], 0.3));
+  const color = useColorModeValue('grey.800', 'grey.300');
+  const activeColor = useColorModeValue('dodger.500', 'dodger.600');
   const borderColor = useColorModeValue(
     hexOpacity(theme.colors.stratos[500], 0.2),
     hexOpacity(theme.colors.grey[50], 0.2)
@@ -28,7 +23,11 @@ export const RadioPropertyType = memo(({ property }: { property: ExtendedPropert
 
   const onChange = (v: SelectOptionProps['value']) => {
     if (typeof v === 'string') {
-      property.upValue(v);
+      if (v === value) {
+        clearProperty();
+      } else {
+        property.upValue(v);
+      }
     }
   };
 
@@ -38,13 +37,34 @@ export const RadioPropertyType = memo(({ property }: { property: ExtendedPropert
         propertyLabel={propertyLabel}
         hasInheritedValue={hasInheritedValue}
         hasValue={!!value}
-        onClear={clearProperty}
+        // onClear={clearProperty}
       />
       {propertyOptions ? (
         <ButtonGroup
           size="sm"
           variant="outline"
           isAttached
+          borderWidth="1px"
+          borderColor="grey.100"
+          rounded="4px"
+          {...(value.length > 0 ? { className: `active ${hasInheritedValue ? 'inherit' : ''}` } : {})}
+          sx={{
+            '&.active': {
+              borderColor: 'dodger.600 !important',
+            },
+            '&.inherit': {
+              borderColor: 'green.500 !important',
+            },
+            _dark: {
+              borderColor: 'ebony.500',
+              '&.active': {
+                borderColor: 'dodger.700 !important',
+              },
+              '&.inherit': {
+                borderColor: 'green.200 !important',
+              },
+            },
+          }}
         >
           {propertyOptions.map((option) => (
             <Tooltip
@@ -59,7 +79,8 @@ export const RadioPropertyType = memo(({ property }: { property: ExtendedPropert
                 color={value === option.value ? activeColor : color}
                 flex={1}
                 borderColor="transparent"
-                backgroundColor={value === option.value ? activeBgColor : bgColor}
+                rounded="4px"
+                // backgroundColor={value === option.value ? activeBgColor : bgColor}
                 _groupHover={{ borderColor: value === option.value ? focusedBorderColor : borderColor }}
               />
             </Tooltip>

@@ -24,7 +24,7 @@ export const FontFamilyProperty = memo(({ property }: { property: ExtendedProper
         }))
       : [];
 
-  const { value, hasInheritedValue, clearProperty, propertyLabel, propertyOptions } = useStyleProperty(property);
+  const { value, hasInheritedValue, propertyLabel, propertyOptions } = useStyleProperty(property);
 
   const hasValue = value.length > 0;
 
@@ -49,13 +49,14 @@ export const FontFamilyProperty = memo(({ property }: { property: ExtendedProper
         propertyLabel={propertyLabel}
         hasInheritedValue={hasInheritedValue}
         hasValue={hasValue}
-        onClear={clearProperty}
+        // onClear={clearProperty}
       />
       {propertyOptions ? (
         <SelectProperty
           value={selectedValue}
           options={selectOptions}
           onChange={handleInputChange}
+          hasInheritedValue={hasInheritedValue}
         />
       ) : (
         <Text>Property options are not defined</Text>

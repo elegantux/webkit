@@ -26,6 +26,7 @@ import { IconType } from 'react-icons';
 
 import { hexOpacity } from '@ui/theme/utils';
 import colors from '@ui/theme/colors';
+import theme from '@ui/theme/theme';
 
 export interface SelectOptionProps<Payload = any> {
   value: string | number;
@@ -35,6 +36,7 @@ export interface SelectOptionProps<Payload = any> {
 }
 
 export type SelectProps = Props & {
+  variant?: SELECT_VARIANTS;
   labelText?: string;
   selectContainerProps?: ChakraProps;
   hideSelectedOptions?: boolean;
@@ -49,6 +51,11 @@ export type SelectProps = Props & {
   OptionItem?: (props: OptionProps) => ReactElement;
   LoadingMessage?: () => ReactElement;
 };
+
+export enum SELECT_VARIANTS {
+  DEFAULT = 'default',
+  STYLE_MANAGER = 'style-manager',
+}
 
 const SELECT_CLASS_NAMES: ClassNamesConfig = {
   menuList: () => 'hide-scrollbar',
@@ -91,6 +98,7 @@ export const SELECT_LIGHT_STYLES: StylesConfig = {
     ':last-of-type': {
       marginBottom: 0,
     },
+    transition: 'all 0.1s ease-in-out',
   }),
   control: (base, state) => ({
     ...base,
@@ -356,6 +364,135 @@ export const SELECT_DARK_STYLES: StylesConfig = {
   }),
 };
 
+const SELECT_LIGHT_STYLE_MANAGER_VARIANT: StylesConfig = {
+  ...SELECT_LIGHT_STYLES,
+  container: () => ({
+    '&.inherit div[class$="-control"]': {
+      borderColor: theme.colors.green[500],
+    },
+  }),
+  menu: (base, props) => ({
+    ...SELECT_LIGHT_STYLES.menu!(base, props),
+    borderRadius: '4px',
+    borderWidth: '1px',
+    borderColor: hexOpacity(colors.grey[50], 0.3),
+    backgroundColor: 'white',
+    padding: '4px',
+    zIndex: 3,
+  }),
+  option: (base, state) => ({
+    ...SELECT_LIGHT_STYLES.option!(base, state),
+    fontSize: '14px',
+    fontWeight: '500',
+    color: colors.grey[900],
+    padding: '0',
+    marginBottom: '0px',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    backgroundColor: state.isSelected ? hexOpacity(colors.grey['100'], 0.5) : 'transparent',
+    ':hover, :active': {
+      backgroundColor: colors.grey[50],
+    },
+    ':last-of-type': {
+      marginBottom: 0,
+    },
+    '& > .option_item': {
+      padding: '4px 12px',
+    },
+  }),
+  control: (base, state) => ({
+    ...base,
+    ...(state.isDisabled ? { userSelect: 'none' } : {}),
+    backgroundColor: 'transparent',
+    opacity: state.isDisabled ? 0.4 : 1,
+    borderRadius: '4px',
+    outline: 'none',
+    boxShadow: 'none',
+    border: `1px solid ${state.hasValue ? colors.dodger[600] : colors.grey[100]}`,
+    minHeight: '34px',
+    ':hover': {
+      borderColor: state.hasValue ? colors.dodger[600] : colors.grey[300],
+    },
+  }),
+  input: (base, props) => ({
+    ...SELECT_LIGHT_STYLES.input!(base, props),
+    fontSize: '14px',
+    fontWeight: '500',
+    // color: colors.grey[900],
+    // margin: 0,
+  }),
+  singleValue: (base, props) => ({
+    ...SELECT_LIGHT_STYLES.singleValue!(base, props),
+    fontSize: '14px',
+    fontWeight: '500',
+    // color: colors.grey[900],
+  }),
+  indicatorsContainer: (base, props) => ({
+    ...SELECT_LIGHT_STYLES.indicatorsContainer!(base, props),
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+  }),
+  dropdownIndicator: (base, props) => ({
+    ...SELECT_LIGHT_STYLES.dropdownIndicator!(base, props),
+    padding: '7px',
+  }),
+  clearIndicator: (base, props) => ({
+    ...SELECT_LIGHT_STYLES.clearIndicator!(base, props),
+    padding: '0 3px 0 0',
+  }),
+};
+
+const SELECT_DARK_STYLE_MANAGER_VARIANT: StylesConfig = {
+  ...SELECT_LIGHT_STYLE_MANAGER_VARIANT,
+  container: (base, props) => ({
+    ...SELECT_LIGHT_STYLE_MANAGER_VARIANT.container!(base, props),
+    '&.inherit div[class$="-control"]': {
+      borderColor: theme.colors.green[200],
+    },
+  }),
+  menu: (base, props) => ({
+    ...SELECT_LIGHT_STYLE_MANAGER_VARIANT.menu!(base, props),
+    borderColor: colors.ebony[500],
+    backgroundColor: colors.ebony[800],
+  }),
+  option: (base, state) => ({
+    ...SELECT_LIGHT_STYLE_MANAGER_VARIANT.option!(base, state),
+    color: colors.grey[50],
+    backgroundColor: state.isSelected ? hexOpacity(colors.grey['50'], 0.2) : 'transparent',
+    ':hover, :active': {
+      backgroundColor: hexOpacity(colors.grey['50'], 0.1),
+    },
+  }),
+  control: (base, state) => ({
+    ...SELECT_LIGHT_STYLE_MANAGER_VARIANT.control!(base, state),
+    color: colors.grey[100],
+    backgroundColor: 'transparent',
+    border: `1px solid ${state.hasValue ? colors.dodger[700] : colors.ebony[500]}`,
+    ':hover': {
+      borderColor: state.hasValue ? colors.dodger[700] : colors.ebony[300],
+    },
+  }),
+  input: (base, props) => ({
+    ...SELECT_LIGHT_STYLE_MANAGER_VARIANT.input!(base, props),
+    color: colors.grey[100],
+  }),
+  singleValue: (base, props) => ({
+    ...SELECT_LIGHT_STYLE_MANAGER_VARIANT.singleValue!(base, props),
+    color: colors.grey[100],
+  }),
+};
+
+const variants = {
+  light: {
+    [SELECT_VARIANTS.DEFAULT]: SELECT_LIGHT_STYLES,
+    [SELECT_VARIANTS.STYLE_MANAGER]: SELECT_LIGHT_STYLE_MANAGER_VARIANT,
+  },
+  dark: {
+    [SELECT_VARIANTS.DEFAULT]: SELECT_DARK_STYLES,
+    [SELECT_VARIANTS.STYLE_MANAGER]: SELECT_DARK_STYLE_MANAGER_VARIANT,
+  },
+};
+
 function DropdownIndicatorRenderer(props: DropdownIndicatorProps) {
   const { isMulti } = props;
   return (
@@ -455,6 +592,7 @@ function OptionRenderer(props: OptionProps) {
   return (
     <components.Option {...props}>
       <Flex
+        className="option_item"
         ref={optionRef}
         align="center"
         justify="space-between"
@@ -501,6 +639,7 @@ export function LoadingMessageRenderer() {
 export const Select = forwardRef(
   <Option, IsMulti extends boolean = false, Group extends GroupBase<Option> = GroupBase<Option>>(
     {
+      variant = SELECT_VARIANTS.DEFAULT,
       labelText,
       selectContainerProps,
       hideSelectedOptions = false,
@@ -522,7 +661,7 @@ export const Select = forwardRef(
     const searchTextRef = useRef<string>('');
     const uniqueId = `select_${Math.random().toFixed(5).slice(2)}`;
     const mode = useColorMode();
-    const styles = mode.colorMode === 'light' ? SELECT_LIGHT_STYLES : SELECT_DARK_STYLES;
+    const styles = variants[mode.colorMode][variant];
 
     useOutsideClick({
       ref: selectContainerRef,

@@ -1,5 +1,6 @@
 import { Flex, Text, Tooltip, useColorModeValue, useTheme } from '@chakra-ui/react';
 import { FaCircleInfo } from 'react-icons/fa6';
+import { useTranslation } from 'react-i18next';
 
 import { ClearValueButton } from '@app/editor/components/style-manager/components/ClearValueButton';
 
@@ -12,17 +13,18 @@ export function PropertyHeader({
   propertyLabel: string;
   hasValue?: boolean;
   hasInheritedValue?: boolean;
-  onClear?: Function;
+  onClear?: () => void;
 }) {
   const theme = useTheme();
-  const activeLabelColor = useColorModeValue('dodger.500', 'dodger.200');
-  const activeLabelWithParentValueColor = useColorModeValue(theme.colors.orange[500], theme.colors.orange[200]);
+  // const activeLabelColor = useColorModeValue('dodger.500', 'dodger.200');
+  const activeLabelWithParentValueColor = useColorModeValue(theme.colors.green[500], theme.colors.green[200]);
+  const { t } = useTranslation();
 
   let labelColor: string = 'grey.600';
   if (hasInheritedValue) {
     labelColor = activeLabelWithParentValueColor;
   } else if (hasValue) {
-    labelColor = activeLabelColor;
+    // labelColor = activeLabelColor;
   }
 
   return (
@@ -38,10 +40,10 @@ export function PropertyHeader({
       >
         {propertyLabel}
       </Text>
-      {hasValue && !hasInheritedValue && <ClearValueButton onClick={onClear} />}
+      {hasValue && !hasInheritedValue && onClear && <ClearValueButton onClick={onClear} />}
       {hasValue && hasInheritedValue && (
         <Tooltip
-          label="The value of this property is derived from the CSS rules related to this component."
+          label={t('The value of this property is derived from the CSS rules related to this component.')}
           fontSize="12px"
           borderRadius="4px"
           hasArrow

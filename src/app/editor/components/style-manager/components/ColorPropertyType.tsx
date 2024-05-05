@@ -1,7 +1,10 @@
 import {
+  Box,
   Button,
   Flex,
   Input,
+  InputGroup,
+  InputLeftAddon,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -20,6 +23,7 @@ import { hexOpacity } from '@ui/theme/utils';
 import { PropertyHeader } from '@app/editor/components/style-manager/components/PropertyHeader';
 import { debounce } from '@lib/utils';
 import { useStyleProperty } from '@app/editor/components/style-manager/lib/utils';
+import { ClearValueButton } from '@app/editor/components/style-manager/components/ClearValueButton';
 
 const pickerColorToString = (color: string | HsvaColor) =>
   typeof color === 'string' ? color : hsvaToHsvaString(color);
@@ -50,7 +54,6 @@ export const ColorPropertyType = memo(({ property }: { property: ExtendedPropert
       return color;
     },
   });
-  console.log(propertyLabel, value);
 
   const hasColor = value.length > 0;
 
@@ -81,43 +84,73 @@ export const ColorPropertyType = memo(({ property }: { property: ExtendedPropert
         propertyLabel={propertyLabel}
         hasInheritedValue={hasInheritedValue}
         hasValue={!!value}
-        onClear={handleClearButton}
+        // onClear={handleClearButton}
       />
       <Flex>
-        <Input
-          type="text"
-          textAlign="left"
-          variant="filled"
+        {/* <Input */}
+        {/*  type="text" */}
+        {/*  textAlign="left" */}
+        {/*  variant="filled" */}
+        {/*  size="sm" */}
+        {/*  value={value} */}
+        {/*  isDisabled */}
+        {/* /> */}
+        <InputGroup
+          variant="style-text"
           size="sm"
-          value={value}
-          isDisabled
-        />
-        <Popover
-          isLazy
-          lazyBehavior="unmount"
+          zIndex={1}
+          {...(value.length > 0 ? { className: `active ${hasInheritedValue ? 'inherit' : ''}` } : {})}
         >
-          <PopoverTrigger>
-            <Button
-              width="32px"
-              minW="32px"
-              height="32px"
-              padding="0"
-              bgColor={hasColor ? displayColor : bgColor}
-              _hover={{ bgColor: hasColor ? displayColor : bgColor }}
+          <InputLeftAddon p={0}>
+            <Popover
+              isLazy
+              lazyBehavior="unmount"
+              // placement="top"
             >
-              {!hasColor && <ColorPickerIcon color={iconColor} />}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent width="auto">
-            <PopoverArrow p={2} />
-            <PopoverBody p="1px">
-              <ColorPicker
-                color={value}
-                onChange={handleInputChange}
+              <PopoverTrigger>
+                <Button
+                  minW="34px"
+                  height="100%"
+                  padding="0"
+                  mr={0}
+                  borderRadius="3px"
+                  bgColor={hasColor ? displayColor : 'transparent'}
+                  _hover={{ bgColor: hasColor ? displayColor : bgColor }}
+                >
+                  {!hasColor && <ColorPickerIcon color={iconColor} />}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent width="auto">
+                <PopoverArrow p={2} />
+                <PopoverBody p="1px">
+                  <ColorPicker
+                    color={value}
+                    onChange={handleInputChange}
+                  />
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
+          </InputLeftAddon>
+          <Input
+            type="text"
+            textAlign="left"
+            defaultValue={value}
+            mr="0 !important"
+          />
+          <Box
+            position="absolute"
+            top="5px"
+            right="4px"
+          >
+            {value.length > 0 && (
+              <ClearValueButton
+                variant="unit"
+                color="grey.400"
+                onClick={handleClearButton}
               />
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
+            )}
+          </Box>
+        </InputGroup>
       </Flex>
     </Flex>
   );

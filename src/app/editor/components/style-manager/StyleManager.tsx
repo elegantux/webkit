@@ -17,6 +17,7 @@ import { FaPen } from 'react-icons/fa6';
 import { EDITOR_STORE, useEditorStore, useStyleManagerSectorsStore } from '@app/editor/lib/store';
 import { STYLE_TYPES } from '@app/editor/components/style-manager/lib/constant';
 import { ExtendedProperty } from '@lib/models/grapesjs-extended';
+import { ResizeCursor } from '@app/editor/components/style-manager/components/ResizeCursor';
 import { InputPropertyType } from '@app/editor/components/style-manager/components/InputPropertyType';
 import { SelectPropertyType } from '@app/editor/components/style-manager/components/SelectPropertyType';
 import { RadioPropertyType } from '@app/editor/components/style-manager/components/RadioPropertyType';
@@ -33,7 +34,10 @@ function StyleSector({ sector }: { sector: Sector }) {
   const hasChanges = useMemo(() => propertyList.map((property) => property.hasValue()).includes(true), [propertyList]);
 
   return (
-    <AccordionItem key={sector.getId()}>
+    <AccordionItem
+      key={sector.getId()}
+      sx={{ '& [aria-expanded="true"] + .chakra-collapse': { overflow: 'visible !important' } }}
+    >
       <AccordionButton
         as={Flex}
         position="sticky"
@@ -141,25 +145,28 @@ export function StyleManager() {
   }, [editor]);
 
   return (
-    <Accordion
-      defaultIndex={[0, 1, 2]}
-      allowMultiple
-    >
-      {sectorList.map((sector) => (
-        <React.Fragment key={sector.getId()}>
-          {sector.getId() === 'display' ? (
-            <DisplaySector
-              key={sector.getId()}
-              sector={sector}
-            />
-          ) : (
-            <StyleSector
-              key={sector.getId()}
-              sector={sector}
-            />
-          )}
-        </React.Fragment>
-      ))}
-    </Accordion>
+    <>
+      <ResizeCursor />
+      <Accordion
+        defaultIndex={[0, 1, 2, 3, 4]}
+        allowMultiple
+      >
+        {sectorList.map((sector) => (
+          <React.Fragment key={sector.getId()}>
+            {sector.getId() === 'display' ? (
+              <DisplaySector
+                key={sector.getId()}
+                sector={sector}
+              />
+            ) : (
+              <StyleSector
+                key={sector.getId()}
+                sector={sector}
+              />
+            )}
+          </React.Fragment>
+        ))}
+      </Accordion>
+    </>
   );
 }
