@@ -45,7 +45,7 @@
         type: 'image',
         label: 'Placeholder Image',
         name: `trait_${COMPONENT_TYPE}__placeholder_src`,
-        default: '/wa-apps/webkit/img/dummy-image.webp',
+        default: window.webkit.webkitBackendUrls.backendAppStaticUrl + '/img/dummy-image.webp',
         changeProp: true,
         group: 'Placeholder',
       },
@@ -88,7 +88,7 @@
           this.el.innerHTML = innerHtml;
         },
         setLoadingView() {
-          this.el.src = '/wa-apps/webkit/img/loading.webp';
+          this.el.src = window.webkit.webkitBackendUrls.backendAppStaticUrl + '/img/loading.webp';
         },
         async handleTraitsChange(model) {
           this.setLoadingView();

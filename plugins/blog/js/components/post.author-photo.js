@@ -42,7 +42,7 @@
           this.el.innerHTML = innerHtml;
         },
         setLoadingView() {
-          this.el.src = '/wa-apps/webkit/img/dummy-image.webp';
+          this.el.src = window.webkit.webkitBackendUrls.backendAppStaticUrl + '/img/dummy-image.webp';
         },
         setEmptyView() {
           const view = `
