@@ -9,7 +9,7 @@ class webkitSiteBackend_page_editHandler extends waEventHandler
     /**
      * Determine if the page belongs to a settlement using a WebKit theme.
      */
-    $webkit_settlement = webkitCrossAppHelper::getWebkitSettlementByPageRoute($app_id, $params['route']);
+    $webkit_settlement = webkitCrossAppHelper::getWebkitSettlementByPageRoute($app_id, webkitUrl::normalizeHookRoute($params['route']));
 
     /**
      * If yes, then allow the page to open in the WebKit editor.
@@ -22,7 +22,7 @@ class webkitSiteBackend_page_editHandler extends waEventHandler
         'page_title' => $params['name'],
       ];
       return [
-        'action_button_li' => webkitEditorComponent::getTemplateHTML('wa-apps/'. webkitConst::APP_ID .'/templates/hooks/edit-with-webkit-button.html', $cta_info)
+        'action_button_li' => webkitEditorComponent::getTemplateHTML(webkitUrl::getAppPath('/templates/hooks/edit-with-webkit-button.html'), $cta_info)
       ];
     }
 

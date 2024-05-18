@@ -26,7 +26,7 @@
           name: COMPONENT_NAME,
           attributes: {
             [DATA_KEY]: COMPONENT_TYPE,
-            src: '/wa-apps/webkit/img/dummy-image.webp',
+            src: window.webkit.webkitBackendUrls.backendAppStaticUrl + '/img/dummy-image.webp',
             class: COMPONENT_TYPE,
           },
           tagName: "img",
@@ -45,7 +45,7 @@
               type: 'image',
               label: 'Image',
               name: 'src',
-              default: '/wa-apps/webkit/img/dummy-image.webp',
+              default: window.webkit.webkitBackendUrls.backendAppStaticUrl + '/img/dummy-image.webp',
             },
           ],
         },

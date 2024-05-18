@@ -64,13 +64,30 @@ trait webkitUrl
     return wa(webkitConst::APP_ID)->getDataPath($path);
   }
 
+  /**
+   * If the framework installed in sub-folder, e.g. domain.com/wa,
+   * we have to take into account that "wa" postfix and add it to the route,
+   * because $route doesn't include it.
+   * See the difference
+   * wa_dump($params['route'], $normalized_route); // 'webkit_news/*', 'wa/webkit_news/*'
+   * @param $route
+   * @return string
+   * @throws waException
+   */
+  public static function normalizeHookRoute($route)
+  {
+    return substr(wa()->getRootUrl(), 1, strlen(wa()->getRootUrl())) . $route;
+  }
+
   public static function getBackendUrls()
   {
-    $backend_api_url = webkitUrl::getBackendApiUrl();
+    $backend_url = wa()->getRootUrl() . wa()->getConfig()->getBackendUrl();
+    $backend_api_url = substr(wa()->getRootUrl(), 0, -1) . webkitUrl::getBackendApiUrl();
     $backend_app_static_url = substr(webkitUrl::getAppStaticUrl(), 0, -1);
 
     return [
-      'backend_url' => '/' . wa()->getConfig()->getBackendUrl(),
+      'backend_root_url' => wa()->getRootUrl(),
+      'backend_url' => $backend_url,
       'backend_api_url' => $backend_api_url,
       'backend_app_static_url' => $backend_app_static_url,
     ];
